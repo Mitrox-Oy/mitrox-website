@@ -96,11 +96,10 @@ const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ items = [] }) => 
           {/* Header */}
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium text-white mb-4">
-              Valmiit projektimme
+              Inspiraatiota tulevaan sivustoosi
             </h2>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-              Tutustu joihinkin suosikkiprojekteihimme ja näe, mitä voimme
-              luoda yhdessä
+              Tutustu esimerkkisivustoihin, jotka kuvaavat Mitroxin suunnittelun laatua ja tyyliä.
             </p>
           </div>
 
