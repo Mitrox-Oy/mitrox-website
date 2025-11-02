@@ -1,90 +1,57 @@
 import React, { useState } from "react";
-import { ExternalLink } from "lucide-react";
+import claroYoga from "../assets/claro-yoga.png";
+import homewell from "../assets/homewell.png";
+import nordhavnBistro from "../assets/nordhavn-bistro.png";
+import nordicPulse from "../assets/nordic-pulse.png";
+import pureclean from "../assets/pureclean.png";
+import studioKa from "../assets/studio-ka.png";
 import PortfolioModal from "./PortfolioModal";
 import type { PortfolioItem } from "./PortfolioModal";
 
 export interface PortfolioShowcaseProps {
-  items?: PortfolioItem[];
+  items?: Array<{
+    id: string;
+    image: string;
+    company: string;
+  }>;
 }
 
-const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ items = [] }) => {
+const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ items }) => {
   const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
 
-  // Default placeholder portfolio items - replace with actual data
-  const defaultItems: PortfolioItem[] = items.length > 0
-    ? items
-    : [
-        {
-          id: "1",
-          image: "/placeholder-portfolio-1.jpg",
-          company: "Esimerkki Yritys 1",
-          testimonial: {
-            quote:
-              "Mitrox loi meille modernin verkkosivun, joka ylitti kaikki odotuksemme. Projektin aikataulu noudatettiin täsmällisesti ja lopputulos on ammattitaitoinen.",
-            personName: "Matti Meikäläinen",
-            role: "Toimitusjohtaja",
-          },
-        },
-        {
-          id: "2",
-          image: "/placeholder-portfolio-2.jpg",
-          company: "Esimerkki Yritys 2",
-          testimonial: {
-            quote:
-              "Erinomainen yhteistyö ja lopputulos. Verkkosivumme on nyt moderni, käyttäjäystävällinen ja auttaa meitä saavuttamaan liiketoimintatavoitteemme.",
-            personName: "Liisa Virtanen",
-            role: "Markkinointipäällikkö",
-          },
-        },
-        {
-          id: "3",
-          image: "/placeholder-portfolio-3.jpg",
-          company: "Esimerkki Yritys 3",
-          testimonial: {
-            quote:
-              "Projekti sujui sujuvasti alusta loppuun. Tiimi kuunteli tarpeitamme ja toi ne eloon upeassa visuaalisessa muodossa.",
-            personName: "Jussi Jokinen",
-            role: "Perustaja",
-          },
-        },
-        {
-          id: "4",
-          image: "/placeholder-portfolio-4.jpg",
-          company: "Esimerkki Yritys 4",
-          testimonial: {
-            quote:
-              "Suosittelemme Mitroxia lämpimästi. He ymmärtävät liiketoiminnan tarpeet ja luovat ratkaisuja, jotka todella toimivat.",
-            personName: "Anna Korhonen",
-            role: "Myyntipäällikkö",
-          },
-        },
-        {
-          id: "5",
-          image: "/placeholder-portfolio-5.jpg",
-          company: "Esimerkki Yritys 5",
-          testimonial: {
-            quote:
-              "Verkkosivumme on saanut paljon kehuja. Mitroxin tiimi teki työn loistavasti ja olemme erittäin tyytyväisiä lopputulokseen.",
-            personName: "Petri Nieminen",
-            role: "Toimitusjohtaja",
-          },
-        },
-        {
-          id: "6",
-          image: "/placeholder-portfolio-6.jpg",
-          company: "Esimerkki Yritys 6",
-          testimonial: {
-            quote:
-              "Ammattitaitoinen palvelu ja lopputulos on juuri sitä, mitä tarvitsimme. Kiitos loistavasta työstä!",
-            personName: "Sari Lehtonen",
-            role: "Perustaja",
-          },
-        },
-      ];
-
-  const handleCloseModal = () => {
-    setSelectedItem(null);
-  };
+  // Default portfolio items with actual images
+  const defaultItems: PortfolioItem[] = items || [
+    {
+      id: "1",
+      image: claroYoga,
+      company: "Claro Yoga",
+    },
+    {
+      id: "2",
+      image: homewell,
+      company: "HomeWell",
+    },
+    {
+      id: "3",
+      image: nordhavnBistro,
+      company: "Nordhavn Bistro",
+    },
+    {
+      id: "4",
+      image: nordicPulse,
+      company: "Nordic Pulse",
+    },
+    {
+      id: "5",
+      image: pureclean,
+      company: "PureClean",
+    },
+    {
+      id: "6",
+      image: studioKa,
+      company: "Studio—KA",
+    },
+  ];
 
   return (
     <>
@@ -112,27 +79,23 @@ const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ items = [] }) => 
                 onClick={() => setSelectedItem(item)}
               >
                 {/* Image */}
-                <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black">
+                <div className="absolute inset-0">
                   <img
                     src={item.image}
                     alt={item.company}
-                    className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity"
+                    className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
                     loading="lazy"
                   />
                 </div>
 
                 {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
 
                 {/* Content */}
                 <div className="absolute inset-0 flex flex-col justify-end p-6">
-                  <h3 className="text-white font-medium text-lg mb-1">
+                  <h3 className="text-white font-medium text-lg">
                     {item.company}
                   </h3>
-                  <div className="flex items-center gap-2 text-gray-300 text-sm group-hover:text-white transition-colors">
-                    <span>Katso lisää</span>
-                    <ExternalLink className="w-4 h-4" />
-                  </div>
                 </div>
 
                 {/* Hover Effect */}
@@ -145,11 +108,10 @@ const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ items = [] }) => 
 
       {/* Modal */}
       {selectedItem && (
-        <PortfolioModal item={selectedItem} onClose={handleCloseModal} />
+        <PortfolioModal item={selectedItem} onClose={() => setSelectedItem(null)} />
       )}
     </>
   );
 };
 
 export default PortfolioShowcase;
-
