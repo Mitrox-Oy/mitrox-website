@@ -38,6 +38,13 @@ const WebsiteHero: React.FC = () => {
     }
   };
 
+  const handleScrollToProcess = () => {
+    const processSection = document.getElementById("process");
+    if (processSection) {
+      processSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
     <section
       id="hero"
@@ -83,8 +90,7 @@ const WebsiteHero: React.FC = () => {
               }`}
               style={{ fontFamily: "Epilogue, sans-serif", fontWeight: 600 }}
             >
-              Räätälöidyt verkkosivut<br />
-              jotka kasvattavat liiketoimintaasi
+              Verkkosivut, jotka tekevät vaikutuksen
             </h1>
 
             {/* Subtitle */}
@@ -99,8 +105,7 @@ const WebsiteHero: React.FC = () => {
                 fontWeight: 400,
               }}
             >
-              Luomme juuri sinulle sopivan verkkosivun, joka kertoo
-              yrityksesi tarinan ja auttaa saavuttamaan liiketoimintatavoitteesi
+              Luomme verkkosivun, joka tekee brändistäsi vakuuttavan ja asiakaskokemuksesta vaivattoman
             </p>
 
             {/* Buttons */}
@@ -122,8 +127,8 @@ const WebsiteHero: React.FC = () => {
                 Katso portfolio
                 <ChevronDown className="w-4 h-4" />
               </button>
-              <a
-                href="#contact"
+              <button
+                onClick={handleScrollToProcess}
                 className="w-full sm:w-auto px-6 sm:px-8 py-3 rounded-full bg-white text-black hover:bg-gray-100 font-medium transition-all duration-300 flex items-center justify-center"
                 style={{
                   fontFamily:
@@ -131,8 +136,8 @@ const WebsiteHero: React.FC = () => {
                   fontWeight: 400,
                 }}
               >
-                Ota yhteyttä
-              </a>
+                Aloita tänään
+              </button>
             </div>
           </div>
         </div>

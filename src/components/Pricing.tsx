@@ -129,6 +129,9 @@ const Pricing: React.FC = () => {
                 }`}
               >
                 Vuosittain
+                <span className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-xs text-green-400 font-semibold bg-black/90 rounded-full px-1.5 py-0.5 border border-green-400/50 whitespace-nowrap">
+                  -20%
+                </span>
               </button>
             </div>
           </div>
@@ -156,6 +159,13 @@ const Pricing: React.FC = () => {
 
                 {/* Card */}
                 <div className="relative w-full flex flex-col rounded-2xl p-8 bg-white/[0.02] backdrop-blur-xl border border-white/10 hover:bg-white/[0.04] hover:border-white/20 transition-all duration-300">
+                  
+                  {/* Limited Launch Price Badge */}
+                  <div className="absolute -top-3 right-4 z-10">
+                    <div className="bg-black/90 text-green-400 px-1.5 py-0.5 rounded-full text-xs font-semibold border border-green-400/50 whitespace-nowrap">
+                      Rajoitettu lanseeraushinta
+                    </div>
+                  </div>
                   
                   {/* Header */}
                   <div className="mb-8">

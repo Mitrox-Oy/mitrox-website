@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Check, ArrowRight } from "lucide-react";
+import { Check, ArrowRight, Calculator } from "lucide-react";
+import WebsiteInquiryForm from "./WebsiteInquiryForm";
 
 const formatEUR = (value: number) =>
   new Intl.NumberFormat("fi-FI", {
@@ -12,16 +13,39 @@ type BillingCycle = "monthly" | "yearly";
 
 const WebsitePricing: React.FC = () => {
   const [billing, setBilling] = useState<BillingCycle>("yearly");
+  const [showCalculator, setShowCalculator] = useState(false);
+  const [pageCount, setPageCount] = useState(5);
+  const [includeLanguage, setIncludeLanguage] = useState(false);
+  const [includeAIBot, setIncludeAIBot] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   const MONTHLY_PRICE = 39;
   const YEARLY_DISCOUNT = 0.1;
   const YEARLY_PRICE = Math.round(MONTHLY_PRICE * 12 * (1 - YEARLY_DISCOUNT));
   const EFFECTIVE_MONTHLY = Math.round(YEARLY_PRICE / 12);
 
-  const handleScrollToContact = () => {
-    const el = document.getElementById("contact");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+  // Pricing calculations
+  const SETUP_FEE_BASE = 599;
+  const SETUP_FEE_PER_PAGE = 100;
+  const LANGUAGE_FEE_BASE = 200;
+  const LANGUAGE_FEE_PER_PAGE = 50;
+  // Tekoälybotin hinta: 55€/kk vuosittaisella, 65€/kk kuukausittaisella
+  const AI_BOT_MONTHLY = billing === "yearly" ? 55 : 65;
+
+  const calculateSetupFee = () => {
+    const extraPages = Math.max(0, pageCount - 5);
+    return SETUP_FEE_BASE + (extraPages * SETUP_FEE_PER_PAGE);
   };
+
+  const calculateLanguageFee = () => {
+    if (!includeLanguage) return 0;
+    const extraPages = Math.max(0, pageCount - 5);
+    return LANGUAGE_FEE_BASE + (extraPages * LANGUAGE_FEE_PER_PAGE);
+  };
+
+  const totalSetupFee = calculateSetupFee() + calculateLanguageFee();
+  const baseMonthlyFee = billing === "yearly" ? EFFECTIVE_MONTHLY : MONTHLY_PRICE;
+  const monthlyFee = baseMonthlyFee + (includeAIBot ? AI_BOT_MONTHLY : 0);
 
   return (
     <section id="pricing" className="relative py-40 md:py-48 px-4 sm:px-6 lg:px-8 bg-black font-inter">
@@ -31,12 +55,22 @@ const WebsitePricing: React.FC = () => {
           <h2 className="text-4xl sm:text-5xl font-light text-white mb-4">
             Hinnoittelu
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto mb-8">
             Yksinkertainen ja läpinäkyvä hinnoittelu ilman piilotettuja kustannuksia
           </p>
 
-          {/* Toggle */}
-          <div className="mt-12 inline-block">
+          <div className="flex flex-col items-center gap-4">
+            {/* Calculator Toggle */}
+            <button
+              onClick={() => setShowCalculator(!showCalculator)}
+              className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full bg-transparent hover:bg-white/5 border border-white/10 hover:border-white/20 text-white/70 hover:text-white transition-all duration-300 text-sm font-light"
+            >
+              <Calculator className="w-3.5 h-3.5" />
+              {showCalculator ? "Piilota hinnoittelulaskuri" : "Laske hinta projektillesi"}
+            </button>
+
+            {/* Toggle */}
+            <div className="inline-block">
             <div className="relative inline-flex rounded-full bg-white/5 backdrop-blur-xl border border-white/10 p-1">
               <div
                 className="absolute top-1 bottom-1 w-1/2 rounded-full bg-white/10 backdrop-blur-sm transition-transform duration-300 ease-out"
@@ -66,11 +100,186 @@ const WebsitePricing: React.FC = () => {
               </button>
             </div>
           </div>
+          </div>
         </div>
+
+        {/* Price Calculator */}
+        {showCalculator && (
+          <div className="max-w-4xl mx-auto mb-16">
+            <div className="rounded-2xl p-8 lg:p-12 bg-white/[0.02] backdrop-blur-xl border border-white/10">
+              <h3 className="text-2xl font-medium text-white mb-6 text-center">
+                Hinnoittelulaskuri
+              </h3>
+
+              <div className="space-y-8">
+                {/* Page Count Slider */}
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <label className="text-sm font-medium text-gray-300">
+                      Sivumäärä
+                    </label>
+                    <span className="text-xl font-medium text-white">
+                      {pageCount} {pageCount === 1 ? "sivu" : "sivua"}
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min="1"
+                    max="20"
+                    value={pageCount}
+                    onChange={(e) => setPageCount(Number(e.target.value))}
+                    className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-white"
+                    style={{
+                      background: `linear-gradient(to right, white 0%, white ${((pageCount - 1) / 19) * 100}%, rgba(255,255,255,0.1) ${((pageCount - 1) / 19) * 100}%, rgba(255,255,255,0.1) 100%)`
+                    }}
+                  />
+                  <div className="flex justify-between text-xs text-gray-500 mt-2">
+                    <span>1</span>
+                    <span>5 (sisältyy aloitusmaksuun)</span>
+                    <span>10</span>
+                    <span>15</span>
+                    <span>20</span>
+                  </div>
+                </div>
+
+                {/* Language Toggle */}
+                <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10">
+                  <div>
+                    <label className="text-sm font-medium text-white block mb-1">
+                      Lisäkieli (Suomi ↔ Englanti)
+                    </label>
+                    <p className="text-xs text-gray-400">
+                      Käännös ja viimeistely verkkosivustolle
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIncludeLanguage(!includeLanguage)}
+                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 ${
+                      includeLanguage ? "bg-white" : "bg-white/20"
+                    }`}
+                  >
+                    <span
+                      className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-black shadow ring-0 transition duration-200 ease-in-out ${
+                        includeLanguage ? "translate-x-5" : "translate-x-0"
+                      }`}
+                    />
+                  </button>
+                </div>
+
+                {/* AI Bot Toggle */}
+                <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10">
+                  <div>
+                    <label className="text-sm font-medium text-white block mb-1">
+                      Mitrox Tekoälybotti
+                    </label>
+                    <p className="text-xs text-gray-400">
+                      24/7 keskusteleva asiakasavustaja (+{formatEUR(AI_BOT_MONTHLY)}/kk)
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIncludeAIBot(!includeAIBot)}
+                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 ${
+                      includeAIBot ? "bg-white" : "bg-white/20"
+                    }`}
+                  >
+                    <span
+                      className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-black shadow ring-0 transition duration-200 ease-in-out ${
+                        includeAIBot ? "translate-x-5" : "translate-x-0"
+                      }`}
+                    />
+                  </button>
+                </div>
+
+                {/* Price Breakdown */}
+                <div className="space-y-4 pt-6 border-t border-white/10">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-400">Aloitusmaksu</span>
+                    <div className="text-right">
+                      <span className="text-lg font-medium text-white">
+                        {formatEUR(calculateSetupFee())}
+                      </span>
+                      {pageCount > 5 && (
+                        <p className="text-xs text-gray-500 mt-1">
+                          {formatEUR(SETUP_FEE_BASE)} (5 sivua) + {pageCount - 5} × {formatEUR(SETUP_FEE_PER_PAGE)}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  {includeLanguage && (
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-400">Lisäkieli</span>
+                      <div className="text-right">
+                        <span className="text-lg font-medium text-white">
+                          {formatEUR(calculateLanguageFee())}
+                        </span>
+                        {pageCount > 5 && (
+                          <p className="text-xs text-gray-500 mt-1">
+                            {formatEUR(LANGUAGE_FEE_BASE)} (5 sivua) + {pageCount - 5} × {formatEUR(LANGUAGE_FEE_PER_PAGE)}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex justify-between items-center pt-4 border-t border-white/10">
+                    <span className="text-base font-medium text-white">Yhteensä (aloitusmaksu)</span>
+                    <span className="text-2xl font-medium text-white">
+                      {formatEUR(totalSetupFee)}
+                    </span>
+                  </div>
+
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-400">Kuukausimaksu</span>
+                    <div className="text-right">
+                      <span className="text-lg font-medium text-white">
+                        {formatEUR(monthlyFee)} /kk
+                      </span>
+                      {includeAIBot && (
+                        <p className="text-xs text-gray-500 mt-1">
+                          {formatEUR(baseMonthlyFee)} (verkkosivusto) + {formatEUR(AI_BOT_MONTHLY)} (tekoälybotti)
+                        </p>
+                      )}
+                      {billing === "yearly" && !includeAIBot && (
+                        <p className="text-xs text-gray-500 mt-1">
+                          Säästät {formatEUR(MONTHLY_PRICE * 12 - YEARLY_PRICE)} / vuosi
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="pt-4 border-t border-white/10 bg-white/5 rounded-xl p-4">
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-sm font-medium text-gray-300">
+                        Ensimmäinen vuosi (arvio)
+                      </span>
+                      <span className="text-3xl font-light text-white">
+                        {formatEUR(totalSetupFee + (monthlyFee * 12))}
+                      </span>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-2 text-right">
+                      Sisältää aloitusmaksun + 12kk kuukausimaksu<br />
+                      Hinnat verottomina. ALV 25,5 % lisätään hintaan
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Main Pricing Card */}
         <div className="max-w-4xl mx-auto mb-16">
           <div className="relative rounded-2xl p-8 lg:p-12 bg-white/[0.02] backdrop-blur-xl border border-white/10 hover:bg-white/[0.04] transition-all duration-300">
+            {/* Limited Launch Price Badge */}
+            <div className="absolute -top-3 right-4 z-10">
+              <div className="bg-black/90 text-green-400 px-1.5 py-0.5 rounded-full text-xs font-semibold border border-green-400/50 whitespace-nowrap">
+                Rajoitettu lanseeraushinta
+              </div>
+            </div>
+
             <div className="text-center mb-8">
               <h3 className="text-2xl font-medium text-white mb-2">
                 Verkkosivupaketti
@@ -129,7 +338,7 @@ const WebsitePricing: React.FC = () => {
                     <Check className="h-4 w-4 text-green-400" />
                   </div>
                   <span className="text-sm text-gray-300 leading-relaxed">
-                    Hosting ja tekninen ylläpito
+                    Sivuston ylläpito ja turvallinen hosting
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
@@ -137,7 +346,7 @@ const WebsitePricing: React.FC = () => {
                     <Check className="h-4 w-4 text-green-400" />
                   </div>
                   <span className="text-sm text-gray-300 leading-relaxed">
-                    Kuukausittaiset analytiikkaraportit
+                    Kuukausittaiset analytiikka- ja kehitysraportit
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
@@ -145,7 +354,7 @@ const WebsitePricing: React.FC = () => {
                     <Check className="h-4 w-4 text-green-400" />
                   </div>
                   <span className="text-sm text-gray-300 leading-relaxed">
-                    Premium asiakastuki
+                    Premium-asiakastuki ja jatkuva huolenpito
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
@@ -153,10 +362,29 @@ const WebsitePricing: React.FC = () => {
                     <Check className="h-4 w-4 text-green-400" />
                   </div>
                   <span className="text-sm text-gray-300 leading-relaxed">
-                    Jopa 4 sisältö- tai designpäivitystä joka kuukausi
+                    Jopa 4 sisältö- tai designpäivitystä kuukaudessa
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="mt-0.5 shrink-0">
+                    <Check className="h-4 w-4 text-green-400" />
+                  </div>
+                  <span className="text-sm text-gray-300 leading-relaxed">
+                    Hakukoneoptimointi ja suorituskyvyn seuranta
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="mt-0.5 shrink-0">
+                    <Check className="h-4 w-4 text-green-400" />
+                  </div>
+                  <span className="text-sm text-gray-300 leading-relaxed">
+                    Tietoturvapäivitykset ja valvonta
                   </span>
                 </li>
               </ul>
+              <p className="text-xs text-gray-400 text-center mt-6 max-w-2xl mx-auto leading-relaxed">
+                Kaikki on huolehdittu puolestasi – sinä keskityt kasvuun.
+              </p>
             </div>
 
             {/* Guarantee */}
@@ -171,14 +399,14 @@ const WebsitePricing: React.FC = () => {
             {/* CTA */}
             <div className="text-center">
               <button
-                onClick={handleScrollToContact}
+                onClick={() => setIsFormOpen(true)}
                 className="w-full max-w-md mx-auto py-3 px-6 rounded-xl font-medium text-sm bg-white text-black hover:bg-gray-100 transition-all duration-300 flex items-center justify-center gap-2"
               >
-                Ota yhteyttä
+                Aloita tänään
                 <ArrowRight className="h-4 w-4" />
               </button>
               <p className="text-center text-xs text-gray-400 mt-3">
-                Aloitetaan projekti yhdessä.
+                Aloitetaan prosessi yhdessä.
               </p>
             </div>
           </div>
@@ -263,6 +491,9 @@ const WebsitePricing: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Inquiry Form Modal */}
+      <WebsiteInquiryForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
     </section>
   );
 };

@@ -31,7 +31,11 @@ const Header: React.FC = () => {
 
   // Show product page nav items on product pages
   const isProductPage = location.pathname === "/websites" || location.pathname === "/ai-agent";
-  const displayNav = isProductPage ? [...NAV, ...PRODUCT_PAGE_NAV] : NAV;
+  const displayNav = isProductPage 
+    ? location.pathname === "/websites"
+      ? [NAV[0], ...PRODUCT_PAGE_NAV, NAV[1]]
+      : [...NAV, ...PRODUCT_PAGE_NAV]
+    : NAV;
 
   // Handle products dropdown with delay
   const handleProductsMouseEnter = () => {

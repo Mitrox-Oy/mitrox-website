@@ -5,7 +5,6 @@ import {
   Cog,
   Rocket,
   ArrowRight,
-  RefreshCw,
 } from "lucide-react";
 import WebsiteInquiryForm from "./WebsiteInquiryForm";
 
@@ -22,37 +21,37 @@ const STEPS: Step[] = [
   {
     id: "01",
     title: "Kyselylomake",
-    backTitle: "Sitoudutaan prosessiin",
-    desc: "Täytä kyselylomake",
+    backTitle: "Kyselylomake",
+    desc: "Täytä lyhyt lomake, jossa kerrot yrityksesi tavoitteista ja tyylistä.",
     details:
-      "Asiakas täyttää kyselylomakkeen ja sitoutuu prosessiin. Kerromme tarvitsemamme tiedot ja aloitamme yhteistyön.",
+      "Kyselyn avulla saamme selkeän kuvan brändistäsi ja toiveistasi. Tämän jälkeen jaamme sinulle aikataulun ja tarvittavat tiedot — me hoidamme loput.",
     icon: <MessageSquare className="w-5 h-5 text-white" />,
   },
   {
     id: "02",
     title: "Rakentaminen",
-    backTitle: "Varmistamme tiedot",
-    desc: "Rakennamme sivuston",
+    backTitle: "Rakentaminen",
+    desc: "Rakennamme sivuston yrityksesi tarpeisiin.",
     details:
-      "Palaamme asiakkaalle ja varmistamme tiedot, jonka jälkeen rakennamme sivuston yrityksesi tarpeisiin räätälöitynä.",
+      "Varmistamme sisällöt ja rakenteen ennen toteutusta. Suunnittelemme ulkoasun, teknisen rakenteen ja varmistamme, että sivusto toimii kaikilla laitteilla.",
     icon: <Brain className="w-5 h-5 text-white" />,
   },
   {
     id: "03",
     title: "Katselmus",
-    backTitle: "Viikon sisällä palautus",
-    desc: "Käymme läpi muokkaukset",
+    backTitle: "Katselmus",
+    desc: "Käymme läpi sivuston ja muokkaukset.",
     details:
-      "Palaamme asiakkaalle viikon sisällä ja käymme läpi nykyistä sivustoa ja mahdollisia muokkauksia. Teemme tarvittavat muutokset.",
+      "Saat luonnoksen valmiista sivustosta viikon sisällä. Käymme sen yhdessä läpi, teemme tarvittavat muutokset ja viimeistelemme designin.",
     icon: <Cog className="w-5 h-5 text-white" />,
   },
   {
     id: "04",
     title: "Julkaisu",
-    backTitle: "Viimeinen katselmus",
-    desc: "Julkaisemme sivuston",
+    backTitle: "Julkaisu",
+    desc: "Julkaisemme sivuston.",
     details:
-      "Teemme mahdolliset muokkaukset ja järjestämme viimeisen katselmuksen, jonka jälkeen julkaisemme sivuston. Verkkosivustosi on nyt valmiina!",
+      "Tarkistamme kaiken vielä kerran ennen julkaisua. Kun sivusto on julkaistu, varmistamme suorituskyvyn, tietoturvan ja SEO-perusasetukset.",
     icon: <Rocket className="w-5 h-5 text-white" />,
   },
 ];
@@ -86,10 +85,10 @@ const ProcessSection: React.FC = () => {
         {/* Otsikko */}
         <div className="mb-16 text-center">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium text-white mb-4">
-            Yksinkertainen prosessi
+            Helppo ja huoleton prosessi
           </h2>
           <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-            4 askelta valmiiseen verkkosivustoon – sinä keskityt kasvuun
+            Neljä selkeää vaihetta valmiiseen verkkosivustoon – me hoidamme kaiken puolestasi.
           </p>
         </div>
 
@@ -113,7 +112,7 @@ const ProcessSection: React.FC = () => {
                 <div
                   key={s.id}
                   className={[
-                    "relative w-full h-[200px] mx-auto transition-all duration-300",
+                    "relative w-full h-[280px] mx-auto transition-all duration-300",
                     shouldBlur
                       ? "opacity-40 blur-sm pointer-events-none"
                       : "opacity-100 blur-0",
