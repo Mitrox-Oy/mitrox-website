@@ -9,7 +9,7 @@ const ProductsSection: React.FC = () => {
       icon: <Globe className="w-8 h-8" />,
       title: "Räätälöidyt Verkkosivut",
       description:
-        "Modernit ja käyttäjäystävälliset verkkosivut, jotka kertovat yrityksesi tarinan ja kasvattavat liiketoimintaasi. Yksilöllinen design joka vastaa brändisi visiota.",
+        "Modernit, käyttäjäystävälliset verkkosivut, jotka kertovat yrityksesi tarinan ja tukevat kasvua.\n\nYksilöllinen design, joka heijastaa brändisi identiteettiä.",
       buttonText: "Tutustu portfolioon",
       link: "/websites",
       action: null,
@@ -18,9 +18,9 @@ const ProductsSection: React.FC = () => {
     {
       id: "chatbot",
       icon: <Bot className="w-8 h-8" />,
-      title: "AI Agent / Chatbot",
+      title: "Tekoälybotti",
       description:
-        "Tekoälypohjainen chatbotti joka palvelee asiakkaitasi 24/7. Automaattisesti vastaa kysymyksiin, kerää liidejä ja kasvattaa myyntiäsi.",
+        "Älykäs virtuaaliavustaja, joka palvelee asiakkaitasi ympäri vuorokauden.\n\nVastaa kysymyksiin, kerää liidejä ja vahvistaa myyntiä automaattisesti.",
       buttonText: "Katso yksityiskohdat",
       link: "/ai-agent",
       action: null,
@@ -31,7 +31,7 @@ const ProductsSection: React.FC = () => {
       icon: <Sparkles className="w-8 h-8" />,
       title: "Seuraava innovaatio",
       description:
-        "Työskentelemme parhaillaan uuden innovatiivisen ratkaisun parissa. Pysy kuulolla ja saat tiedon ensimmäisten joukossa!",
+        "Työstämme parhaillaan uutta ratkaisua, joka vie palvelumme seuraavalle tasolle.\n\nPysy kuulolla ja kuulet siitä ensimmäisten joukossa.",
       buttonText: "Tulossa pian",
       link: null,
       action: null,
@@ -83,10 +83,14 @@ const ProductsSection: React.FC = () => {
                 {product.title}
               </h3>
 
-              {/* Description */}
-              <p className="text-sm text-gray-400 leading-relaxed mb-6 group-hover:text-gray-300 transition-colors flex-grow">
-                {product.description}
-              </p>
+                      {/* Description */}
+                      <div className="text-sm text-gray-400 leading-relaxed mb-6 group-hover:text-gray-300 transition-colors flex-grow">
+                        {product.description.split('\n\n').map((paragraph, idx) => (
+                          <p key={idx} className={idx > 0 ? "mt-3" : ""}>
+                            {paragraph}
+                          </p>
+                        ))}
+                      </div>
 
               {/* Button - Always at bottom */}
               <div className="mt-auto">
