@@ -19,14 +19,14 @@ const EmailRow: React.FC<Person & { label?: string }> = ({ name, email, label })
     <li className="flex items-center justify-between gap-6 py-2">
       <div className="min-w-0">
         {label && (
-          <div className="text-[11px] uppercase tracking-widest text-white/80 font-semibold">
+          <div className="text-[11px] uppercase tracking-[0.2em] text-white/70 font-semibold">
             {label}
           </div>
         )}
         <div className="text-sm text-gray-200 truncate">{name}</div>
         <a
           href={`mailto:${email}`}
-          className="text-sm text-blue-300 hover:text-blue-200 underline-offset-2 hover:underline break-all"
+          className="text-sm text-white/70 hover:text-white underline-offset-4 hover:underline break-all"
         >
           {email}
         </a>
@@ -213,6 +213,7 @@ const ContactForm: React.FC = () => {
       </header>
 
       <div className="mx-auto grid max-w-5xl gap-10 lg:grid-cols-[1.05fr_1fr]">
+        {/* Lomake boxi */}
         <div className="lg:col-span-2 max-w-2xl mx-auto space-y-4">
           {/* Lomake boxi */}
           <div className="rounded-xl bg-white/5 backdrop-blur-xl backdrop-saturate-150 p-6">

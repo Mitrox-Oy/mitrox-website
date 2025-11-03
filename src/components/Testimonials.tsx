@@ -27,7 +27,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonials = [] }) => {
         },
         {
           quote:
-            "Chatbotimme on auttanut meitä palvelemaan asiakkaitamme ympäri vuorokauden. Myyntimme kasvoi 30% ensimmäisten kuukausien aikana.",
+            "Mitrox AI Advisor palvelee asiakkaitamme ympäri vuorokauden ja ohjaa liidit oikeille myyjille. Myyntimme kasvoi 30 % ensimmäisten kuukausien aikana.",
           company: "Toinen Yritys",
           personName: "Liisa Virtanen",
           role: "Markkinointipäällikkö",

@@ -1,103 +1,232 @@
-import React, { useState } from "react";
-import { X, Send, ChevronRight, ChevronLeft } from "lucide-react";
+import React, { useState, useRef, useEffect } from "react";
+import { X, Send, ChevronRight, ChevronLeft, ChevronDown } from "lucide-react";
 
 interface FormData {
   // Yrityksen perustiedot
   companyName: string;
   industry: string;
   targetAudience: string;
+  companyImage: string;
+  companyImageOther: string;
   
-  // Verkkosivun tarkoitus
-  websitePurpose: string[];
+  // Verkkosivun tavoite
   mainGoals: string[];
   
-  // Visuaalinen tyyli
+  // Visuaalinen tyyli ja äänensävy
   designStyle: string;
   colorPreferences: string;
   referenceSites: string;
+  toneOfVoice: string;
   
   // Sivut ja sisältö
   requiredPages: string[];
   contentOwnership: string;
+  uniqueSellingPoint: string;
   specialFeatures: string;
   
   // Tekniset vaatimukset
   integrations: string[];
+  integrationFollowups: {
+    [key: string]: {
+      provider: string;
+      haveAccount: string;
+      purpose: string;
+    };
+  };
   languages: string[];
   seo: string;
   
-  // Yhteystiedot
+  // Aikataulu ja yhteystiedot
+  timeline: string;
   name: string;
   email: string;
   phone: string;
   message: string;
+  
+  // Lisäpalvelut
+  additionalServices: string[];
+  additionalRequests: string;
 }
-
-const PURPOSE_OPTIONS = [
-  "Markkinointi ja brändäys",
-  "Myynnin kasvattaminen",
-  "Asiakaspalvelu",
-  "Tuotteiden/palveluiden esittely",
-  "Yhteystietojen jakaminen",
-  "Bloggaus/sisällöntuotanto",
-];
 
 const GOALS_OPTIONS = [
   "Liidien keräys",
-  "Asiakaspalvelun automaatio",
-  "Tuotteen/palvelun esittely",
+  "Tuotteiden/palveluiden esittely",
   "Brändin vahvistaminen",
-  "Asiakkaiden tietoisuuden lisääminen",
+  "Myynnin kasvattaminen",
+  "Asiakaspalvelu tai automaatio",
+  "Yhteystietojen jakaminen",
+  "Sisällöntuotanto / blogi",
 ];
 
 const PAGE_OPTIONS = [
   "Etusivu",
   "Tietoa meistä",
-  "Tuotteet/Palvelut",
+  "Tuotteet / Palvelut",
   "Yhteystiedot",
-  "Blog",
-  "Galleria/Portfolio",
+  "Blogi",
+  "Galleria / Portfolio",
   "FAQ",
   "Hinnoittelu",
 ];
 
 const INTEGRATION_OPTIONS = [
-  "Sähköpostilistat (MailChimp, HubSpot, jne.)",
-  "CRM-järjestelmät",
-  "Sosiaalisen median integraatiot",
-  "Varausjärjestelmät",
-  "Chatbotti/AI Agent",
+  {
+    key: "email_marketing",
+    label: "Uutiskirje ja kampanjat (Mailchimp, Brevo)",
+    helper: "Pidä yhteyttä asiakkaisiin sähköpostitse.",
+    placeholder: "Esim. Mailchimp, Brevo, HubSpot...",
+  },
+  {
+    key: "booking",
+    label: "Ajanvaraus verkossa (Calendly, Timma, Google Calendar)",
+    helper: "Asiakkaasi voivat varata ajan suoraan sivustoltasi.",
+    placeholder: "Esim. Calendly, Timma, Google Calendar...",
+  },
+  {
+    key: "social_embed",
+    label: "Some-sisällöt sivulle (Instagram-feed, YouTube-video)",
+    helper: "Näytä ajankohtaisia julkaisuja tai esittelyvideoita sivullasi.",
+    placeholder: "Esim. Instagram, YouTube, TikTok...",
+  },
+  {
+    key: "maps",
+    label: "Kartta ja ajo-ohjeet (Google Maps)",
+    helper: "Näytä yrityksesi sijainti ja helpota asiakkaiden saapumista.",
+    placeholder: "Esim. Google Maps, Apple Maps...",
+  },
+  {
+    key: "forms_leads",
+    label: "Yhteydenottolomakkeet ja liidit (Typeform, Tally)",
+    helper: "Kerää yhteydenottoja automaattisesti jatkokäyttöön.",
+    placeholder: "Esim. Typeform, Tally, Google Forms...",
+  },
+  {
+    key: "mitrox_advisor",
+    label: "Verkkosivun asiakasavustaja (Mitrox AI Advisor)",
+    helper: "24/7 avustaja, joka ohjaa kävijöitä ja auttaa keräämään liidejä.",
+    placeholder: "Mitrox AI Advisor",
+  },
+  {
+    key: "unknown",
+    label: "En osaa sanoa – ehdottakaa meille sopivin ratkaisu",
+    helper: "Jos et ole varma, jätä valinta meille.",
+    placeholder: "",
+  },
 ];
+
+const ADDITIONAL_SERVICES_OPTIONS = [
+  "Mitrox Advisor – 55 €/kk alkaen",
+  "Lisäkieli (Suomi ↔ Englanti) – 199 € alkaen",
+  "Laajennettu SEO-optimointi – 69 €/kk",
+  "Ei lisäpalveluita tällä hetkellä",
+];
+
+const ADDITIONAL_SERVICES_DESCRIPTIONS: { [key: string]: string } = {
+  "Mitrox Advisor – 55 €/kk alkaen": "24/7 verkkosivun asiakasavustaja, joka vastaa kävijöiden kysymyksiin ja ohjaa oikeaan suuntaan.",
+  "Lisäkieli (Suomi ↔ Englanti) – 199 € alkaen": "Ammattitason käännös ja viimeistely viidelle sivulle, sisältäen SEO-optimoinnin.",
+  "Laajennettu SEO-optimointi – 69 €/kk": "Jatkuva hakukonenäkyvyyden kehitys ja säännölliset raportit.",
+};
 
 const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
   const [currentStep, setCurrentStep] = useState(0);
+  const [openDropdowns, setOpenDropdowns] = useState<{ [key: string]: boolean }>({});
+  const dropdownRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  
   const [formData, setFormData] = useState<FormData>({
     companyName: "",
     industry: "",
     targetAudience: "",
-    websitePurpose: [],
+    companyImage: "",
+    companyImageOther: "",
     mainGoals: [],
     designStyle: "",
     colorPreferences: "",
     referenceSites: "",
+    toneOfVoice: "",
     requiredPages: [],
     contentOwnership: "",
+    uniqueSellingPoint: "",
     specialFeatures: "",
     integrations: [],
+    integrationFollowups: {},
     languages: [],
     seo: "",
+    timeline: "",
     name: "",
     email: "",
     phone: "",
     message: "",
+    additionalServices: [],
+    additionalRequests: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
 
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      Object.keys(dropdownRefs.current).forEach((key) => {
+        if (dropdownRefs.current[key] && !dropdownRefs.current[key]?.contains(event.target as Node)) {
+          setOpenDropdowns((prev) => ({ ...prev, [key]: false }));
+        }
+      });
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Auto-select additional services based on language, SEO, and integration selections
+  // Note: We only ADD services automatically, never remove them - user has full control
+  useEffect(() => {
+    const NO_SERVICES = "Ei lisäpalveluita tällä hetkellä";
+    
+    // Don't auto-select if user has explicitly chosen "Ei lisäpalveluita"
+    if (formData.additionalServices.includes(NO_SERVICES)) {
+      return;
+    }
+
+    const hasBothLanguages = formData.languages.includes("Suomi") && formData.languages.includes("Englanti");
+    const needsExtendedSEO = formData.seo === "Kyllä, tarvitsen laajempaa SEO-optimointia";
+    const hasMitroxAdvisor = formData.integrations.includes("mitrox_advisor");
+    
+    const languageService = "Lisäkieli (Suomi ↔ Englanti) – 199 € alkaen";
+    const seoService = "Laajennettu SEO-optimointi – 69 €/kk";
+    const advisorService = "Mitrox Advisor – 55 €/kk alkaen";
+    
+    const newServices = [...formData.additionalServices];
+    let hasChanges = false;
+
+    // Auto-add language service if both languages selected (only if not already added)
+    if (hasBothLanguages && !newServices.includes(languageService)) {
+      newServices.push(languageService);
+      hasChanges = true;
+    }
+
+    // Auto-add SEO service ONLY if extended SEO is explicitly selected (only if not already added)
+    if (needsExtendedSEO && !newServices.includes(seoService)) {
+      newServices.push(seoService);
+      hasChanges = true;
+    }
+
+    // Auto-add Mitrox Advisor service if selected in integrations (only if not already added)
+    if (hasMitroxAdvisor && !newServices.includes(advisorService)) {
+      newServices.push(advisorService);
+      hasChanges = true;
+    }
+
+    // Note: We don't remove services automatically - user can always manually remove them if needed
+
+    if (hasChanges) {
+      setFormData((prev) => ({ ...prev, additionalServices: newServices }));
+    }
+  }, [formData.languages, formData.seo, formData.integrations]);
+
   const steps = [
     {
       title: "Yrityksen perustiedot",
+      microcopy: "Tämä auttaa meitä ymmärtämään yrityksesi ydintä ja kohdentamaan sivuston oikein.",
       fields: [
         {
           name: "companyName",
@@ -116,24 +245,40 @@ const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = (
           name: "targetAudience",
           label: "Kohdeyleisö *",
           type: "textarea",
-          placeholder: "Kuvittele kuka käyttää verkkosivustoa (esim. B2B-asiakkaat, kuluttajat, tietyt ikäryhmät...)",
+          placeholder: "Kuka käyttää verkkosivustoa (esim. B2B-asiakkaat, kuluttajat, tietyt ikäryhmät...)",
           required: true,
+        },
+        {
+          name: "companyImage",
+          label: "Millaisen ensivaikutelman haluat antaa verkossa? *",
+          type: "select",
+          options: [
+            "Ammattimainen ja luotettava",
+            "Innovatiivinen ja moderni",
+            "Lämmin ja helposti lähestyttävä",
+            "Ylellinen ja viimeistelty",
+            "Rohkea ja erottuva",
+            "Asiantunteva ja selkeä",
+            "En osaa sanoa – ehdottakaa meille sopivaa linjaa",
+          ],
+          microcopy: "Ensivaikutelma auttaa meitä linjaamaan koko sivuston.",
+          required: true,
+        },
+        {
+          name: "companyImageOther",
+          label: "Kerro tarkemmin",
+          type: "textarea",
+          placeholder: "Jos valitsit 'Jokin muu', kerro tarkemmin...",
         },
       ],
     },
     {
-      title: "Verkkosivun tarkoitus",
+      title: "Verkkosivun tavoite",
+      microcopy: "Kun tiedämme tavoitteesi, voimme rakentaa sivuston, joka tukee liiketoimintaasi suoraan.",
       fields: [
         {
-          name: "websitePurpose",
-          label: "Mikä on verkkosivuston pääasiallinen tarkoitus? (voi valita useita) *",
-          type: "multiselect",
-          options: PURPOSE_OPTIONS,
-          required: true,
-        },
-        {
           name: "mainGoals",
-          label: "Mitkä ovat verkkosivuston tärkeimmät tavoitteet? (voi valita useita) *",
+          label: "Mikä on verkkosivuston tärkein tavoite? (voi valita useita) *",
           type: "multiselect",
           options: GOALS_OPTIONS,
           required: true,
@@ -141,38 +286,59 @@ const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = (
       ],
     },
     {
-      title: "Visuaalinen tyyli",
+      title: "Visuaalinen tyyli ja äänensävy",
+      microcopy: "Tyyli ja sävy vaikuttavat kaikkeen – kuvamaailmaan, väreihin ja viestinnän rytmiin.",
       fields: [
         {
           name: "designStyle",
-          label: "Minkälainen visuaalinen tyyli kiinnostaa? *",
+          label: "Millaiselta haluat sivustosi tuntuvan? *",
           type: "select",
           options: [
             "Moderni ja minimalistinen",
             "Klassinen ja ammattimainen",
-            "Värikäs ja eloisa",
-            "Yrityksellinen ja luotettava",
             "Luova ja uniikki",
-            "En ole varma, avoin ehdotuksille",
+            "Ylellinen ja premium",
+            "Yrityksellinen ja luotettava",
+            "Värikäs ja energinen",
+            "Rauhallinen ja luonnonläheinen",
+            "Avoin ehdotuksille",
           ],
+          microcopy: "Tunne vaikuttaa kuvamaailmaan, väreihin ja asetteluun.",
           required: true,
         },
         {
           name: "colorPreferences",
           label: "Värimieltymykset tai brändivärit",
           type: "textarea",
-          placeholder: "Kerro brändiväreistäsi tai minkälaisia värejä haluat käyttää (esim. sininen ja valkoinen, luonnon sävyt...)",
+          placeholder: "Esim. sininen ja valkoinen, luonnon sävyt...",
         },
         {
           name: "referenceSites",
-          label: "Ongelma-sivustot tai inspiraatio",
+          label: "Inspiraatiosivustot tai esimerkit",
           type: "textarea",
-          placeholder: "Jos sinulla on verkkosivustoja, joiden tyyli inspiroi sinua, jaa linkit tähän.",
+          placeholder: "Linkitä verkkosivustoja, joiden tyyli miellyttää sinua.",
+        },
+        {
+          name: "toneOfVoice",
+          label: "Millaisella äänensävyllä haluat sivustosi puhuvan? *",
+          type: "select",
+          options: [
+            "Asiantunteva ja selkeä",
+            "Rauhallinen ja luottamusta herättävä",
+            "Lämmin ja helposti lähestyttävä",
+            "Luova ja rento",
+            "Energinen ja rohkea",
+            "Ylellinen ja viimeistelty",
+            "En ole varma – ehdota sopivaa tyyliä",
+          ],
+          microcopy: "Äänensävy ohjaa kaikkea kirjoitusta ja viestinnän rytmiä.",
+          required: true,
         },
       ],
     },
     {
       title: "Sivut ja sisältö",
+      microcopy: "Mitä selkeämmin määrittelet sisällön, sitä vähemmän tarvitaan korjauskierroksia.",
       fields: [
         {
           name: "requiredPages",
@@ -183,31 +349,42 @@ const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = (
         },
         {
           name: "contentOwnership",
-          label: "Kuka vastaa sisällön tuottamisesta? *",
+          label: "Miten haluat hoitaa sivuston sisällön? *",
+          helper: "Kuvat, tekstit ja tarina yrityksestäsi.",
           type: "select",
           options: [
-            "Me tuotamme kaiken sisällön",
-            "Asiakas tuottaa sisällön",
-            "Yhteistyötä molempien välillä",
-            "Tarvitsemme apua sisällön kanssa",
+            "Me hoidamme kaiken sisällön puolestasi",
+            "Toimitamme sisällön itse",
+            "Tehdään yhdessä",
+            "Tarvitsemme apua sisällön suunnittelussa",
           ],
+          microcopy: "Valintasi määrittää tekstityön ja kuvatuotannon laajuuden.",
+          required: true,
+        },
+        {
+          name: "uniqueSellingPoint",
+          label: "Mikä tekee yrityksestäsi ainutlaatuisen? *",
+          type: "textarea",
+          placeholder: "Kerro lyhyesti, miksi asiakkaan tulisi valita juuri teidät.",
           required: true,
         },
         {
           name: "specialFeatures",
           label: "Erityistoiminnot tai vaatimukset",
           type: "textarea",
-          placeholder: "Esimerkiksi: galleria, lomakkeet, varausjärjestelmä, kartta, integraatiot...",
+          placeholder: "Esimerkiksi galleria, varausjärjestelmä, kartta, integraatiot...",
         },
       ],
     },
     {
-      title: "Tekniset vaatimukset",
+      title: "Tekniset ja toiminnalliset integraatiot",
+      intro: "Valitse vain tarpeelliset. Me hoidamme suorituskyvyn, suojauksen ja analytiikan puolestasi.",
+      microcopy: "Valinnat auttavat mitoittamaan projektin oikein ja nopeuttavat toteutusta.",
       fields: [
         {
           name: "integrations",
-          label: "Tarvitaanko integraatioita? (voi valita useita)",
-          type: "multiselect",
+          label: "Mitkä integraatiot tarvitaan? (voi valita useita)",
+          type: "multiselect_with_followups",
           options: INTEGRATION_OPTIONS,
         },
         {
@@ -230,8 +407,20 @@ const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = (
       ],
     },
     {
-      title: "Yhteystiedot ja viesti",
+      title: "Aikataulu ja yhteystiedot",
+      microcopy: "Aikataulu auttaa meitä priorisoimaan työsi heti oikealle tuotantolinjalle.",
       fields: [
+        {
+          name: "timeline",
+          label: "Aikataulu tai julkaisuajankohta",
+          type: "select",
+          options: [
+            "Heti kun valmista",
+            "Seuraavan kuukauden sisällä",
+            "2 kuukauden sisällä",
+            "Ei kiirettä",
+          ],
+        },
         {
           name: "name",
           label: "Nimi *",
@@ -257,6 +446,25 @@ const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = (
         },
       ],
     },
+    {
+      title: "Lisäpalvelut",
+      microcopy: "Valinnat auttavat mitoittamaan projektin ja resursoinnin juuri sinun tarpeisiisi.",
+      fields: [
+        {
+          name: "additionalServices",
+          label: "Mitkä lisäpalvelut kiinnostavat sinua? *",
+          type: "multiselect",
+          options: ADDITIONAL_SERVICES_OPTIONS,
+          required: true,
+        },
+        {
+          name: "additionalRequests",
+          label: "Muita toiveita tai erikoistarpeita?",
+          type: "textarea",
+          placeholder: "Esimerkiksi lisätoiminnallisuudet, integraatiot tai laajempi sisältötyö.",
+        },
+      ],
+    },
   ];
 
   const totalSteps = steps.length;
@@ -272,11 +480,81 @@ const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = (
   const handleMultiSelectChange = (fieldName: string, value: string) => {
     setFormData((prev) => {
       const current = prev[fieldName as keyof FormData] as string[];
+      const NO_SERVICES = "Ei lisäpalveluita tällä hetkellä";
+      
+      // Special handling for additional services
+      if (fieldName === "additionalServices") {
+        if (value === NO_SERVICES) {
+          // If "Ei lisäpalveluita" is clicked, toggle it and remove all others
+          if (current.includes(NO_SERVICES)) {
+            // If already selected, just deselect it
+            return { ...prev, [fieldName]: [] };
+          } else {
+            // Select only "Ei lisäpalveluita"
+            return { ...prev, [fieldName]: [NO_SERVICES] };
+          }
+        } else {
+          // If any other service is clicked
+          let newValue = current.includes(value)
+            ? current.filter((item) => item !== value)
+            : [...current, value];
+          
+          // Remove "Ei lisäpalveluita" if any other service is selected
+          newValue = newValue.filter((item) => item !== NO_SERVICES);
+          
+          return { ...prev, [fieldName]: newValue };
+        }
+      }
+
+      // Special handling for integrations
+      if (fieldName === "integrations") {
+        const isSelected = current.includes(value);
+        let newIntegrations = isSelected
+          ? current.filter((item) => item !== value)
+          : [...current, value];
+
+        // Update followups: remove if deselected, add empty if selected
+        const newFollowups = { ...prev.integrationFollowups };
+        if (isSelected) {
+          delete newFollowups[value];
+        } else {
+          newFollowups[value] = {
+            provider: "",
+            haveAccount: "",
+            purpose: "",
+          };
+        }
+
+        return {
+          ...prev,
+          [fieldName]: newIntegrations,
+          integrationFollowups: newFollowups,
+        };
+      }
+      
+      // Default behavior for other multiselect fields
       const newValue = current.includes(value)
         ? current.filter((item) => item !== value)
         : [...current, value];
       return { ...prev, [fieldName]: newValue };
     });
+  };
+
+  const handleIntegrationFollowupChange = (
+    integrationKey: string,
+    fieldName: "provider" | "haveAccount" | "purpose",
+    value: string
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      integrationFollowups: {
+        ...prev.integrationFollowups,
+        [integrationKey]: {
+          ...prev.integrationFollowups[integrationKey],
+          [fieldName]: value,
+        },
+      },
+    }));
   };
 
   const canProceed = () => {
@@ -316,52 +594,78 @@ const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = (
           name: formData.companyName,
           industry: formData.industry,
           target_audience: formData.targetAudience,
+          company_image: formData.companyImage,
+          company_image_other: formData.companyImageOther,
         },
         website_requirements: {
-          purpose: formData.websitePurpose,
           goals: formData.mainGoals,
           pages: formData.requiredPages,
           languages: formData.languages,
+          unique_selling_point: formData.uniqueSellingPoint,
         },
         design_preferences: {
           style: formData.designStyle,
           colors: formData.colorPreferences,
           references: formData.referenceSites,
+          tone_of_voice: formData.toneOfVoice,
         },
         technical: {
-          integrations: formData.integrations,
+          integrations: formData.integrations.map((key) => {
+            const integration = INTEGRATION_OPTIONS.find((opt) => opt.key === key);
+            return {
+              key: key,
+              label: integration?.label || key,
+              helper: integration?.helper || "",
+              followup: formData.integrationFollowups[key] || null,
+            };
+          }),
           seo: formData.seo,
           special_features: formData.specialFeatures,
         },
         content: {
           ownership: formData.contentOwnership,
         },
+        timeline: formData.timeline,
         contact: {
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
           message: formData.message,
         },
+        additional_services: {
+          services: formData.additionalServices,
+          requests: formData.additionalRequests,
+        },
         // Human-readable summary for email
         summary: `
 Yritys: ${formData.companyName}
 Toimiala: ${formData.industry}
 Kohdeyleisö: ${formData.targetAudience}
+Yrityksen imago: ${formData.companyImage}${formData.companyImageOther ? ` (${formData.companyImageOther})` : ""}
 
-Verkkosivun tarkoitus: ${formData.websitePurpose.join(", ")}
-Tavoitteet: ${formData.mainGoals.join(", ")}
+Verkkosivun tavoitteet: ${formData.mainGoals.join(", ")}
 
 Design-tyyli: ${formData.designStyle}
 Värit: ${formData.colorPreferences || "Ei määritelty"}
 Inspiraatio: ${formData.referenceSites || "Ei määritelty"}
+Äänensävy: ${formData.toneOfVoice}
 
 Sivut: ${formData.requiredPages.join(", ")}
 Sisällön tuottaja: ${formData.contentOwnership}
+Ainutlaatuinen myyntivaltti: ${formData.uniqueSellingPoint}
 Erityistoiminnot: ${formData.specialFeatures || "Ei"}
 
-Integraatiot: ${formData.integrations.length > 0 ? formData.integrations.join(", ") : "Ei"}
+Integraatiot: ${formData.integrations.length > 0 ? formData.integrations.map((key) => {
+            const integration = INTEGRATION_OPTIONS.find((opt) => opt.key === key);
+            return integration?.label || key;
+          }).join(", ") : "Ei"}
 Kielet: ${formData.languages.join(", ")}
 SEO: ${formData.seo}
+
+Aikataulu: ${formData.timeline || "Ei määritelty"}
+
+Lisäpalvelut: ${formData.additionalServices.length > 0 ? formData.additionalServices.join(", ") : "Ei"}
+Muita toiveita: ${formData.additionalRequests || "Ei"}
 
 Yhteystiedot:
 Nimi: ${formData.name}
@@ -401,21 +705,28 @@ Lisätietoja: ${formData.message || "Ei"}
             companyName: "",
             industry: "",
             targetAudience: "",
-            websitePurpose: [],
+            companyImage: "",
+            companyImageOther: "",
             mainGoals: [],
             designStyle: "",
             colorPreferences: "",
             referenceSites: "",
+            toneOfVoice: "",
             requiredPages: [],
             contentOwnership: "",
+            uniqueSellingPoint: "",
             specialFeatures: "",
             integrations: [],
+            integrationFollowups: {},
             languages: [],
             seo: "",
+            timeline: "",
             name: "",
             email: "",
             phone: "",
             message: "",
+            additionalServices: [],
+            additionalRequests: "",
           });
           setCurrentStep(0);
           setTimeout(() => {
@@ -458,7 +769,22 @@ Lisätietoja: ${formData.message || "Ei"}
         </div>
 
         {/* Form Content */}
-        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
+        <form 
+          onSubmit={(e) => {
+            e.preventDefault();
+            // Only submit if we're on the last step and user clicked submit button
+            if (currentStep === totalSteps - 1) {
+              handleSubmit(e);
+            }
+          }} 
+          className="flex-1 overflow-y-auto"
+          onKeyDown={(e) => {
+            // Prevent form submission on Enter key unless explicitly submitting
+            if (e.key === "Enter" && e.target instanceof HTMLInputElement && (e.target.type === "text" || e.target.type === "email" || e.target.type === "tel")) {
+              e.preventDefault();
+            }
+          }}
+        >
           <div className="p-6">
             {submitStatus === "success" ? (
               <div className="text-center py-12">
@@ -509,48 +835,294 @@ Lisätietoja: ${formData.message || "Ei"}
                   {steps[currentStep].title}
                 </h3>
 
+                {"intro" in steps[currentStep] && steps[currentStep].intro && (
+                  <p className="text-sm text-white/70 mb-4">
+                    {steps[currentStep].intro}
+                  </p>
+                )}
+
+                {steps[currentStep].microcopy && (
+                  <p className="text-sm text-neutral-400 mt-3 mb-6 italic">
+                    {steps[currentStep].microcopy}
+                  </p>
+                )}
+
                 <div className="space-y-6">
-                  {steps[currentStep].fields.map((field) => (
+                  {steps[currentStep].fields.map((field) => {
+                    // Hide companyImageOther - no longer needed with new options
+                    if (field.name === "companyImageOther") {
+                      return null;
+                    }
+                    
+                    return (
                     <div key={field.name}>
                       <label className="block text-sm font-medium text-gray-300 mb-2">
                         {field.label}
                       </label>
+                      {"helper" in field && field.helper && (
+                        <p className="text-xs text-gray-400 mb-2">
+                          {field.helper}
+                        </p>
+                      )}
 
                       {field.type === "textarea" ? (
+                        <>
                         <textarea
                           name={field.name}
                           value={(formData[field.name as keyof FormData] as string) || ""}
                           onChange={(e) => handleInputChange(e, field.name)}
-                          placeholder={field.placeholder}
+                          placeholder={"placeholder" in field ? field.placeholder : undefined}
                           required={field.required}
                           rows={4}
                           className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-white/20 transition-colors resize-none"
                         />
+                          {"microcopy" in field && field.microcopy && (
+                            <p className="text-sm text-neutral-400 mt-2">
+                              {field.microcopy}
+                            </p>
+                          )}
+                        </>
                       ) : field.type === "select" ? (
-                        <select
-                          name={field.name}
-                          value={(formData[field.name as keyof FormData] as string) || ""}
-                          onChange={(e) => handleInputChange(e, field.name)}
-                          required={field.required}
-                          className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 text-white focus:outline-none focus:border-white/20 transition-colors"
+                        <div 
+                          ref={(el) => (dropdownRefs.current[field.name] = el)}
+                          className="relative"
                         >
-                          <option value="">Valitse...</option>
-                          {field.options?.map((option) => (
-                            <option key={option} value={option}>
-                              {option}
-                            </option>
-                          ))}
-                        </select>
-                      ) : field.type === "multiselect" ? (
-                        <div className="space-y-2">
-                          {field.options?.map((option) => {
+                          <button
+                            type="button"
+                            onClick={() => {
+                              // Check if dropdown should open upward
+                              const dropdownElement = dropdownRefs.current[field.name];
+                              if (dropdownElement) {
+                                const rect = dropdownElement.getBoundingClientRect();
+                                const spaceBelow = window.innerHeight - rect.bottom;
+                                const spaceAbove = rect.top;
+                                const shouldOpenUp = spaceAbove > spaceBelow && spaceAbove > 200;
+                                
+                                setOpenDropdowns((prev) => ({ 
+                                  ...prev, 
+                                  [field.name]: !prev[field.name],
+                                  [`${field.name}_up`]: shouldOpenUp 
+                                }));
+                              } else {
+                                setOpenDropdowns((prev) => ({ ...prev, [field.name]: !prev[field.name] }));
+                              }
+                            }}
+                            className={`w-full px-4 py-3 rounded-xl border text-left flex items-center justify-between transition-colors ${
+                              formData[field.name as keyof FormData]
+                                ? "bg-black/40 border-white/10 text-white"
+                                : "bg-black/40 border-white/10 text-gray-400"
+                            } hover:border-white/20 focus:outline-none focus:border-white/20`}
+                          >
+                            <span>
+                              {(formData[field.name as keyof FormData] as string) || "Valitse..."}
+                            </span>
+                            <ChevronDown 
+                              className={`w-4 h-4 transition-transform ${openDropdowns[field.name] ? "rotate-180" : ""}`}
+                            />
+                          </button>
+                          {openDropdowns[field.name] && (
+                            <div 
+                              className={`absolute z-50 w-full rounded-xl bg-black/95 backdrop-blur-xl border border-white/10 shadow-2xl overflow-hidden ${
+                                openDropdowns[`${field.name}_up`] ? "bottom-full mb-2" : "top-full mt-2"
+                              }`}
+                            >
+                              {"options" in field && Array.isArray(field.options) && field.options.map((option: string | any) => {
+                                const optionValue = typeof option === "string" ? option : option.value || option.label || option;
+                                const optionLabel = typeof option === "string" ? option : option.label || option.value || option;
+                                return (
+                                  <button
+                                    key={optionValue}
+                                    type="button"
+                                    onClick={() => {
+                                      handleInputChange({ target: { value: optionValue, name: field.name } } as any, field.name);
+                                      setOpenDropdowns((prev) => ({ ...prev, [field.name]: false }));
+                                    }}
+                                    className={`w-full px-4 py-3 text-left text-sm transition-colors ${
+                                      (formData[field.name as keyof FormData] as string) === optionValue
+                                        ? "bg-white/10 text-white"
+                                        : "text-gray-300 hover:bg-white/5 hover:text-white"
+                                    }`}
+                                  >
+                                    {optionLabel}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          )}
+                          {field.required && !formData[field.name as keyof FormData] && (
+                            <input type="hidden" required />
+                          )}
+                        </div>
+                      ) : field.type === "multiselect_with_followups" ? (
+                        <div className="space-y-4">
+                          {"options" in field && Array.isArray(field.options) && field.options.map((option: any) => {
+                            const optionKey = typeof option === "object" ? option.key : option;
+                            const optionLabel = typeof option === "object" ? option.label : option;
+                            const optionHelper = typeof option === "object" ? option.helper : undefined;
                             const isSelected = (
                               formData[field.name as keyof FormData] as string[]
-                            ).includes(option);
+                            ).includes(optionKey);
+                            const followupData = formData.integrationFollowups[optionKey] || {
+                              provider: "",
+                              haveAccount: "",
+                              purpose: "",
+                            };
+                            
+                            return (
+                              <div key={optionKey} className="space-y-3">
+                                <label
+                                  className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-colors ${
+                                    isSelected
+                                      ? "bg-white/10 border-white/20"
+                                      : "bg-black/40 border-white/10 hover:bg-black/60"
+                                  }`}
+                                >
+                                  <input
+                                    type="checkbox"
+                                    checked={isSelected}
+                                    onChange={() =>
+                                      handleMultiSelectChange(field.name, optionKey)
+                                    }
+                                    className="w-4 h-4 mt-0.5 text-white bg-black/40 border-white/20 rounded focus:ring-white/20 shrink-0"
+                                  />
+                                  <div className="flex-1 min-w-0">
+                                    <span className="text-white text-sm block">{optionLabel}</span>
+                                    {optionHelper && (
+                                      <span className="text-gray-400 text-xs block mt-1">{optionHelper}</span>
+                                    )}
+                                  </div>
+                                </label>
+                                
+                                {isSelected && optionKey !== "unknown" && optionKey !== "mitrox_advisor" && (
+                                  <div className="ml-7 space-y-3 p-4 rounded-lg bg-black/20 border border-white/5">
+                                    <div>
+                                      <label className="block text-xs font-medium text-gray-300 mb-2">
+                                        Palvelu tai työkalu
+                                      </label>
+                                      <input
+                                        type="text"
+                                        value={followupData.provider}
+                                        onChange={(e) =>
+                                          handleIntegrationFollowupChange(optionKey, "provider", e.target.value)
+                                        }
+                                        placeholder={option.placeholder || "Esim. Mailchimp, Calendly..."}
+                                        className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/10 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-white/20 transition-colors"
+                                      />
+                                    </div>
+                                    <div>
+                                      <label className="block text-xs font-medium text-gray-300 mb-2">
+                                        Onko teillä jo tili?
+                                      </label>
+                                      <div 
+                                        ref={(el) => (dropdownRefs.current[`${optionKey}_haveAccount`] = el)}
+                                        className="relative"
+                                      >
+                                        <button
+                                          type="button"
+                                          onClick={() => {
+                                            // Check if dropdown should open upward
+                                            const dropdownElement = dropdownRefs.current[`${optionKey}_haveAccount`];
+                                            if (dropdownElement) {
+                                              const rect = dropdownElement.getBoundingClientRect();
+                                              const spaceBelow = window.innerHeight - rect.bottom;
+                                              const spaceAbove = rect.top;
+                                              const shouldOpenUp = spaceAbove > spaceBelow && spaceAbove > 200;
+                                              
+                                              setOpenDropdowns((prev) => ({ 
+                                                ...prev, 
+                                                [`${optionKey}_haveAccount`]: !prev[`${optionKey}_haveAccount`],
+                                                [`${optionKey}_haveAccount_up`]: shouldOpenUp 
+                                              }));
+                                            } else {
+                                              setOpenDropdowns((prev) => ({ ...prev, [`${optionKey}_haveAccount`]: !prev[`${optionKey}_haveAccount`] }));
+                                            }
+                                          }}
+                                          className={`w-full px-3 py-2 rounded-lg border text-left flex items-center justify-between transition-colors text-sm ${
+                                            followupData.haveAccount
+                                              ? "bg-black/40 border-white/10 text-white"
+                                              : "bg-black/40 border-white/10 text-gray-400"
+                                          } hover:border-white/20 focus:outline-none focus:border-white/20`}
+                                        >
+                                          <span>
+                                            {followupData.haveAccount || "Valitse..."}
+                                          </span>
+                                          <ChevronDown 
+                                            className={`w-4 h-4 transition-transform ${openDropdowns[`${optionKey}_haveAccount`] ? "rotate-180" : ""}`}
+                                          />
+                                        </button>
+                                        {openDropdowns[`${optionKey}_haveAccount`] && (
+                                          <div 
+                                            className={`absolute z-50 w-full rounded-lg bg-black/95 backdrop-blur-xl border border-white/10 shadow-2xl overflow-hidden ${
+                                              openDropdowns[`${optionKey}_haveAccount_up`] ? "bottom-full mb-2" : "top-full mt-2"
+                                            }`}
+                                          >
+                                            <button
+                                              type="button"
+                                              onClick={() => {
+                                                handleIntegrationFollowupChange(optionKey, "haveAccount", "Kyllä");
+                                                setOpenDropdowns((prev) => ({ ...prev, [`${optionKey}_haveAccount`]: false }));
+                                              }}
+                                              className={`w-full px-3 py-2 text-left text-sm transition-colors ${
+                                                followupData.haveAccount === "Kyllä"
+                                                  ? "bg-white/10 text-white"
+                                                  : "text-gray-300 hover:bg-white/5 hover:text-white"
+                                              }`}
+                                            >
+                                              Kyllä
+                                            </button>
+                                            <button
+                                              type="button"
+                                              onClick={() => {
+                                                handleIntegrationFollowupChange(optionKey, "haveAccount", "Ei");
+                                                setOpenDropdowns((prev) => ({ ...prev, [`${optionKey}_haveAccount`]: false }));
+                                              }}
+                                              className={`w-full px-3 py-2 text-left text-sm transition-colors ${
+                                                followupData.haveAccount === "Ei"
+                                                  ? "bg-white/10 text-white"
+                                                  : "text-gray-300 hover:bg-white/5 hover:text-white"
+                                              }`}
+                                            >
+                                              Ei
+                                            </button>
+                                          </div>
+                                        )}
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <label className="block text-xs font-medium text-gray-300 mb-2">
+                                        Lyhyt kuvaus tarpeesta
+                                      </label>
+                                      <textarea
+                                        value={followupData.purpose}
+                                        onChange={(e) =>
+                                          handleIntegrationFollowupChange(optionKey, "purpose", e.target.value)
+                                        }
+                                        placeholder="Kerro lyhyesti, miten integraatiota käytetään..."
+                                        rows={3}
+                                        className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/10 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-white/20 transition-colors resize-none"
+                                      />
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      ) : field.type === "multiselect" ? (
+                        <div className="space-y-2">
+                          {"options" in field && Array.isArray(field.options) && field.options.map((option: string | any) => {
+                            const optionValue = typeof option === "string" ? option : option.key || option.value || option.label || option;
+                            const optionLabel = typeof option === "string" ? option : option.label || option.value || option;
+                            const isSelected = (
+                              formData[field.name as keyof FormData] as string[]
+                            ).includes(optionValue);
+                            const description = field.name === "additionalServices" 
+                              ? ADDITIONAL_SERVICES_DESCRIPTIONS[optionValue] 
+                              : undefined;
                             return (
                               <label
-                                key={option}
-                                className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-colors ${
+                                key={optionValue}
+                                className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-colors ${
                                   isSelected
                                     ? "bg-white/10 border-white/20"
                                     : "bg-black/40 border-white/10 hover:bg-black/60"
@@ -560,11 +1132,16 @@ Lisätietoja: ${formData.message || "Ei"}
                                   type="checkbox"
                                   checked={isSelected}
                                   onChange={() =>
-                                    handleMultiSelectChange(field.name, option)
+                                    handleMultiSelectChange(field.name, optionValue)
                                   }
-                                  className="w-4 h-4 text-white bg-black/40 border-white/20 rounded focus:ring-white/20"
+                                  className="w-4 h-4 mt-0.5 text-white bg-black/40 border-white/20 rounded focus:ring-white/20 shrink-0"
                                 />
-                                <span className="text-white text-sm">{option}</span>
+                                <div className="flex-1 min-w-0">
+                                  <span className="text-white text-sm block">{optionLabel}</span>
+                                  {description && (
+                                    <span className="text-gray-400 text-xs block mt-1">{description}</span>
+                                  )}
+                                </div>
                               </label>
                             );
                           })}
@@ -575,13 +1152,19 @@ Lisätietoja: ${formData.message || "Ei"}
                           name={field.name}
                           value={(formData[field.name as keyof FormData] as string) || ""}
                           onChange={(e) => handleInputChange(e, field.name)}
-                          placeholder={field.placeholder}
+                          placeholder={"placeholder" in field ? field.placeholder : undefined}
                           required={field.required}
                           className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-white/20 transition-colors"
                         />
                       )}
+                      {"microcopy" in field && field.microcopy && (
+                        <p className="text-sm text-neutral-400 mt-2">
+                          {field.microcopy}
+                        </p>
+                      )}
                     </div>
-                  ))}
+                  );
+                  })}
                 </div>
               </>
             )}
@@ -589,7 +1172,16 @@ Lisätietoja: ${formData.message || "Ei"}
 
           {/* Navigation */}
           {submitStatus === "idle" && (
-            <div className="flex items-center justify-between p-6 border-t border-white/10">
+            <div className="border-t border-white/10">
+              {/* Tip text */}
+              <div className="px-6 pt-4 pb-3">
+                <p className="text-xs text-gray-400 leading-relaxed text-center">
+                  Vinkki: Mitä tarkemmin vastaat kysymyksiin, sitä nopeammin pääsemme käynnistämään projektin ja varmistamaan täydellisen lopputuloksen.
+                </p>
+              </div>
+
+              {/* Progress bar and buttons */}
+              <div className="flex items-center justify-between px-6 pb-6">
               <button
                 type="button"
                 onClick={handlePrevious}
@@ -627,7 +1219,8 @@ Lisätietoja: ${formData.message || "Ei"}
                 </button>
               ) : (
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={handleSubmit}
                   disabled={!canProceed() || isSubmitting}
                   className="flex items-center gap-2 px-6 py-2 rounded-lg bg-white text-black hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
                 >
@@ -644,6 +1237,7 @@ Lisätietoja: ${formData.message || "Ei"}
                   )}
                 </button>
               )}
+              </div>
             </div>
           )}
         </form>

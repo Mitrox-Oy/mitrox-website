@@ -11,13 +11,15 @@ type FAQCategory = {
   items: FAQItem[];
 };
 
-const faqData: FAQCategory[] = [
+type FAQType = "website" | "advisor";
+
+const websiteFAQData: FAQCategory[] = [
   {
     title: "1. Hinnat ja sopimus",
     items: [
       {
         question: "Mitä verkkosivusto maksaa?",
-        answer: "Aloitusmaksu on 599 €, joka sisältää jopa 5 sivua ja sivuston suunnittelun yrityksesi tarpeisiin. Lisäsivut maksavat 100 € / sivu. Kuukausimaksu on 39 € / kk tai 35 € / kk vuosilaskutuksella. Hinnat ovat verottomia (ALV 25,5 % lisätään)."
+        answer: "Aloitusmaksu on 599 €, joka sisältää jopa 5 sivua ja sivuston suunnittelun yrityksesi tarpeisiin. Lisäsivut maksavat 99 € / sivu. Kuukausimaksu on 39 € / kk tai 35 € / kk vuosilaskutuksella. Tuemme myös 2 tai 5 vuoden maksuja alennuksilla. Hinnat ovat verottomia (ALV 25,5 % lisätään)."
       },
       {
         question: "Sisältyykö hintaan ALV?",
@@ -26,6 +28,10 @@ const faqData: FAQCategory[] = [
       {
         question: "Voinko maksaa kuukausittain tai vuosittain?",
         answer: "Kyllä. Voit valita kuukausi- tai vuosilaskutuksen. Vuosilaskutus on edullisempi vaihtoehto ja sisältää samat palvelut."
+      },
+      {
+        question: "Voinko maksaa useamman vuoden kerrallaan?",
+        answer: "Kyllä. Tuemme 2 tai 5 vuoden maksuja myös. Nämä ovat tarkoitettu yrityksille ketkä kaipaavat vakautta pitkäksi aikaa."
       },
       {
         question: "Mikä on perustamismaksu ja miksi sitä peritään?",
@@ -91,7 +97,7 @@ const faqData: FAQCategory[] = [
       },
       {
         question: "Kuinka monta päivitystä voin pyytää kuukaudessa?",
-        answer: "Kuukausimaksuun sisältyy 4 sisältö- tai designpäivitystä kuukaudessa. Ylimenevät muutokset maksavat 20 € / päivitys."
+        answer: "Kuukausimaksuun sisältyy 4 sisältö- tai designpäivitystä kuukaudessa. Ylimenevät muutokset maksavat 19 € / päivitys."
       }
     ]
   },
@@ -100,15 +106,19 @@ const faqData: FAQCategory[] = [
     items: [
       {
         question: "Voinko laajentaa sivustoa myöhemmin?",
-        answer: "Kyllä. Voit tilata lisäsivuja hintaan 100 € / sivu. Sivustoa voidaan myös päivittää uusilla ominaisuuksilla tai integraatioilla."
+        answer: "Kyllä. Voit tilata uusia sivuja hintaan 99 € / sivu. Sivustoa voidaan myös päivittää uusilla ominaisuuksilla tai integraatioilla."
       },
       {
-        question: "Voinko lisätä tekoälybotin?",
-        answer: "Kyllä. Mitrox Tekoälybotti on lisäpalvelu hintaan 55 € / kk alkaen (verkkosivupaketin yhteydessä). Se palvelee asiakkaitasi 24/7 ja kerää liidejä automaattisesti."
+        question: "Voinko lisätä Mitrox AI Advisorin?",
+        answer: "Kyllä. Mitrox AI Advisor on lisäpalvelu hintaan 55 € / kk alkaen (verkkosivupaketin yhteydessä). Se palvelee asiakkaitasi 24/7 ja kerää liidejä automaattisesti."
       },
       {
         question: "Tarjoatteko kaksikielisiä sivustoja?",
-        answer: "Kyllä. Lisäkielipalvelu (Suomi ↔ Englanti) maksaa 200 € alkaen ja sisältää käännökset, visuaaliset säädöt ja SEO-optimoidut metatiedot."
+        answer: "Kyllä. Lisäkielipalvelu (Suomi ↔ Englanti) maksaa 199 € alkaen (5 sivua) ja sisältää käännökset, visuaaliset säädöt ja SEO-optimoidut metatiedot. Lisäsivut maksavat 49 € / sivu."
+      },
+      {
+        question: "Mitä on laajempi hakukoneoptimointi?",
+        answer: "Laajennettu SEO parantaa sivustosi näkyvyyttä Googlessa jatkuvasti. Se sisältää sisällön ja rakenteen kehittämisen, nopeuden optimoinnin sekä säännöllisen seurannan ja raportoinnin — jotta sivustosi löytyy paremmin ja toimii nopeammin. Hinta on 69 € / kk."
       },
       {
         question: "Mitä muita lisäpalveluita voin tilata myöhemmin?",
@@ -135,7 +145,140 @@ const faqData: FAQCategory[] = [
   }
 ];
 
-const FAQ: React.FC = () => {
+const aiAgentFAQData: FAQCategory[] = [
+  {
+    title: "1. Hinnat ja sopimus",
+    items: [
+      {
+        question: "Mitä Mitrox AI Advisor maksaa?",
+        answer: "Starter Advisor maksaa alkaen 69 €/kk ja Pro Advisor alkaen 103 €/kk. Tarjoamme myös 14 päivän maksuttoman kokeilujakson ja vuosilaskutuksen 20% alennuksella."
+      },
+      {
+        question: "Sisältyykö hintaan ALV?",
+        answer: "Kaikki hinnat ilmoitetaan verottomina, ja ALV 25,5 % lisätään laskutuksessa."
+      },
+      {
+        question: "Voinko maksaa kuukausittain tai vuosittain?",
+        answer: "Kyllä. Voit valita kuukausi- tai vuosilaskutuksen. Vuosilaskutus on 20% edullisempi vaihtoehto ja sisältää samat palvelut."
+      },
+      {
+        question: "Onko kokeilujakso todella ilmainen?",
+        answer: "Kyllä. Saat 14 päivää aikaa testata Mitrox AI Advisoria täysin ilmaiseksi ilman sitoumuksia. Voit peruuttaa milloin tahansa kokeilujakson aikana."
+      },
+      {
+        question: "Mitä tapahtuu, jos lopetan palvelun?",
+        answer: "Voit päättää palvelun milloin tahansa. Neuvoja poistetaan käytöstä ja käyttöoikeus lakkaa. Viimeinen laskutus tapahtuu kuluvan laskutuskauden mukaisesti."
+      },
+      {
+        question: "Voinko vaihtaa pakettia myöhemmin?",
+        answer: "Kyllä. Voit päivittää pakettia milloin tahansa. Jos vaihdat Pro-pakettiin, saat välittömästi käyttöösi kaikki Pro-ominaisuudet."
+      }
+    ]
+  },
+  {
+    title: "2. Toteutus ja aikataulu",
+    items: [
+      {
+        question: "Kuinka nopeasti Mitrox AI Advisor saadaan käyttöön?",
+        answer: "Neuvoja voidaan ottaa käyttöön nopeasti. Prosessi sisältää 30 minuutin ideakartoituksen, toteutuksen, integraatiot ja käyttöönoton. Useimmat neuvojat ovat käytössä muutamassa päivässä."
+      },
+      {
+        question: "Miten prosessi etenee alusta loppuun?",
+        answer: "Prosessi etenee neljässä vaiheessa: Ideakartoitus, jossa määrittelemme tarpeet, Toteutus, jossa konfiguroimme neuvojan, Testaus, jossa testaamme yhdessä, sekä Käyttöönotto, jolloin neuvoja alkaa palvella asiakkaitasi."
+      },
+      {
+        question: "Voinko osallistua neuvojan suunnitteluun?",
+        answer: "Ehdottomasti. Ideakartoituksessa määrittelemme yhdessä, mitä neuvojan pitää osata ja miten sen pitää vastata. Voit myös antaa palautetta testausvaiheessa."
+      },
+      {
+        question: "Milloin saan nähdä ensimmäisen version?",
+        answer: "Ensimmäinen versio valmistuu yleensä muutamassa päivässä ideakartoituksen jälkeen. Sen jälkeen testaamme yhdessä ja teemme tarvittavat muutokset ennen käyttöönottoa."
+      },
+      {
+        question: "Kuinka monta räätälöityä vastausta neuvojaan voidaan lisätä?",
+        answer: "Starter-paketissa on 50 räätälöityä vastausta, Pro-paketissa rajoituksia ei ole. Voit laajentaa vastausten määrää milloin tahansa."
+      }
+    ]
+  },
+  {
+    title: "3. Tekninen ja integraatiot",
+    items: [
+      {
+        question: "Mihin palvelimiin Mitrox AI Advisor voidaan integroida?",
+        answer: "Neuvoja voidaan integroida verkkosivustolle, WhatsAppiin ja muihin kanaviin. Starter-paketissa voi liittää 30 verkkosivua, Pro-paketissa 80 verkkosivua."
+      },
+      {
+        question: "Tarvitseeko neuvoja teknistä tukea minun puoleltani?",
+        answer: "Ei. Me hoidamme kaiken teknisen puolen, mukaan lukien integraatiot ja ylläpidon. Sinun ei tarvitse olla tekninen asiantuntija."
+      },
+      {
+        question: "Kuinka neuvoja oppii vastaamaan kysymyksiin?",
+        answer: "Neuvoja käyttää räätälöityjä vastauksia, jotka luomme yhdessä. Se voi myös hakea tietoa liittämistäsi verkkosivuista, jolloin se osaa vastata kysymyksiin automaattisesti."
+      },
+      {
+        question: "Onko Mitrox AI Advisor suomenkielinen?",
+        answer: "Kyllä, kaikki paketit tukevat suomea. Pro-paketti tukee myös englantia (FI/EN)."
+      },
+      {
+        question: "Miten neuvoja kerää liidejä?",
+        answer: "Neuvoja kerää automaattisesti asiakkaiden yhteystiedot, kun he jättävät kyselyn tai pyytävät yhteydenottoa. Saat liidit suoraan analytiikkapaneeliin."
+      }
+    ]
+  },
+  {
+    title: "4. Ominaisuudet ja käyttö",
+    items: [
+      {
+        question: "Mitä eroa on Starter ja Pro -paketeilla?",
+        answer: "Pro-paketti sisältää kaikki Starter-ominaisuudet plus: laajennetun dialogin ja muistitoiminnot, 80 verkkosivua (vs. 30), ajanvarauskalenterin, WhatsApp-integraatiot, kaksikielisyyden (FI/EN), muokattavan käyttöliittymän ja nopeamman asiakastuen (24h vs. 72h)."
+      },
+      {
+        question: "Kuinka monta viestiä neuvoja käsittelee kuukaudessa?",
+        answer: "Starter-paketti sisältää 1000 viestiä/kk ja Pro-paketti 5000 viestiä/kk. Ylimenevät viestit voidaan lisätä erillisellä maksulla."
+      },
+      {
+        question: "Voinko muokata neuvojan ulkoasua?",
+        answer: "Kaikissa paketeissa on Mitrox AI Advisor -teema. Pro-paketissa voit myös muokata käyttöliittymää brändisi mukaiseksi."
+      },
+      {
+        question: "Tukeeko neuvoja ajanvarauskalenteria?",
+        answer: "Kyllä, ajanvarauskalenteri on saatavilla Pro-paketissa. Neuvoja voi suoraan varata aikoja kalenteriin."
+      },
+      {
+        question: "Voinko nähdä, miten neuvoja suoriutuu?",
+        answer: "Kyllä. Kaikissa paketeissa on edistynyt analytiikka, josta näet viestimäärät, liidit, suosituimmat kysymykset ja paljon muuta."
+      }
+    ]
+  },
+  {
+    title: "5. Tuki ja luottamus",
+    items: [
+      {
+        question: "Mitä tapahtuu, jos en ole tyytyväinen lopputulokseen?",
+        answer: "Tarjoamme 14 päivän rahat takaisin -takuun projektin alusta. Jos et ole tyytyväinen, palautamme maksun ilman kysymyksiä."
+      },
+      {
+        question: "Miten asiakastuki toimii?",
+        answer: "Starter-paketissa vastaamme pyyntöihin 72 tunnin sisällä sähköpostitse. Pro-paketissa vastaamme 24 tunnin sisällä sähköpostitse."
+      },
+      {
+        question: "Päivitetäänkö neuvojaa säännöllisesti?",
+        answer: "Kyllä. Päivitämme neuvojan teknologiaa ja ominaisuuksia säännöllisesti. Kaikki päivitykset sisältyvät kuukausimaksuun."
+      },
+      {
+        question: "Miten varmistatte, että neuvoja vastaa oikein?",
+        answer: "Testaamme neuvojan yhdessä ennen käyttöönottoa ja varmistamme, että vastaukset ovat tarkkoja ja brändisi mukaisia. Voit myös antaa palautetta jatkuvasti."
+      }
+    ]
+  }
+];
+
+type FAQProps = {
+  type?: FAQType;
+};
+
+const FAQ: React.FC<FAQProps> = ({ type = "website" }) => {
+  const faqData = type === "advisor" ? aiAgentFAQData : websiteFAQData;
   const [openCategories, setOpenCategories] = useState<number[]>([]);
   const [openQuestions, setOpenQuestions] = useState<{ [key: string]: boolean }>({});
 

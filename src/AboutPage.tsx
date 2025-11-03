@@ -3,7 +3,8 @@ import React from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import SEOHead from "./components/SEOHead";
-import { Mail, Calendar as CalendarIcon, Linkedin } from "lucide-react";
+import { Mail, Linkedin } from "lucide-react";
+import ContactForm from "./components/ContactForm";
 
 import onniImg from "./profile/felix.png";
 import tobiasImg from "./profile/tobias.png";
@@ -152,22 +153,21 @@ export default function AboutPage() {
       }}
     >
       <SEOHead
-        title="Tietoa meistä - Mitrox.io | Suomalainen tekoälybot-tiimi"
-        description="Tutustut Mitrox.io-tiimiin. Nuoret suomalaiset asiantuntijat, jotka rakentavat tekoälybotteja yrityksille. Luotettavuus, helppous ja täsmällisyys ohjaavat toimintaamme."
+        title="Tietoa meistä - Mitrox.io | Mitrox AI Advisor -tiimi"
+        description="Tutustut Mitrox.io-tiimiin. Nuoret suomalaiset asiantuntijat, jotka rakentavat Mitrox AI Advisoria yrityksille. Luotettavuus, helppous ja täsmällisyys ohjaavat toimintaamme."
         url="https://mitrox.io/about"
-        keywords="mitrox tiimi, suomalainen tekoäly, chatbot asiantuntijat, tekoälybot kehittäjät, AI-ratkaisut Suomi"
+        keywords="mitrox tiimi, suomalainen tekoäly, Mitrox AI Advisor asiantuntijat, AI-ratkaisut Suomi"
       />
       <Header />
 
       {/* HERO */}
       <section className="pt-28 pb-12 text-center px-6">
         <h1 className="mt-5 text-4xl md:text-6xl font-semibold leading-tight tracking-tight text-white">
-          Selkeää teknologiaa, joka toimii.
+          Selkeää teknologiaa. Aitoa osaamista.
         </h1>
 
         <p className="mt-4 text-white/60 max-w-2xl mx-auto">
-          Yhteiset tavoitteet, vahva tiimihenki: olemme yksilöitä, mutta
-          tiiminä täydennämme toisiamme.
+          Tiimimme yhdistää luovuuden, teknisen osaamisen ja huolellisuuden – tuloksena ratkaisuja, jotka kestävät aikaa ja käyttöä.
         </p>
       </section>
 
@@ -198,7 +198,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* KEITÄ OLEMME */}
+      {/* MITEN TYÖSKENTELEMME */}
       <section className="px-6 pb-16">
         <div className="mx-auto max-w-6xl grid md:grid-cols-[1.05fr_1fr] gap-10 items-center">
           {/* Logo + tagline */}
@@ -220,26 +220,27 @@ export default function AboutPage() {
           {/* Tekstit */}
           <div>
             <h2 className={monoHeading} style={monoFont}>
-              [ KEITÄ OLEMME ]
+              [ Meistä ]
             </h2>
 
             <h3 className="mt-6 text-lg md:text-xl font-semibold text-white/90">
-              Meidän tarinamme
+              Miten työskentelemme
             </h3>
             <p className="mt-3 text-white/65 leading-relaxed md:leading-8">
-              Mitrox on suomalainen teknologiayritys, jonka perustajina toimivat
-              intohimoiset nuoret. Uskomme vahvasti teknologian tulevaisuuteen
-              ja sen potentiaaliin. Arvomme ohjaavat kaikkea toimintaamme ja
-              näkyvät jokaisessa toimituksessa.
+              Selkeä prosessi, nopea toimitus ja jatkuva yhteistyö.
             </p>
 
-            <h3 className="mt-8 text-lg md:text-xl font-semibold text-white/90">
-              Periaatteemme
-            </h3>
             <p className="mt-3 text-white/65 leading-relaxed md:leading-8">
-              Työskentelemme tehokkaalla periaatteella: teemme asiat kerralla
-              mutta perusteellisesti. Et jää koskaan yksin – tarjoamme tukea ja
-              asiantuntemusta aina, kun sitä tarvitset.
+              Rakennamme ratkaisuja, jotka toimivat, näyttävät hyvältä ja kestävät aikaa – tinkimättä laadusta tai kokemuksesta.
+            </p>
+            <p className="mt-6 text-white/65 leading-relaxed md:leading-8">
+              Jokainen projekti alkaa ymmärryksestä: mitä yrityksesi tarvitsee juuri nyt ja mikä vie sitä eteenpäin.
+            </p>
+            <p className="mt-3 text-white/65 leading-relaxed md:leading-8">
+              Emme käytä valmiita malleja, vaan suunnittelemme kokonaisuuden, joka tukee tavoitteitasi ja tekee arjesta helpompaa.
+            </p>
+            <p className="mt-3 text-white/65 leading-relaxed md:leading-8">
+              Kun sivusto tai ratkaisu on valmis, jatkamme kehitystä yhdessä kanssasi – pitkäjänteisesti, vastuullisesti ja luotettavasti.
             </p>
           </div>
         </div>
@@ -251,8 +252,7 @@ export default function AboutPage() {
               Luotettavuus
             </h3>
             <p className="mt-3 text-sm text-white/60 leading-relaxed">
-              Toimitamme sovitusti ja pidämme lupauksemme. Asiakkaamme voivat
-              luottaa meihin.
+              Pidämme lupauksemme ja toimitamme ajallaan. Asiakkaamme voivat luottaa jokaiseen vaiheeseen.
             </p>
           </div>
           <div className="p-6 md:p-8">
@@ -260,8 +260,7 @@ export default function AboutPage() {
               Helppous
             </h3>
             <p className="mt-3 text-sm text-white/60 leading-relaxed">
-              Ratkaisumme ovat selkeitä ja käyttäjäystävällisiä — ilman turhaa
-              monimutkaisuutta.
+              Teemme monimutkaisesta yksinkertaista. Ratkaisumme säästävät aikaa ja energiaa – ilman turhaa säätöä.
             </p>
           </div>
           <div className="p-6 md:p-8">
@@ -269,41 +268,14 @@ export default function AboutPage() {
               Täsmällisyys
             </h3>
             <p className="mt-3 text-sm text-white/60 leading-relaxed">
-              Huolehdimme yksityiskohdista ja varmistamme, että kaikki toimii
-              kuten on sovittu.
+              Viimeistelty työ ja pitäviä aikatauluja. Laatu näkyy sekä lopputuloksessa että yhteistyössä.
             </p>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="px-6 pb-20" id="contact">
-        <div className="mx-auto max-w-6xl">
-          <div className="h-px w-full bg-white/10" />
-          <div className="py-6 flex flex-col items-center justify-center text-center gap-3">
-            <h3 className="text-2xl font-semibold tracking-tight">Aloitetaan</h3>
-            <p className="text-white/60 text-sm">
-              Täytä nopea yhteydenottolomake — palaamme sinulle mahdollisimman
-              pian.
-            </p>
-            <button
-              onClick={() => {
-                window.history.back();
-                setTimeout(() => {
-                  window.location.hash = "#contact";
-                  document
-                    .getElementById("contact")
-                    ?.scrollIntoView({ behavior: "smooth", block: "start" });
-                }, 150);
-              }}
-              className="inline-flex items-center gap-3 px-6 py-3 bg-black border border-white/20 hover:border-white/40 transition focus:outline-none focus:ring-1 focus:ring-white/25"
-            >
-              Ota yhteyttä <CalendarIcon className="w-4 h-4" />
-            </button>
-          </div>
-          <div className="h-px w-full bg-white/10" />
-        </div>
-      </section>
+      {/* CONTACT FORM */}
+      <ContactForm />
 
       <Footer />
     </div>

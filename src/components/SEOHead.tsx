@@ -13,8 +13,8 @@ interface SEOHeadProps {
 
 const SEOHead: React.FC<SEOHeadProps> = ({
   title = "Mitrox Oy - Teknologia, joka tuntuu luonnolliselta | Suomalainen teknologiayritys",
-  description = "Mitrox muuttaa monimutkaisen yksinkertaiseksi ja tehokkaaksi. Tarjoamme modernit teknologiaratkaisut: räätälöidyt verkkosivut ja AI-agentit. Suomalainen teknologiayritys, joka luo juuri sinulle sopivat ratkaisut.",
-  keywords = "tekoälybot, chatbot, asiakaspalvelu, automaatio, suomalainen, AI, tekoäly, liiketoiminta, myynti, asiakastuki",
+  description = "Mitrox muuttaa monimutkaisen yksinkertaiseksi ja tehokkaaksi. Tarjoamme modernit teknologiaratkaisut: ensiluokkaiset sivustot ja Mitrox AI Advisor -palvelun. Suomalainen teknologiayritys, joka luo juuri sinulle sopivat ratkaisut.",
+  keywords = "mitrox ai advisor, ai advisor, tekoälyneuvoja, asiakaspalvelu, automaatio, suomalainen, tekoäly, liiketoiminta, b2b myynti, premium ai",
   image = "https://mitrox.io/og-image.jpg",
   url = "https://mitrox.io/",
   type = "website",

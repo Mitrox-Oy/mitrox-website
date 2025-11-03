@@ -152,7 +152,7 @@ export default function WebsiteBusinessPage() {
       {/* Space background for everything except hero */}
       <SpaceBackground className="top-[100vh]" />
       <SEOHead
-        title="Räätälöidyt Verkkosivut - Mitrox.io"
+        title="Ensiluokkaiset sivustot - Mitrox.io"
         description="Luomme modernit ja käyttäjäystävälliset verkkosivut, jotka kertovat yrityksesi tarinan ja kasvattavat liiketoimintaasi."
         url="https://mitrox.io/websites"
       />

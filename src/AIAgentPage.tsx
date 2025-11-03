@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import SpaceBackground from "./components/SpaceBackground";
 import Header from "./components/Header";
+import BottomNavbar from "./components/BottomNavbar";
 import SEOHead from "./components/SEOHead";
 import TrustSection from "./components/TrustSection";
 import ProcessSection from "./components/ProcessSection";
@@ -11,7 +12,7 @@ import FAQ from "./components/FAQ";
 import ContactForm from "./components/ContactForm";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
-import LiquidEther from "./components/LiquidEther";
+import ColorBends from "./components/ColorBends";
 import { ChevronDown } from "lucide-react";
 
 const AIAgentHero: React.FC = () => {
@@ -43,26 +44,24 @@ const AIAgentHero: React.FC = () => {
       id="hero"
       className="relative w-full h-screen overflow-hidden"
     >
-      {/* LiquidEther Background */}
+      {/* Color Bends Background */}
       <div className="absolute inset-0 w-full h-full bg-black">
-        <LiquidEther
-          colors={["#5227FF", "#FF9FFC", "#B19EEF"]}
-          mouseForce={20}
-          cursorSize={100}
-          isViscous={false}
-          viscous={30}
-          iterationsViscous={32}
-          iterationsPoisson={32}
-          resolution={0.5}
-          isBounce={false}
-          autoDemo={true}
-          autoSpeed={0.5}
-          autoIntensity={2.2}
-          takeoverDuration={0.25}
-          autoResumeDelay={3000}
-          autoRampDuration={0.6}
+        <ColorBends
+          colors={["#04030a", "#0c1521", "#1b2434", "#2a3144"]}
+          rotation={30}
+          speed={0.3}
+          scale={1.22}
+          frequency={1.4}
+          warpStrength={1.15}
+          mouseInfluence={0.78}
+          parallax={0.4}
+          noise={0.08}
+          transparent
+          className="w-full h-full"
         />
       </div>
+
+      <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/60 to-black pointer-events-none" />
 
       {/* Bottom fade to match next section */}
       <div
@@ -78,29 +77,36 @@ const AIAgentHero: React.FC = () => {
           <div className="flex flex-col items-center">
             {/* Title */}
             <h1
-              className={`text-4xl sm:text-5xl lg:text-7xl leading-tight mb-4 sm:mb-6 flex flex-col items-center justify-center text-white px-2 transition-all duration-700 ease-out ${
+              className={`text-4xl sm:text-5xl lg:text-7xl leading-tight mb-3 sm:mb-4 flex flex-col items-center justify-center text-white px-2 transition-all duration-700 ease-out ${
                 showContent ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
               }`}
               style={{ fontFamily: "Epilogue, sans-serif", fontWeight: 600 }}
             >
-              Tekoälybotti joka<br />
-              kasvattaa liiketoimintaasi
+              Mitrox AI Advisor
             </h1>
+
+            <p
+              className={`text-[0.75rem] sm:text-sm uppercase tracking-[0.5em] text-white/50 mb-6 sm:mb-7 transition-all duration-700 ease-out ${
+                showContent ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+              }`}
+              style={{ transitionDelay: showContent ? "120ms" : "0ms" }}
+            >
+              Älykäs kasvukumppanisi
+            </p>
 
             {/* Subtitle */}
             <p
-              className={`text-base sm:text-lg text-gray-200 mb-6 sm:mb-8 max-w-[42rem] mx-auto leading-relaxed font-light transition-all duration-700 ease-out px-2 ${
+              className={`text-base sm:text-lg text-gray-200 mb-6 sm:mb-8 max-w-[44rem] mx-auto leading-relaxed font-light transition-all duration-700 ease-out px-2 ${
                 showContent ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
               }`}
               style={{
-                transitionDelay: showContent ? "150ms" : "0ms",
+                transitionDelay: showContent ? "200ms" : "0ms",
                 fontFamily:
                   'GeistSans, "GeistSans Fallback", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
                 fontWeight: 400,
               }}
             >
-              Suunnittelemme juuri teille sopivan ratkaisun, joka palvelee
-              asiakkaitasi 24/7 ja kasvattaa liiketoimintaasi
+              Suunnittelemme B2B-myynnille rakennetun tekoälyneuvojan, joka palvelee 24/7, ohjaa asiakkaasi oikeaan ratkaisuun ja vapauttaa tiimisi keskittymään kannattavaan kasvuun.
             </p>
 
             {/* Buttons */}
@@ -119,7 +125,7 @@ const AIAgentHero: React.FC = () => {
                   fontWeight: 400,
                 }}
               >
-                Kokeile bottia
+                Kokeile Advisoria
                 <ChevronDown className="w-4 h-4" />
               </button>
               <a
@@ -147,18 +153,19 @@ export default function AIAgentPage() {
       {/* Space background for everything except hero */}
       <SpaceBackground className="top-[100vh]" />
       <SEOHead
-        title="AI Agent / Chatbot - Mitrox.io"
-        description="Tekoälypohjainen chatbotti joka palvelee asiakkaitasi 24/7. Automaattisesti vastaa kysymyksiin, kerää liidejä ja kasvattaa myyntiäsi."
-        url="https://mitrox.io/ai-agent"
+        title="Mitrox AI Advisor - Mitrox.io"
+        description="Älykäs Mitrox AI Advisor palvelee asiakkaasi 24/7, kasvattaa myyntiä ja vapauttaa tiimisi keskittymään kasvuun. Premium-tason tekoälyneuvoja B2B-yrityksille."
+        url="https://mitrox.io/advisor"
       />
       <Header />
+      <BottomNavbar />
       <AIAgentHero />
       <TrustSection />
-      <ProcessSection />
+      <ProcessSection type="advisor" />
       <section className="relative bg-black">
         <Features />
         <Pricing />
-        <FAQ />
+        <FAQ type="advisor" />
       </section>
       <ContactForm />
       <Footer />

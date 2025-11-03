@@ -12,8 +12,8 @@ const NAV = [
 type ProductNavItem = { label: string; href: string; subtitle?: string };
 
 const PRODUCTS: ProductNavItem[] = [
-  { label: "Räätälöidyt Verkkosivut", href: "/websites" },
-  { label: "Mitrox AI Advisor", href: "/ai-agent", subtitle: "Älykäs kasvukumppanisi" },
+  { label: "Ensiluokkaiset sivustot", href: "/websites", subtitle: "Suunniteltu yrityksesi menestykseen" },
+  { label: "Mitrox AI Advisor", href: "/advisor", subtitle: "Älykäs kasvukumppanisi" },
 ];
 
 const Header: React.FC = () => {
@@ -25,7 +25,7 @@ const Header: React.FC = () => {
 
   const location = useLocation();
 
-  const isProductPage = location.pathname === "/websites" || location.pathname === "/ai-agent";
+  const isProductPage = location.pathname === "/websites" || location.pathname === "/advisor";
 
   // Handle products dropdown with delay
   const handleProductsMouseEnter = () => {
@@ -127,9 +127,11 @@ const Header: React.FC = () => {
                         to={isPage ? item.href : `/#${item.href}`}
                         onClick={(e) => {
                           // If on product page, always go to landing page
-                          if (isProductPage && !isPage) {
+                          if (!isPage && (isProductPage || location.pathname !== "/")) {
                             e.preventDefault();
-                            window.location.href = `/#${item.href}`;
+                            // Always go to root for home link when not already on "/"
+                            if (item.href === "hero") window.location.href = "/";
+                            else window.location.href = `/#${item.href}`;
                           } else if (!isPage) {
                             if (location.pathname === "/") {
                               e.preventDefault();
@@ -162,7 +164,7 @@ const Header: React.FC = () => {
 
                     {/* Dropdown Menu */}
                     {productsOpen && (
-                      <div className="absolute top-full left-0 mt-2 w-64 rounded-2xl bg-white/5 backdrop-blur-2xl backdrop-saturate-150 ring-1 ring-white/15 shadow-[0_16px_40px_rgba(0,0,0,0.35)] overflow-hidden z-50">
+                      <div className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-black/95 backdrop-blur-sm ring-1 ring-white/15 shadow-[0_16px_40px_rgba(0,0,0,0.35)] overflow-hidden z-50">
                         <div className="py-1">
                           <Link
                             to="/websites"
@@ -174,12 +176,13 @@ const Header: React.FC = () => {
                               <Globe2 className="w-4 h-4" />
                             </span>
                             <span className="flex-1 min-w-0">
-                              <span className="block text-sm truncate">Räätälöidyt Verkkosivut</span>
+                              <span className="block text-sm">Ensiluokkaiset sivustot</span>
+                              <span className="block text-[0.6rem] uppercase tracking-[0.35em] text-white/45 mt-0.5">Suunniteltu yrityksesi menestykseen</span>
                             </span>
                             <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                           </Link>
                           <Link
-                            to="/ai-agent"
+                            to="/advisor"
                             onClick={() => setProductsOpen(false)}
                             onMouseEnter={handleProductsMouseEnter}
                             className="group flex items-center gap-3 px-3.5 py-2.5 text-white/90 hover:text-white hover:bg-white/10 transition-colors rounded-xl mx-1.5"
@@ -310,10 +313,11 @@ const Header: React.FC = () => {
                     key={item.href}
                     to={isPage ? item.href : `/#${item.href}`}
                     onClick={(e) => {
-                      // If on product page, always go to landing page
-                      if (isProductPage && !isPage) {
+                      // If not on home, navigate to root for home link
+                      if (!isPage && (isProductPage || location.pathname !== "/")) {
                         e.preventDefault();
-                        window.location.href = `/#${item.href}`;
+                        if (item.href === "hero") window.location.href = "/";
+                        else window.location.href = `/#${item.href}`;
                       } else if (!isPage) {
                         if (location.pathname === "/") {
                           e.preventDefault();
