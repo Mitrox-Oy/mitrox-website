@@ -12,6 +12,7 @@ import ContactForm from "./components/ContactForm";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import LiquidEther from "./components/LiquidEther";
+import BottomNavbar from "./components/BottomNavbar";
 import { ChevronDown } from "lucide-react";
 
 const WebsiteHero: React.FC = () => {
@@ -167,6 +168,7 @@ export default function WebsiteBusinessPage() {
       </section>
       <ContactForm />
       <Footer />
+      <BottomNavbar />
       <ScrollToTop />
     </div>
   );
