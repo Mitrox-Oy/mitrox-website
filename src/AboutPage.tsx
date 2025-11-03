@@ -152,10 +152,10 @@ export default function AboutPage() {
       }}
     >
       <SEOHead
-        title="Tietoa meistä - Mitrox.io | Suomalainen tekoälybot-tiimi"
-        description="Tutustut Mitrox.io-tiimiin. Nuoret suomalaiset asiantuntijat, jotka rakentavat tekoälybotteja yrityksille. Luotettavuus, helppous ja täsmällisyys ohjaavat toimintaamme."
+        title="Tietoa meistä - Mitrox.io | Mitrox AI Advisor -tiimi"
+        description="Tutustut Mitrox.io-tiimiin. Nuoret suomalaiset asiantuntijat, jotka rakentavat Mitrox AI Advisoria yrityksille. Luotettavuus, helppous ja täsmällisyys ohjaavat toimintaamme."
         url="https://mitrox.io/about"
-        keywords="mitrox tiimi, suomalainen tekoäly, chatbot asiantuntijat, tekoälybot kehittäjät, AI-ratkaisut Suomi"
+        keywords="mitrox tiimi, suomalainen tekoäly, Mitrox AI Advisor asiantuntijat, AI-ratkaisut Suomi"
       />
       <Header />
 

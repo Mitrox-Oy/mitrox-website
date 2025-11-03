@@ -29,7 +29,7 @@ const WebsitePricing: React.FC = () => {
   const SETUP_FEE_PER_PAGE = 100;
   const LANGUAGE_FEE_BASE = 200;
   const LANGUAGE_FEE_PER_PAGE = 50;
-  // Tekoälybotin hinta: 55€/kk vuosittaisella, 65€/kk kuukausittaisella
+  // Mitrox AI Advisorin hinta: 55€/kk vuosittaisella, 65€/kk kuukausittaisella
   const AI_BOT_MONTHLY = billing === "yearly" ? 55 : 65;
 
   const calculateSetupFee = () => {
@@ -171,7 +171,7 @@ const WebsitePricing: React.FC = () => {
                 <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10">
                   <div>
                     <label className="text-sm font-medium text-white block mb-1">
-                      Mitrox Tekoälybotti
+                      Mitrox AI Advisor
                     </label>
                     <p className="text-xs text-gray-400">
                       24/7 keskusteleva asiakasavustaja (+{formatEUR(AI_BOT_MONTHLY)}/kk)
@@ -239,7 +239,7 @@ const WebsitePricing: React.FC = () => {
                       </span>
                       {includeAIBot && (
                         <p className="text-xs text-gray-500 mt-1">
-                          {formatEUR(baseMonthlyFee)} (verkkosivusto) + {formatEUR(AI_BOT_MONTHLY)} (tekoälybotti)
+                          {formatEUR(baseMonthlyFee)} (verkkosivusto) + {formatEUR(AI_BOT_MONTHLY)} (Mitrox AI Advisor)
                         </p>
                       )}
                       {billing === "yearly" && !includeAIBot && (
@@ -427,7 +427,7 @@ const WebsitePricing: React.FC = () => {
             {/* AI Agent Add-On */}
             <div className="p-6 rounded-xl bg-white/[0.02] backdrop-blur-xl border border-white/10 hover:bg-white/[0.04] transition-all duration-300">
               <h4 className="text-lg font-medium text-white mb-3">
-                Mitrox Tekoälybotti
+                Mitrox AI Advisor
               </h4>
               <div className="text-2xl font-light text-white mb-2">
                 {formatEUR(55)}

@@ -17,19 +17,19 @@ const Features: React.FC = () => {
       icon: Workflow,
       title: "Modernit Ratkaisut",
       description:
-        "Tarjoamme luotettavia, nopeita ja yksilöllisiä ratkaisuja, jotka auttavat yritystäsi kasvamaan ja kilpailukykyisyyden vahvistumaan.",
+        "Suunnittelemme ja toteutamme ratkaisuja, jotka yhdistävät teknisen osaamisen ja viimeistellyn muotoilun. Tuloksena on verkkopalvelu, joka toimii saumattomasti ja näyttää yhtä hyvältä kuin se toimii.",
     },
     {
       icon: Zap,
       title: "Nopea Käyttöönotto",
       description:
-        "Varmistamme palvelun sujuvan ja nopean käyttöönoton minimoimalla häiriöt liiketoiminnalle. Sinä keskityt vain liiketoiminnan tuloksiin.",
+        "Rakennamme tehokkaasti ja toimitamme ajallaan. Käyttöönotto sujuu ilman turhaa odottelua – yrityksesi on valmiina hyödyntämään uutta ratkaisua lähes heti.",
     },
     {
       icon: HeartHandshake,
       title: "Aina Apunasi",
       description:
-        "Olemme turvallinen ja asiantunteva kumppani, joka takaa luotettavan tuen ja jatkuvan kehityksen koko yhteistyön ajan.",
+        "Tarjoamme jatkuvaa tukea ja kehitystä. Olemme kumppani, johon voit nojata – aina, kun tarvitset neuvoa, päivityksiä tai uusia ideoita yrityksesi kasvuun.",
     },
   ];
 
@@ -69,7 +69,7 @@ const Features: React.FC = () => {
             Miksi valita Mitrox?
           </h2>
           <p className="max-w-3xl text-base leading-relaxed text-white/70">
-            Suomalainen teknologiayritys, joka ymmärtää liiketoimintasi tarpeet ja luo juuri sinulle sopivat ratkaisut.
+            Suomalainen teknologiayritys, joka yhdistää älyn, designin ja tehokkuuden. Ymmärrämme liiketoimintasi tarpeet ja rakennamme ratkaisuja, jotka vievät yritystäsi eteenpäin – luotettavasti ja tyylillä.
           </p>
         </div>
 

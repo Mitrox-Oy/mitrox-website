@@ -20,8 +20,8 @@ export default function App() {
           <Route path="/" element={<Home />} />       {/* Etusivu */}
           <Route path="/about" element={<AboutPage />} /> {/* Tietoa meistä */}
           <Route path="/live-demo" element={<LiveDemoPage />} /> {/* Live Demo */}
-          <Route path="/websites" element={<WebsiteBusinessPage />} /> {/* Räätälöidyt Verkkosivut */}
-          <Route path="/ai-agent" element={<AIAgentPage />} /> {/* AI Agent / Chatbot */}
+          <Route path="/websites" element={<WebsiteBusinessPage />} /> {/* Ensiluokkaiset sivustot */}
+          <Route path="/advisor" element={<AIAgentPage />} /> {/* Mitrox AI Advisor */}
           <Route path="/affiliate" element={<AffiliatePage />} /> {/* Affiliate-ohjelma */}
         </Routes>
       </Router>

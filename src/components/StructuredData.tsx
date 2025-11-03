@@ -8,7 +8,7 @@ const StructuredData: React.FC = () => {
     "name": "Mitrox.io",
     "url": "https://mitrox.io",
     "logo": "https://mitrox.io/logo.png",
-    "description": "Suomalainen tekoälybot-ratkaisu yrityksille. Automatisoi asiakaspalvelusi ja kasvata liiketoimintaasi 24/7 älykkäillä chatbot-ratkaisuilla.",
+    "description": "Suomalainen Mitrox AI Advisor -ratkaisu yrityksille. Automatisoi asiakaspalvelusi ja kasvata liiketoimintaasi 24/7 älykkäällä neuvojalla.",
     "foundingDate": "2025",
     "founders": [
       {
@@ -41,8 +41,8 @@ const StructuredData: React.FC = () => {
     ],
     "offers": {
       "@type": "Offer",
-      "name": "Tekoälybot-palvelut",
-      "description": "Chatbot-ratkaisut yrityksille",
+      "name": "Mitrox AI Advisor -palvelut",
+      "description": "Älykäs Mitrox AI Advisor B2B-yrityksille",
       "priceCurrency": "EUR",
       "availability": "https://schema.org/InStock"
     }
@@ -53,7 +53,7 @@ const StructuredData: React.FC = () => {
     "@type": "WebSite",
     "name": "Mitrox.io",
     "url": "https://mitrox.io",
-    "description": "Tekoälybotti joka kasvattaa liiketoimintaasi",
+    "description": "Mitrox AI Advisor joka kasvattaa liiketoimintaasi",
     "inLanguage": "fi",
     "potentialAction": {
       "@type": "SearchAction",
@@ -65,8 +65,8 @@ const StructuredData: React.FC = () => {
   const serviceSchema = {
     "@context": "https://schema.org",
     "@type": "Service",
-    "name": "Tekoälybot-palvelut",
-    "description": "Chatbot-ratkaisut yrityksille - automatisoi asiakaspalvelusi ja kasvata liiketoimintaasi",
+    "name": "Mitrox AI Advisor",
+    "description": "Mitrox AI Advisor -ratkaisu yrityksille – automatisoi asiakaspalvelusi ja kasvata liiketoimintaasi",
     "provider": {
       "@type": "Organization",
       "name": "Mitrox.io"
@@ -77,19 +77,19 @@ const StructuredData: React.FC = () => {
     },
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
-      "name": "Tekoälybot-paketit",
+      "name": "Mitrox AI Advisor -paketit",
       "itemListElement": [
         {
           "@type": "Offer",
           "itemOffered": {
             "@type": "Service",
-            "name": "Starter Bot"
+            "name": "Starter Advisor"
           },
-          "price": "79",
+          "price": "69",
           "priceCurrency": "EUR",
           "priceSpecification": {
             "@type": "UnitPriceSpecification",
-            "price": "79",
+            "price": "69",
             "priceCurrency": "EUR",
             "billingIncrement": "1",
             "unitCode": "MON"
@@ -99,13 +99,13 @@ const StructuredData: React.FC = () => {
           "@type": "Offer",
           "itemOffered": {
             "@type": "Service",
-            "name": "Pro Bot"
+            "name": "Pro Advisor"
           },
-          "price": "129",
+          "price": "103",
           "priceCurrency": "EUR",
           "priceSpecification": {
             "@type": "UnitPriceSpecification",
-            "price": "129",
+            "price": "103",
             "priceCurrency": "EUR",
             "billingIncrement": "1",
             "unitCode": "MON"
@@ -121,26 +121,26 @@ const StructuredData: React.FC = () => {
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "Mitä tekoälybot maksaa?",
+        "name": "Mitä Mitrox AI Advisor maksaa?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Starter Bot maksaa 79€/kk ja Pro Bot 129€/kk. Tarjoamme myös 14 päivän maksuttoman kokeilujakson."
+          "text": "Starter Advisor maksaa alkaen 69€/kk ja Pro Advisor alkaen 103€/kk. Tarjoamme myös 14 päivän maksuttoman kokeilujakson."
         }
       },
       {
         "@type": "Question",
-        "name": "Kuinka nopeasti tekoälybot saadaan käyttöön?",
+        "name": "Kuinka nopeasti Mitrox AI Advisor saadaan käyttöön?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Tekoälybot voidaan ottaa käyttöön nopeasti. Prosessi sisältää 30 minuutin ideakartoituksen, toteutuksen, integraatiot ja käyttöönoton."
+          "text": "Mitrox AI Advisor voidaan ottaa käyttöön nopeasti. Prosessi sisältää 30 minuutin ideakartoituksen, toteutuksen, integraatiot ja käyttöönoton."
         }
       },
       {
         "@type": "Question",
-        "name": "Onko tekoälybot suomenkielinen?",
+        "name": "Onko Mitrox AI Advisor suomenkielinen?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Kyllä, kaikki bottimme tukevat suomea. Pro Bot -paketti tukee myös englantia (FI/EN)."
+          "text": "Kyllä, kaikki Mitrox AI Advisor -paketit tukevat suomea. Pro Advisor -paketti tukee myös englantia (FI/EN)."
         }
       }
     ]

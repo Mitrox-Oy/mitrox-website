@@ -5,7 +5,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import SEOHead from "./components/SEOHead";
 import ScrollToTop from "./components/ScrollToTop";
-import { ArrowRight, TrendingUp, DollarSign, Users, Award, CheckCircle, X } from "lucide-react";
+import { ArrowRight, Award, CheckCircle, Users, X } from "lucide-react";
 
 export default function AffiliatePage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -16,6 +16,7 @@ export default function AffiliatePage() {
 
   const [formData, setFormData] = useState({
     name: "",
+    company: "",
     email: "",
     website: "",
     message: "",
@@ -43,6 +44,11 @@ export default function AffiliatePage() {
       setIsModalOpen(true);
       return;
     }
+    if (!formData.company.trim()) {
+      setErrorMsg("Täytä yrityksen nimi.");
+      setIsModalOpen(true);
+      return;
+    }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       setErrorMsg("Tarkista sähköposti.");
       setIsModalOpen(true);
@@ -59,6 +65,7 @@ export default function AffiliatePage() {
           to: "info@mitrox.io",
           subject: `Affiliate-hakemus: ${formData.name}`,
           name: formData.name,
+          company: formData.company,
           email: formData.email,
           website: formData.website || "Ei määritelty",
           message: formData.message || "Ei viestiä",
@@ -70,9 +77,9 @@ export default function AffiliatePage() {
       const data = await res.json();
       if (!data?.success) throw new Error(data?.message || "Lähetys epäonnistui");
 
-      setSuccessMsg("Kiitos hakemuksestasi! Otamme sinuun yhteyttä mahdollisimman pian ja lähetämme henkilökohtaisen affiliate-linkkisi.");
+      setSuccessMsg("Kiitos hakemuksestasi! Otamme sinuun yhteyttä mahdollisimman pian ja lähetämme henkilökohtaisen kumppanikoodisi.");
       setIsModalOpen(true);
-      setFormData({ name: "", email: "", website: "", message: "" });
+      setFormData({ name: "", company: "", email: "", website: "", message: "" });
       setBotcheck("");
     } catch (err: any) {
       setErrorMsg(err?.message || "Jotain meni pieleen. Yritä hetken päästä uudelleen.");
@@ -93,13 +100,13 @@ export default function AffiliatePage() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+      <section className="relative pt-40 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold mb-6 text-white" style={{ fontFamily: 'Epilogue, sans-serif', fontWeight: 600 }}>
-            Affiliate-ohjelma
+            Mitroxin kumppaniohjelma - Kasvamme yhdessä
           </h1>
           <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Tuo meille uusia asiakkaita ja saat ilmaisia kuukausia palveluistamme. Myös uusi asiakas hyötyy ilmaisista kuukausista - kaikki voittavat!
+            Liity Mitroxin kumppaniksi ja ansaitse palkintoja suosittelemalla palveluitamme eteenpäin. Sekä sinä että uusi asiakas hyötyvät. Kumppanuus, jossa kaikki voittavat.
           </p>
         </div>
       </section>
@@ -110,13 +117,15 @@ export default function AffiliatePage() {
           <div className="grid md:grid-cols-3 gap-8 mb-16">
             <div className="p-8 rounded-2xl bg-white/[0.02] backdrop-blur-xl border border-white/10 hover:bg-white/[0.04] transition-all duration-300">
               <div className="mb-6 text-gray-400">
-                <TrendingUp className="w-8 h-8" />
+                <Award className="w-8 h-8" />
               </div>
               <h3 className="text-xl font-medium text-white mb-3">
-                Ilmaisia kuukausia sinulle
+                1. Palkitseva kumppanuus
               </h3>
               <p className="text-sm text-gray-400 leading-relaxed">
-                Jokaisesta tuomastasi asiakkaasta saat ilmaisia kuukausia palveluistamme. Mitä enemmän asiakkaita tuot, sitä enemmän ilmaisia kuukausia kertyy.
+                Jokaisesta suosittelemastasi asiakkaasta saat yhden ilmaisen kuukauden omaan Mitrox-palveluusi.
+                <br /><br />
+                Mitä enemmän suosittelet, sitä enemmän ilmaisia kuukausia kertyy – reilu ja läpinäkyvä tapa hyötyä yhteisestä kasvusta.
               </p>
             </div>
 
@@ -125,22 +134,26 @@ export default function AffiliatePage() {
                 <Users className="w-8 h-8" />
               </div>
               <h3 className="text-xl font-medium text-white mb-3">
-                Ilmaisia kuukausia myös uudelle asiakkaalle
+                2. Uusi asiakas palkitaan heti alusta
               </h3>
               <p className="text-sm text-gray-400 leading-relaxed">
-                Myös uusi asiakas saa ilmaisia kuukausia linkkisi kautta rekisteröityessään. Molemmat hyötyvät - win-win tilanne!
+                Liittyessään Mitrox-palveluun käyttäessään kumppanikoodiasi uusi asiakas saa ensimmäisen kuukauden maksutta.
+                <br /><br />
+                Se on luonteva tapa aloittaa yhteistyö ja kokea Mitroxin palvelun arvo jo ensimmäisestä päivästä lähtien.
               </p>
             </div>
 
             <div className="p-8 rounded-2xl bg-white/[0.02] backdrop-blur-xl border border-white/10 hover:bg-white/[0.04] transition-all duration-300">
               <div className="mb-6 text-gray-400">
-                <DollarSign className="w-8 h-8" />
+                <CheckCircle className="w-8 h-8" />
               </div>
               <h3 className="text-xl font-medium text-white mb-3">
-                Täysin ilmainen liittyminen
+                3. Helppo ja maksuton liittyminen
               </h3>
               <p className="text-sm text-gray-400 leading-relaxed">
-                Liittyminen on täysin ilmaista. Ei piilotettuja kustannuksia tai kuukausimaksuja. Aloita heti ja ala kerätä ilmaisia kuukausia.
+                Kumppaniohjelmaan liittyminen on täysin ilmaista eikä vaadi sitoumuksia.
+                <br /><br />
+                Liity, jaa henkilökohtainen kumppanikoodisi ja ala ansaita ilmaisia kuukausia heti – me hoidamme loput.
               </p>
             </div>
           </div>
@@ -155,7 +168,7 @@ export default function AffiliatePage() {
               Miten se toimii?
             </h2>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-              Kolme yksinkertaista vaihetta aloittamiseen
+              Kolme yksinkertaista askelta kohti kannattavaa kumppanuutta.
             </p>
           </div>
 
@@ -165,10 +178,12 @@ export default function AffiliatePage() {
                 <span className="text-2xl font-semibold text-white">1</span>
               </div>
               <h3 className="text-xl font-medium text-white mb-3">
-                Liity ohjelmaan
+                Liity kumppaniohjelmaan
               </h3>
               <p className="text-gray-400 leading-relaxed">
-                Täytä lomake alla ja saat henkilökohtaisen affiliate-linkkisi heti käyttöösi.
+                Täytä lyhyt lomake ja saat henkilökohtaisen kumppanilinkin heti käyttöösi.
+                <br /><br />
+                Liittyminen on maksutonta, eikä se velvoita mihinkään – pääset alkuun muutamassa minuutissa.
               </p>
             </div>
 
@@ -177,10 +192,12 @@ export default function AffiliatePage() {
                 <span className="text-2xl font-semibold text-white">2</span>
               </div>
               <h3 className="text-xl font-medium text-white mb-3">
-                Jaa linkkiäsi
+                Jaa kumppanikoodisi eteenpäin
               </h3>
               <p className="text-gray-400 leading-relaxed">
-                Jaa henkilökohtaista linkkiäsi verkossa, somessa tai verkostollesi. Jokainen klikkaus seurataan.
+                Jaa henkilökohtainen kumppanikoodisi verkostossasi, sosiaalisessa mediassa tai asiakkaillesi.
+                <br /><br />
+                Jokainen rekisteröityminen kumppanikoodillasi seurataan automaattisesti – sinä keskityt vain suositteluun, me hoidamme loput.
               </p>
             </div>
 
@@ -189,10 +206,12 @@ export default function AffiliatePage() {
                 <span className="text-2xl font-semibold text-white">3</span>
               </div>
               <h3 className="text-xl font-medium text-white mb-3">
-                Saat ilmaisia kuukausia
+                Ansaitse ilmainen kuukausi
               </h3>
               <p className="text-gray-400 leading-relaxed">
-                Kun joku rekisteröityy linkkisi kautta ja muuttuu maksavaksi asiakkaaksi, saat ilmaisia kuukausia palveluistamme. Myös uusi asiakas saa ilmaisia kuukausia.
+                Kun uusi asiakas aloittaa palvelun käyttäessään kumppanikoodiasi, saat yhden ilmaisen kuukauden omaan Mitrox-palveluusi.
+                <br /><br />
+                Myös uusi asiakas saa ensimmäisen kuukauden veloituksetta – reilu ja palkitseva yhteistyö molemmille.
               </p>
             </div>
           </div>
@@ -206,19 +225,21 @@ export default function AffiliatePage() {
             <div className="flex items-center gap-3 mb-6">
               <Award className="w-6 h-6 text-gray-400" />
               <h2 className="text-2xl sm:text-3xl font-medium text-white">
-                Miten ilmaiset kuukaudet toimivat?
+                Miten ilmainen kuukausi toimii?
               </h2>
             </div>
-            
+
             <div className="space-y-6 mb-8">
               <div className="flex items-start gap-4">
                 <CheckCircle className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
                 <div>
                   <h3 className="text-lg font-medium text-white mb-1">
-                    Ilmaisia kuukausia sinulle
+                    Ilmainen kuukausi sinulle
                   </h3>
                   <p className="text-gray-400">
-                    Jokaisesta linkkisi kautta rekisteröityvästä maksavasta asiakkaasta saat ilmaisia kuukausia palveluistamme (AI Agent / Chatbot tai muut kuukausittaiset palvelut).
+                    Jokaisesta uudesta asiakkaasta, joka liittyy palveluumme käyttäen henkilökohtaista kumppanikoodiasi, saat yhden ilmaisen kuukauden omaan Mitrox-palveluusi.
+                    <br /><br />
+                    Palkitseminen tapahtuu, kun uusi asiakas on suorittanut ensimmäisen maksukuukautensa – näin ohjelma pysyy reiluna ja läpinäkyvänä kaikille.
                   </p>
                 </div>
               </div>
@@ -227,25 +248,17 @@ export default function AffiliatePage() {
                 <CheckCircle className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
                 <div>
                   <h3 className="text-lg font-medium text-white mb-1">
-                    Ilmaisia kuukausia myös uudelle asiakkaalle
+                    Ilmainen kuukausi myös uudelle asiakkaalle
                   </h3>
                   <p className="text-gray-400">
-                    Uusi asiakas saa myös ilmaisia kuukausia rekisteröityessään linkkisi kautta. Molemmat hyötyvät - se on win-win tilanne!
+                    Uusi asiakas saa liittyessään kahden kuukauden Mitrox-jakson, josta ensimmäinen on maksullinen ja toinen täysin ilmainen.
+                    <br /><br />
+                    Tämä antaa mahdollisuuden kokeilla palvelua rauhassa ja nähdä sen todellisen arvon ennen pidempää päätöstä.
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-4">
-                <CheckCircle className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
-                <div>
-                  <h3 className="text-lg font-medium text-white mb-1">
-                    Seuraa ilmaisia kuukausia
-                  </h3>
-                  <p className="text-gray-400">
-                    Saat pääsyn dashboardiin, jossa voit seurata kuinka monta ilmaista kuukautta olet saanut ja miten paljon lisää voit vielä ansaita.
-                  </p>
-                </div>
-              </div>
+
             </div>
           </div>
         </div>
@@ -258,9 +271,9 @@ export default function AffiliatePage() {
             Valmis aloittamaan?
           </h2>
           <p className="text-lg text-gray-400 mb-8 max-w-2xl mx-auto">
-            Liity affiliate-ohjelmaamme täyttämällä lomake tai ota yhteyttä suoraan.
+            Liity kumppaniohjelmaamme täyttämällä lomake tai ota yhteyttä suoraan.
           </p>
-          
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="#join-form"
@@ -269,12 +282,7 @@ export default function AffiliatePage() {
               Liity ohjelmaan
               <ArrowRight className="w-4 h-4" />
             </a>
-            <a
-              href="mailto:info@mitrox.io?subject=Affiliate-ohjelma"
-              className="inline-flex items-center justify-center px-8 py-3 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 text-white hover:bg-black/60 hover:border-white/20 font-medium transition-all duration-300"
-            >
-              Ota yhteyttä
-            </a>
+
           </div>
         </div>
       </section>
@@ -284,14 +292,30 @@ export default function AffiliatePage() {
         <div className="max-w-2xl mx-auto">
           <div className="p-8 lg:p-12 rounded-2xl bg-white/[0.02] backdrop-blur-xl border border-white/10">
             <h2 className="text-2xl sm:text-3xl font-medium mb-6 text-white text-center">
-              Liity affiliate-ohjelmaan
+              Liity kumppaniohjelmaan
             </h2>
             <p className="text-gray-400 mb-8 text-center">
-              Täytä lomake, niin otamme sinuun yhteyttä mahdollisimman pian ja lähetämme henkilökohtaisen affiliate-linkkisi.
+              Täytä lomake, niin otamme sinuun yhteyttä mahdollisimman pian ja lähetämme henkilökohtaisen kumppanikoodisi.
             </p>
-            
+
             <form onSubmit={handleSubmit} className="space-y-6">
               <input type="hidden" name="botcheck" value={botcheck} onChange={(e) => setBotcheck(e.target.value)} />
+
+              <div>
+                <label htmlFor="company" className="block text-sm font-medium text-gray-300 mb-2">
+                  Yrityksen nimi *
+                </label>
+                <input
+                  type="text"
+                  id="company"
+                  name="company"
+                  required
+                  value={formData.company}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-white/20 transition-colors"
+                  placeholder="Yrityksen nimi Oy"
+                />
+              </div>
 
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
@@ -351,7 +375,7 @@ export default function AffiliatePage() {
                   value={formData.message}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-white/20 transition-colors resize-none"
-                  placeholder="Kerro meille itsestäsi ja miten aiot jakaa linkkiäsi..."
+                  placeholder="Kerro meille itsestäsi ja miten aiot jakaa kumppanikoodiasi..."
                 />
               </div>
 
@@ -417,4 +441,3 @@ export default function AffiliatePage() {
     </div>
   );
 }
-

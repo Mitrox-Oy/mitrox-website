@@ -66,7 +66,7 @@ const INTEGRATION_OPTIONS = [
   "CRM-järjestelmät",
   "Sosiaalisen median integraatiot",
   "Varausjärjestelmät",
-  "Chatbotti/AI Agent",
+  "Mitrox AI Advisor",
 ];
 
 const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
@@ -521,7 +521,7 @@ Lisätietoja: ${formData.message || "Ei"}
                           name={field.name}
                           value={(formData[field.name as keyof FormData] as string) || ""}
                           onChange={(e) => handleInputChange(e, field.name)}
-                          placeholder={field.placeholder}
+                          placeholder={"placeholder" in field ? field.placeholder : undefined}
                           required={field.required}
                           rows={4}
                           className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-white/20 transition-colors resize-none"
@@ -535,7 +535,7 @@ Lisätietoja: ${formData.message || "Ei"}
                           className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 text-white focus:outline-none focus:border-white/20 transition-colors"
                         >
                           <option value="">Valitse...</option>
-                          {field.options?.map((option) => (
+                          {"options" in field && field.options?.map((option: string) => (
                             <option key={option} value={option}>
                               {option}
                             </option>
@@ -543,7 +543,7 @@ Lisätietoja: ${formData.message || "Ei"}
                         </select>
                       ) : field.type === "multiselect" ? (
                         <div className="space-y-2">
-                          {field.options?.map((option) => {
+                          {"options" in field && field.options?.map((option: string) => {
                             const isSelected = (
                               formData[field.name as keyof FormData] as string[]
                             ).includes(option);
@@ -575,7 +575,7 @@ Lisätietoja: ${formData.message || "Ei"}
                           name={field.name}
                           value={(formData[field.name as keyof FormData] as string) || ""}
                           onChange={(e) => handleInputChange(e, field.name)}
-                          placeholder={field.placeholder}
+                          placeholder={"placeholder" in field ? field.placeholder : undefined}
                           required={field.required}
                           className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-white/20 transition-colors"
                         />

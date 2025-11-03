@@ -14,19 +14,19 @@ const CompanyInfo: React.FC = () => {
       icon: Shield,
       title: "Luotettavuus",
       description:
-        "Toimitamme sovitusti ja pidämme lupauksemme. Asiakkaamme voivat luottaa meihin.",
+        "Toimimme täsmällisesti ja pidämme sanamme. Asiakkaamme voivat luottaa siihen, että jokainen projekti etenee suunnitellusti ja laadukkaasti – alusta loppuun.",
     },
     {
       icon: Zap,
       title: "Helppous",
       description:
-        "Ratkaisumme ovat selkeitä ja käyttäjäystävällisiä — ilman turhaa monimutkaisuutta.",
+        "Teemme monimutkaisesta yksinkertaista. Ratkaisumme ovat selkeitä, käyttäjäystävällisiä ja rakennettu helpottamaan arkeasi – ei kuormittamaan sitä.",
     },
     {
       icon: Target,
       title: "Täsmällisyys",
       description:
-        "Huolehdimme yksityiskohdista ja varmistamme, että kaikki toimii kuten on sovittu.",
+        "Huolehdimme yksityiskohdista tinkimättä. Aikataulut pitävät, lopputulos on viimeistelty ja jokainen yksityiskohta tukee kokonaisuuden laatua.",
     },
   ];
 
@@ -41,17 +41,13 @@ const CompanyInfo: React.FC = () => {
             Keitä olemme
           </h2>
           <p className="max-w-3xl text-base leading-relaxed text-white/70">
-            Mitrox on suomalainen teknologiayritys, jonka perustajina toimivat
-            intohimoiset nuoret. Uskomme vahvasti teknologian tulevaisuuteen
-            ja sen potentiaaliin.
+            Mitrox on suomalainen teknologiayritys, joka yhdistää tekoälyn, suunnittelun ja liiketoimintaymmärryksen yhdeksi kokonaisuudeksi. Tiimimme koostuu intohimoisista nuorista osaajista, jotka uskovat teknologian mahdollisuuksiin – ja tekevät siitä totta joka päivä.
           </p>
         </div>
 
         <div className="mb-20 max-w-3xl">
           <p className="text-base leading-relaxed text-white/70">
-            Työskentelemme tehokkaalla periaatteella: teemme asiat kerralla
-            mutta perusteellisesti. Et jää koskaan yksin – tarjoamme tukea ja
-            asiantuntemusta aina, kun sitä tarvitset.
+            Työskentelemme periaatteella, jossa laatu ja tehokkuus kulkevat käsi kädessä. Teemme asiat kerralla oikein ja pidämme huolen, ettet jää yksin – tarjoamme jatkuvaa tukea ja asiantuntemusta, kun yrityksesi kasvaa.
           </p>
         </div>
 

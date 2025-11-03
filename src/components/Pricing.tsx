@@ -24,7 +24,7 @@ type Plan = {
 
 const plans: Plan[] = [
   {
-    name: "Starter Bot",
+    name: "Starter Advisor",
     price: 79,
     description: "1000 viestiä/kk",
     popular: false,
@@ -40,7 +40,7 @@ const plans: Plan[] = [
     limitations: [],
   },
   {
-    name: "Pro Bot",
+    name: "Pro Advisor",
     price: 129,
     description: "5000 viestiä/kk",
     popular: true,
@@ -78,7 +78,7 @@ const Pricing: React.FC = () => {
     return { main: `${formatEUR(monthly)}`, sub: "", period: "kk" };
   };
 
-  const getCTA = (plan: Plan) => {
+  const getCTA = () => {
     return "Aloita maksutta";
   };
 
@@ -139,7 +139,7 @@ const Pricing: React.FC = () => {
 
         {/* Cards */}
         <div className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          {plans.map((plan, index) => {
+          {plans.map((plan) => {
             const price = getDisplayPrice(plan);
             const isPopular = plan.popular;
 
@@ -221,7 +221,7 @@ const Pricing: React.FC = () => {
                       onClick={handleScrollToContact}
                       className="w-full py-3 px-6 rounded-xl font-medium text-sm bg-white text-black hover:bg-gray-100 transition-all duration-300 flex items-center justify-center gap-2"
                     >
-                      {getCTA(plan)}
+                      {getCTA()}
                       <ArrowRight className="h-4 w-4" />
                     </button>
                     
