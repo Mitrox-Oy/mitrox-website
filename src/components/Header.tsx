@@ -1,6 +1,6 @@
 // src/components/Header.tsx
 import React, { useEffect, useState } from "react";
-import { Menu, X, ArrowRight, ChevronDown } from "lucide-react";
+import { Menu, X, ArrowRight, ChevronDown, Globe2, Sparkles } from "lucide-react";
 import logo from "../assets/logo.png";
 import { Link, useLocation } from "react-router-dom";
 
@@ -9,15 +9,11 @@ const NAV = [
   { label: "Tietoa meistä", href: "/about" },
 ];
 
-const PRODUCT_PAGE_NAV = [
-  { label: "Prosessi", href: "process" },
-  { label: "Hinnasto", href: "pricing" },
-  { label: "FAQ", href: "faq" },
-];
+type ProductNavItem = { label: string; href: string; subtitle?: string };
 
-const PRODUCTS = [
+const PRODUCTS: ProductNavItem[] = [
   { label: "Räätälöidyt Verkkosivut", href: "/websites" },
-  { label: "AI Agent / Chatbot", href: "/ai-agent" },
+  { label: "Mitrox AI Advisor", href: "/ai-agent", subtitle: "Älykäs kasvukumppanisi" },
 ];
 
 const Header: React.FC = () => {
@@ -29,13 +25,7 @@ const Header: React.FC = () => {
 
   const location = useLocation();
 
-  // Show product page nav items on product pages
   const isProductPage = location.pathname === "/websites" || location.pathname === "/ai-agent";
-  const displayNav = isProductPage 
-    ? location.pathname === "/websites"
-      ? [NAV[0], ...PRODUCT_PAGE_NAV, NAV[1]]
-      : [...NAV, ...PRODUCT_PAGE_NAV]
-    : NAV;
 
   // Handle products dropdown with delay
   const handleProductsMouseEnter = () => {
@@ -128,8 +118,8 @@ const Header: React.FC = () => {
                 {/* Navigation */}
                 <nav className="flex items-center gap-2">
                   {/* Etusivu - first */}
-                  {displayNav[0] && (() => {
-                    const item = displayNav[0];
+                  {NAV[0] && (() => {
+                    const item = NAV[0];
                     const isPage = item.href.startsWith("/");
                     return (
                       <Link
@@ -155,57 +145,61 @@ const Header: React.FC = () => {
                     );
                   })()}
 
-                  {/* Products Dropdown - second (only on landing page) */}
-                  {!isProductPage && (
-                    <div
-                      className="relative"
-                      onMouseEnter={handleProductsMouseEnter}
-                      onMouseLeave={handleProductsMouseLeave}
+                  {/* Products Dropdown - second (always visible) */}
+                  <div
+                    className="relative"
+                    onMouseEnter={handleProductsMouseEnter}
+                    onMouseLeave={handleProductsMouseLeave}
+                  >
+                    <button
+                      className="text-white/80 hover:text-white transition-colors text-base font-light px-5 py-2.5 rounded-full hover:bg-white/10 flex items-center gap-1"
+                      aria-expanded={productsOpen}
+                      aria-haspopup="true"
                     >
-                      <button
-                        className="text-white/80 hover:text-white transition-colors text-base font-light px-5 py-2.5 rounded-full hover:bg-white/10 flex items-center gap-1"
-                        aria-expanded={productsOpen}
-                        aria-haspopup="true"
-                      >
-                        Tuotteet
-                        <ChevronDown className={`w-4 h-4 transition-transform ${productsOpen ? 'rotate-180' : ''}`} />
-                      </button>
+                      Tuotteet
+                      <ChevronDown className={`w-4 h-4 transition-transform ${productsOpen ? 'rotate-180' : ''}`} />
+                    </button>
 
-                      {/* Dropdown Menu */}
-                      {productsOpen && (
-                        <div className="absolute top-full left-0 mt-2 w-56 rounded-xl bg-black/40 backdrop-blur-xl backdrop-saturate-150 shadow-2xl border border-white/10 overflow-hidden z-50">
-                          <div className="py-2">
-                            {PRODUCTS.map((product) => {
-                              const isPage = product.href.startsWith("/");
-                              return (
-                                <Link
-                                  key={product.href}
-                                  to={product.href}
-                                  onClick={(e) => {
-                                    if (!isPage && location.pathname === "/") {
-                                      e.preventDefault();
-                                      handleScroll(product.href.replace("/#", ""));
-                                    }
-                                    if (productsTimeoutRef.current) {
-                                      clearTimeout(productsTimeoutRef.current);
-                                    }
-                                    setProductsOpen(false);
-                                  }}
-                                  onMouseEnter={handleProductsMouseEnter}
-                                  className="block px-4 py-2.5 text-white/80 hover:text-white hover:bg-white/10 transition-colors text-sm font-light"
-                                >
-                                  {product.label}
-                                </Link>
-                              );
-                            })}
-                          </div>
+                    {/* Dropdown Menu */}
+                    {productsOpen && (
+                      <div className="absolute top-full left-0 mt-2 w-64 rounded-2xl bg-white/5 backdrop-blur-2xl backdrop-saturate-150 ring-1 ring-white/15 shadow-[0_16px_40px_rgba(0,0,0,0.35)] overflow-hidden z-50">
+                        <div className="py-1">
+                          <Link
+                            to="/websites"
+                            onClick={() => setProductsOpen(false)}
+                            onMouseEnter={handleProductsMouseEnter}
+                            className="flex items-center gap-3 px-3.5 py-2.5 text-white/90 hover:text-white hover:bg-white/10 transition-colors rounded-xl mx-1.5"
+                          >
+                            <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-white/10 text-white/80">
+                              <Globe2 className="w-4 h-4" />
+                            </span>
+                            <span className="flex-1 min-w-0">
+                              <span className="block text-sm truncate">Räätälöidyt Verkkosivut</span>
+                            </span>
+                            <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </Link>
+                          <Link
+                            to="/ai-agent"
+                            onClick={() => setProductsOpen(false)}
+                            onMouseEnter={handleProductsMouseEnter}
+                            className="group flex items-center gap-3 px-3.5 py-2.5 text-white/90 hover:text-white hover:bg-white/10 transition-colors rounded-xl mx-1.5"
+                          >
+                            <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-white/10 text-white/80">
+                              <Sparkles className="w-4 h-4" />
+                            </span>
+                            <span className="flex-1 min-w-0">
+                              <span className="block text-sm">Mitrox AI Advisor</span>
+                              <span className="block text-[0.6rem] uppercase tracking-[0.35em] text-white/45 mt-0.5">Älykäs kasvukumppanisi</span>
+                            </span>
+                            <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </Link>
                         </div>
-                      )}
-                    </div>
-                  )}
+                      </div>
+                    )}
+                  </div>
 
-                  {/* Rest of navigation items (Tietoa meistä, Prosessi, Hinnasto, FAQ) */}
-                  {displayNav.slice(1).map((item) => {
+                  {/* Rest of navigation items (Tietoa meistä) */}
+                  {NAV.slice(1).map((item) => {
                     const isPage = item.href.startsWith("/");
                     return (
                       <Link
@@ -214,9 +208,6 @@ const Header: React.FC = () => {
                         onClick={(e) => {
                           if (!isPage) {
                             if (location.pathname === "/") {
-                              e.preventDefault();
-                              handleScroll(item.href);
-                            } else if (isProductPage) {
                               e.preventDefault();
                               handleScroll(item.href);
                             }
@@ -311,8 +302,8 @@ const Header: React.FC = () => {
           <div className="rounded-2xl bg-black/40 backdrop-blur-xl backdrop-saturate-150 shadow-2xl p-3 w-56">
             <div className="flex flex-col gap-0.5">
               {/* Mobile Etusivu - first */}
-              {displayNav[0] && (() => {
-                const item = displayNav[0];
+              {NAV[0] && (() => {
+                const item = NAV[0];
                 const isPage = item.href.startsWith("/");
                 return (
                   <Link
@@ -339,44 +330,88 @@ const Header: React.FC = () => {
               })()}
 
               {/* Mobile Products Dropdown - second */}
-              {!isProductPage && (
-                <div>
-                  <button
-                    onClick={() => setMobileProductsOpen(!mobileProductsOpen)}
-                    className="w-full flex items-center justify-between rounded-full px-4 py-1.5 text-white/80 hover:text-white hover:bg-white/10 transition-colors text-sm font-light"
+              <div>
+                <button
+                  onClick={() => setMobileProductsOpen(!mobileProductsOpen)}
+                  className="w-full flex items-center justify-between rounded-full px-4 py-1.5 text-white/80 hover:text-white hover:bg-white/10 transition-colors text-sm font-light"
+                >
+                  Tuotteet
+                  <ChevronDown className={`w-4 h-4 transition-transform ${mobileProductsOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {mobileProductsOpen && (
+                  <div className="ml-4 mt-1 flex flex-col gap-0.5">
+                    {PRODUCTS.map((product) => {
+                      const isPage = product.href.startsWith("/");
+                      return (
+                        <Link
+                          key={product.href}
+                          to={product.href}
+                          onClick={(e) => {
+                            if (!isPage && location.pathname === "/") {
+                              e.preventDefault();
+                              handleScroll(product.href.replace("/#", ""));
+                            }
+                            setOpen(false);
+                            setMobileProductsOpen(false);
+                          }}
+                          className="block rounded-full px-4 py-1.5 text-white/60 hover:text-white/80 hover:bg-white/10 transition-colors text-xs font-light"
+                        >
+                          <span className="flex flex-col gap-0.5 text-left">
+                            <span>{product.label}</span>
+                            {product.subtitle && (
+                              <span className="text-[0.55rem] uppercase tracking-[0.35em] text-white/35">
+                                {product.subtitle}
+                              </span>
+                            )}
+                          </span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* Mobile Product Page Navigation (Prosessi, Hinnasto, FAQ) - only on product pages */}
+              {isProductPage && (
+                <>
+                  <a
+                    href="#process"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleScroll("process");
+                      setOpen(false);
+                    }}
+                    className="block rounded-full px-4 py-1.5 text-white/80 hover:text-white hover:bg-white/10 transition-colors text-sm font-light"
                   >
-                    Tuotteet
-                    <ChevronDown className={`w-4 h-4 transition-transform ${mobileProductsOpen ? 'rotate-180' : ''}`} />
-                  </button>
-                  {mobileProductsOpen && (
-                    <div className="ml-4 mt-1 flex flex-col gap-0.5">
-                      {PRODUCTS.map((product) => {
-                        const isPage = product.href.startsWith("/");
-                        return (
-                          <Link
-                            key={product.href}
-                            to={product.href}
-                            onClick={(e) => {
-                              if (!isPage && location.pathname === "/") {
-                                e.preventDefault();
-                                handleScroll(product.href.replace("/#", ""));
-                              }
-                              setOpen(false);
-                              setMobileProductsOpen(false);
-                            }}
-                            className="block rounded-full px-4 py-1.5 text-white/60 hover:text-white/80 hover:bg-white/10 transition-colors text-xs font-light"
-                          >
-                            {product.label}
-                          </Link>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
+                    Prosessi
+                  </a>
+                  <a
+                    href="#pricing"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleScroll("pricing");
+                      setOpen(false);
+                    }}
+                    className="block rounded-full px-4 py-1.5 text-white/80 hover:text-white hover:bg-white/10 transition-colors text-sm font-light"
+                  >
+                    Hinnasto
+                  </a>
+                  <a
+                    href="#faq"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleScroll("faq");
+                      setOpen(false);
+                    }}
+                    className="block rounded-full px-4 py-1.5 text-white/80 hover:text-white hover:bg-white/10 transition-colors text-sm font-light"
+                  >
+                    FAQ
+                  </a>
+                </>
               )}
 
-              {/* Mobile Rest of navigation items (Tietoa meistä, Prosessi, Hinnasto, FAQ) */}
-              {displayNav.slice(1).map((item) => {
+              {/* Mobile Rest of navigation items (Tietoa meistä) */}
+              {NAV.slice(1).map((item) => {
                 const isPage = item.href.startsWith("/");
                 return (
                   <Link
@@ -385,9 +420,6 @@ const Header: React.FC = () => {
                     onClick={(e) => {
                       if (!isPage) {
                         if (location.pathname === "/") {
-                          e.preventDefault();
-                          handleScroll(item.href);
-                        } else if (isProductPage) {
                           e.preventDefault();
                           handleScroll(item.href);
                         }

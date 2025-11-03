@@ -238,11 +238,14 @@ const TrustSection: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16 sm:mb-20">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light text-white mb-4 sm:mb-6">
-            Kokeile tekoälybottia
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light text-white mb-4 sm:mb-5">
+            Kokeile Mitrox AI Advisoria
           </h2>
+          <p className="text-[0.75rem] uppercase tracking-[0.45em] text-white/40 mb-4">
+            Älykäs kasvukumppanisi
+          </p>
           <p className="text-gray-400 text-base sm:text-lg max-w-xl mx-auto px-4">
-            Keskustele suoraan botin kanssa ja näe miten se toimii
+            Keskustele neuvojalta Mitroxista, hinnoittelusta tai siitä, miten voimme vauhdittaa yrityksesi kasvua.
           </p>
         </div>
 
@@ -276,13 +279,13 @@ const TrustSection: React.FC = () => {
               Testaa itse
             </h3>
             <p className="text-gray-400 mb-10 sm:mb-12 leading-relaxed text-sm sm:text-base">
-              Kysele vapaasti Mitroxista, hinnoittelusta tai miten voimme auttaa yritystäsi.
+              Kysele neuvojalta Mitroxista, hinnoittelusta tai siitä, miten voimme vauhdittaa yrityksesi kasvua.
             </p>
             <a
               href="#pricing"
               className="inline-flex items-center px-6 sm:px-8 py-2.5 sm:py-3 bg-white text-black hover:bg-gray-100 rounded-full font-medium transition-all text-sm sm:text-base"
             >
-              Tilaa oma botti
+              Tilaa Mitrox AI Advisor
             </a>
           </div>
         </div>

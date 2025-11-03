@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import LiquidEther from './LiquidEther';
 import { ChevronDown } from 'lucide-react';
+import ColorBends from './ColorBends';
 
 const Hero = () => {
   const [showContent, setShowContent] = useState<boolean>(false);
@@ -41,26 +41,24 @@ const Hero = () => {
       id="hero"
       className="relative w-full h-screen overflow-hidden"
     >
-      {/* LiquidEther Background */}
+      {/* Color Bends Background */}
       <div className="absolute inset-0 w-full h-full bg-black">
-        <LiquidEther
-          colors={[ '#5227FF', '#FF9FFC', '#B19EEF' ]}
-          mouseForce={20}
-          cursorSize={100}
-          isViscous={false}
-          viscous={30}
-          iterationsViscous={32}
-          iterationsPoisson={32}
-          resolution={0.5}
-          isBounce={false}
-          autoDemo={true}
-          autoSpeed={0.5}
-          autoIntensity={2.2}
-          takeoverDuration={0.25}
-          autoResumeDelay={3000}
-          autoRampDuration={0.6}
+        <ColorBends
+          colors={["#ff5c7a", "#8a5cff", "#00ffd1"]}
+          rotation={30}
+          speed={0.3}
+          scale={1.2}
+          frequency={1.45}
+          warpStrength={1.05}
+          mouseInfluence={0.8}
+          parallax={0.6}
+          noise={0.08}
+          transparent
+        
         />
       </div>
+
+      <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/55 to-black pointer-events-none" />
 
       {/* Bottom fade to match next section */}
       <div

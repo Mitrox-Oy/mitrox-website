@@ -1,89 +1,94 @@
 // Features.tsx
 
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import { Zap, HeartHandshake, Workflow } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import PixelBlast from "./PixelBlast";
+
+type Feature = {
+  icon: LucideIcon;
+  title: string;
+  description: string;
+};
 
 const Features: React.FC = () => {
-  const [visibleCards, setVisibleCards] = useState<number[]>([]);
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            const i = Number(e.target.getAttribute("data-index") || 0);
-            setVisibleCards((prev) => (prev.includes(i) ? prev : [...prev, i]));
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: "50px" }
-    );
-    cardRefs.current.forEach((ref) => ref && obs.observe(ref));
-    return () => obs.disconnect();
-  }, []);
-
-  const features = [
+  const features: Feature[] = [
     {
-      icon: <Workflow className="w-7 h-7" />,
+      icon: Workflow,
       title: "Modernit Ratkaisut",
       description:
-        "Tarjoamme luotettavia, nopeita ja yksilöllisiä ratkaisuja, jotka auttavat yritystäsi kasvamaan.",
+        "Tarjoamme luotettavia, nopeita ja yksilöllisiä ratkaisuja, jotka auttavat yritystäsi kasvamaan ja kilpailukykyisyyden vahvistumaan.",
     },
     {
-      icon: <Zap className="w-7 h-7" />,
+      icon: Zap,
       title: "Nopea Käyttöönotto",
       description:
-        "Varmistamme palvelun sujuvan käyttöönoton, sinä keskityt vain liiketoiminnan tuloksiin.",
+        "Varmistamme palvelun sujuvan ja nopean käyttöönoton minimoimalla häiriöt liiketoiminnalle. Sinä keskityt vain liiketoiminnan tuloksiin.",
     },
     {
-      icon: <HeartHandshake className="w-7 h-7" />,
+      icon: HeartHandshake,
       title: "Aina Apunasi",
       description:
-        "Turvallinen ja asiantunteva kumppani, joka takaa luotettavan tuen ja kehityksen koko yhteistyön ajan.",
+        "Olemme turvallinen ja asiantunteva kumppani, joka takaa luotettavan tuen ja jatkuvan kehityksen koko yhteistyön ajan.",
     },
   ];
 
   return (
     <section
       id="process"
-      className="relative pt-20 md:pt-24 pb-40 md:pb-48 px-4 sm:px-6 lg:px-8 bg-black"
+      className="relative bg-black py-24 sm:py-32 overflow-hidden"
     >
-      <div className="relative max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-medium mb-3 text-white">
+      {/* Pixel Blast Background */}
+      <div className="absolute inset-0 w-full h-full z-0">
+        <PixelBlast
+          variant="square"
+          pixelSize={6}
+          color="#005bab"
+          patternScale={4}
+          patternDensity={0.7}
+          pixelSizeJitter={0.5}
+          enableRipples
+          rippleSpeed={0.4}
+          rippleThickness={0.12}
+          rippleIntensityScale={1.5}
+          speed={0.6}
+          edgeFade={0.15}
+          transparent
+          className="w-full h-full"
+        />
+      </div>
+
+      <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-black/60 via-black/75 to-black/90" />
+
+      <div className="relative z-10 mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-16 flex flex-col gap-5">
+          <span className="text-[0.7rem] uppercase tracking-[0.5em] text-white/50">
+            [ Miksi valita Mitrox ]
+          </span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium text-white">
             Miksi valita Mitrox?
           </h2>
-          <p className="text-sm max-w-xl mx-auto text-gray-500">
+          <p className="max-w-3xl text-base leading-relaxed text-white/70">
             Suomalainen teknologiayritys, joka ymmärtää liiketoimintasi tarpeet ja luo juuri sinulle sopivat ratkaisut.
           </p>
         </div>
 
-        {/* Cards */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-4xl mx-auto">
-          {features.map((feature, index) => (
+        <div className="grid gap-6 md:grid-cols-3">
+          {features.map((feature) => (
             <div
-              ref={(el) => (cardRefs.current[index] = el)}
-              data-index={index}
-              key={index}
-              className={[
-                "group relative p-6 h-full border-b border-white/5 text-center",
-                "hover:bg-white/[0.02] transition-all duration-300",
-                visibleCards.includes(index) ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8",
-              ].join(" ")}
-              style={{ transitionDelay: visibleCards.includes(index) ? `${index * 50}ms` : "0ms" }}
+              key={feature.title}
+              className="group relative flex min-h-[240px] flex-col overflow-hidden rounded-xl border border-white/[0.07] bg-black/85 p-8 transition-colors hover:border-white/[0.14]"
             >
-              <div className="mb-6 flex items-center justify-center text-gray-400 group-hover:text-gray-300 transition-colors">
-                  {feature.icon}
+              <div className="flex h-full flex-col gap-4">
+                <h3 className="text-xl font-medium text-white">{feature.title}</h3>
+                <p className="text-sm leading-relaxed text-white/60">
+                  {feature.description}
+                </p>
               </div>
 
-              <h3 className="text-lg font-medium mb-4 text-white/90 group-hover:text-white transition-colors">
-                {feature.title}
-              </h3>
-              <p className="text-sm leading-relaxed text-gray-500 group-hover:text-gray-400 transition-colors max-w-xs mx-auto">
-                {feature.description}
-              </p>
+              <div className="pointer-events-none absolute -bottom-14 -right-10 opacity-0 transition duration-500 group-hover:opacity-45">
+                <feature.icon className="h-44 w-44 text-white/[0.05]" />
+              </div>
             </div>
           ))}
         </div>
