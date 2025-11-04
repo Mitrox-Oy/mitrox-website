@@ -1,5 +1,5 @@
 // src/components/BottomNavbar.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ChevronUp, ChevronDown } from "lucide-react";
 
 const BOTTOM_NAV_ITEMS = [
@@ -10,19 +10,42 @@ const BOTTOM_NAV_ITEMS = [
 
 const BottomNavbar: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(true);
+  const [isFooterVisible, setIsFooterVisible] = useState(false);
+  const [footerHeight, setFooterHeight] = useState(0);
 
   const handleScroll = (id: string) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
+  useEffect(() => {
+    const footer = document.querySelector("footer");
+    if (!footer) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsFooterVisible(entry.isIntersecting);
+        setFooterHeight(entry.target.getBoundingClientRect().height);
+      },
+      {
+        root: null,
+        threshold: 0,
+      }
+    );
+
+    observer.observe(footer);
+
+    return () => observer.disconnect();
+  }, []);
+
+  const computedBottom = isFooterVisible ? Math.min(footerHeight, 45) + 24 : isExpanded ? 0 : 16;
+
   return (
     <nav
-      className={`hidden md:block fixed inset-x-0 z-40 transition-all duration-500 ${
-        isExpanded ? "bottom-0" : "bottom-4"
-      }`}
+      className="hidden md:block fixed inset-x-0 z-40 transition-all duration-500"
       style={{
         fontFamily: 'GeistSans, "GeistSans Fallback", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+        bottom: `${computedBottom}px`,
       }}
     >
       <div className={`mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 transition-all duration-500 ${

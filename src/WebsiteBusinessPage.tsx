@@ -133,7 +133,7 @@ const WebsiteHero: React.FC = () => {
               </button>
               <button
                 onClick={handleScrollToProcess}
-                className="w-full sm:w-auto px-6 sm:px-8 py-3 rounded-full bg-white text-black hover:bg-gray-100 font-medium transition-all duration-300 flex items-center justify-center"
+                className="w-full sm:w-auto px-6 sm:px-8 py-3 rounded-full bg-black/30 backdrop-blur-xl border border-white/10 text-white font-medium hover:bg-black/50 hover:border-white/20 transition-all duration-300 flex items-center justify-center"
                 style={{
                   fontFamily:
                     'GeistSans, "GeistSans Fallback", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
