@@ -51,7 +51,7 @@ const Footer: React.FC<FooterProps> = ({ email = "info@mitrox.io" }) => {
           </a>
 
           {/* Email + Copyright + Y-tunnus */}
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm text-center sm:text-left">
+          <div className="flex flex-col items-center sm:flex-row sm:items-center gap-2 text-sm text-center sm:text-left">
             <a
               href={`mailto:${email}`}
               className="inline-flex items-center gap-2 text-gray-300 hover:text-blue-400 transition-colors"
@@ -61,10 +61,18 @@ const Footer: React.FC<FooterProps> = ({ email = "info@mitrox.io" }) => {
             </a>
             <span className="hidden sm:inline text-gray-600">•</span>
             <div className="text-gray-400">
-              © {year} Mitrox Oy. Kaikki oikeudet pidätetään.
+              <span>© {year} Mitrox Oy.</span>
+              <span className="block sm:inline sm:ml-1">Kaikki oikeudet pidätetään.</span>
             </div>
             <span className="hidden sm:inline text-gray-600">•</span>
             <div className="text-gray-400">Y-tunnus: 3562179-8</div>
+            <span className="hidden sm:inline text-gray-600">•</span>
+            <a
+              href="#/privacy-policy"
+              className="text-gray-300 hover:text-blue-400 transition-colors"
+            >
+              Tietosuojaseloste
+            </a>
           </div>
 
           {/* Sosiaalinen media: Instagram + YouTube */}
