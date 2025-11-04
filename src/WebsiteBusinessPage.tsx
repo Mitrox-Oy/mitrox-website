@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import SpaceBackground from "./components/SpaceBackground";
 import Header from "./components/Header";
 import SEOHead from "./components/SEOHead";
+import SEOEnhanced from "./components/SEOEnhanced";
 import PortfolioShowcase from "./components/PortfolioShowcase";
 import ProcessSection from "./components/ProcessSection";
 import Features from "./components/Features";
@@ -14,6 +15,8 @@ import ScrollToTop from "./components/ScrollToTop";
 import LiquidEther from "./components/LiquidEther";
 import BottomNavbar from "./components/BottomNavbar";
 import { ChevronDown } from "lucide-react";
+import { buildMeta, organizationSchema, breadcrumbSchema, serviceSchema } from "../lib/seo";
+import { SEO_CONFIG } from "../config/seo.fi";
 
 const WebsiteHero: React.FC = () => {
   const [showContent, setShowContent] = useState<boolean>(false);
@@ -148,15 +151,39 @@ const WebsiteHero: React.FC = () => {
 };
 
 export default function WebsiteBusinessPage() {
+  // SEO_V2 enhancements (only when flag is enabled)
+  const isSEO_V2 = import.meta.env.VITE_SEO_V2 === "true";
+  const meta = isSEO_V2
+    ? buildMeta({
+        title: SEO_CONFIG.pages.websites.title,
+        description: SEO_CONFIG.pages.websites.description,
+        path: "/websites",
+        keywords: SEO_CONFIG.pages.websites.keywords,
+      })
+    : undefined;
+  const schemas = isSEO_V2
+    ? [
+        organizationSchema(),
+        breadcrumbSchema(SEO_CONFIG.pages.websites.breadcrumbs),
+        serviceSchema({
+          type: "websites",
+          name: SEO_CONFIG.pages.websites.serviceName,
+          areaServed: "FI",
+        }),
+      ]
+    : [];
+
   return (
     <div id="top" className="min-h-screen bg-black relative">
       {/* Space background for everything except hero */}
       <SpaceBackground className="top-[100vh]" />
       <SEOHead
-        title="Ensiluokkaiset sivustot - Mitrox.io"
-        description="Luomme modernit ja käyttäjäystävälliset verkkosivut, jotka kertovat yrityksesi tarinan ja kasvattavat liiketoimintaasi."
-        url="https://mitrox.io/websites"
+        title={meta?.title || "Ensiluokkaiset sivustot - Mitrox.io"}
+        description={meta?.description || "Luomme modernit ja käyttäjäystävälliset verkkosivut, jotka kertovat yrityksesi tarinan ja kasvattavat liiketoimintaasi."}
+        url={meta?.url || "https://mitrox.io/websites"}
+        keywords={meta?.keywords}
       />
+      {isSEO_V2 && <SEOEnhanced meta={meta} schemas={schemas} lang="fi" />}
       <Header />
       <WebsiteHero />
       <PortfolioShowcase />
@@ -164,7 +191,7 @@ export default function WebsiteBusinessPage() {
       <section className="relative bg-black">
         <Features />
         <WebsitePricing />
-        <FAQ />
+        <FAQ type="website" emitSchema={isSEO_V2} />
       </section>
       <ContactForm />
       <Footer />

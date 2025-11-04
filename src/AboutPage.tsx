@@ -3,8 +3,11 @@ import React from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import SEOHead from "./components/SEOHead";
+import SEOEnhanced from "./components/SEOEnhanced";
 import { Mail, Linkedin } from "lucide-react";
 import ContactForm from "./components/ContactForm";
+import { buildMeta, organizationSchema, breadcrumbSchema } from "../lib/seo";
+import { SEO_CONFIG } from "../config/seo.fi";
 
 import onniImg from "./profile/felix.png";
 import tobiasImg from "./profile/tobias.png";
@@ -144,6 +147,23 @@ export default function AboutPage() {
   const monoHeading =
     "uppercase text-[rgb(125,129,135)] tracking-[0.08em] text-[14px] leading-[20px]";
 
+  // SEO_V2 enhancements (only when flag is enabled)
+  const isSEO_V2 = import.meta.env.VITE_SEO_V2 === "true";
+  const meta = isSEO_V2
+    ? buildMeta({
+        title: SEO_CONFIG.pages.about.title,
+        description: SEO_CONFIG.pages.about.description,
+        path: "/about",
+        keywords: SEO_CONFIG.pages.about.keywords,
+      })
+    : undefined;
+  const schemas = isSEO_V2
+    ? [
+        organizationSchema(),
+        breadcrumbSchema(SEO_CONFIG.pages.about.breadcrumbs),
+      ]
+    : [];
+
   return (
     <div
       className="min-h-screen text-white"
@@ -153,11 +173,12 @@ export default function AboutPage() {
       }}
     >
       <SEOHead
-        title="Tietoa meistä - Mitrox.io | Mitrox AI Advisor -tiimi"
-        description="Tutustut Mitrox.io-tiimiin. Nuoret suomalaiset asiantuntijat, jotka rakentavat Mitrox AI Advisoria yrityksille. Luotettavuus, helppous ja täsmällisyys ohjaavat toimintaamme."
-        url="https://mitrox.io/about"
-        keywords="mitrox tiimi, suomalainen tekoäly, Mitrox AI Advisor asiantuntijat, AI-ratkaisut Suomi"
+        title={meta?.title || "Tietoa meistä - Mitrox.io | Mitrox Tiimi"}
+        description={meta?.description || "Tutustut Mitrox.io-tiimiin. Nuoret suomalaiset asiantuntijat, jotka rakentavat Mitrox AI Advisoria yrityksille. Luotettavuus, helppous ja täsmällisyys ohjaavat toimintaamme."}
+        url={meta?.url || "https://mitrox.io/about"}
+        keywords={meta?.keywords || "mitrox tiimi, suomalainen tekoäly, Mitrox AI Advisor asiantuntijat, AI-ratkaisut Suomi"}
       />
+      {isSEO_V2 && <SEOEnhanced meta={meta} schemas={schemas} lang="fi" />}
       <Header />
 
       {/* HERO */}

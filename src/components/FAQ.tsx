@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-
-type FAQItem = {
-  question: string;
-  answer: string;
-};
+import SEOEnhanced from './SEOEnhanced';
+import { faqSchema, FAQItem } from '../../lib/seo';
 
 type FAQCategory = {
   title: string;
@@ -204,8 +201,12 @@ const aiAgentFAQData: FAQCategory[] = [
     title: "3. Tekninen ja integraatiot",
     items: [
       {
+        question: "Mikä on tietolähde?",
+        answer: "Tietolähde on lähde, josta neuvoja hakee tietoa vastatessaan asiakkaiden kysymyksiin. Tietolähteitä voivat olla URL-osoitteet (esim. verkkosivut), dokumentit (PDF, Word, jne.) tai suoraan syötetyt tekstit. Neuvoja käyttää näitä tietolähteitä automaattisesti, jolloin se osaa vastata kysymyksiin tarkasti ja ajantasaisesti."
+      },
+      {
         question: "Mihin palvelimiin Mitrox AI Advisor voidaan integroida?",
-        answer: "Neuvoja voidaan integroida verkkosivustolle, WhatsAppiin ja muihin kanaviin. Starter-paketissa voi liittää 30 verkkosivua, Pro-paketissa 80 verkkosivua."
+        answer: "Neuvoja voidaan integroida verkkosivustolle, WhatsAppiin ja muihin kanaviin. Starter-paketissa voi liittää 30 tietolähdettä, Pro-paketissa 80 tietolähdettä."
       },
       {
         question: "Tarvitseeko neuvoja teknistä tukea minun puoleltani?",
@@ -275,12 +276,18 @@ const aiAgentFAQData: FAQCategory[] = [
 
 type FAQProps = {
   type?: FAQType;
+  emitSchema?: boolean;
 };
 
-const FAQ: React.FC<FAQProps> = ({ type = "website" }) => {
+const FAQ: React.FC<FAQProps> = ({ type = "website", emitSchema = false }) => {
   const faqData = type === "advisor" ? aiAgentFAQData : websiteFAQData;
   const [openCategories, setOpenCategories] = useState<number[]>([]);
   const [openQuestions, setOpenQuestions] = useState<{ [key: string]: boolean }>({});
+
+  // Collect all FAQ items for schema emission
+  const allFAQItems: FAQItem[] = faqData.flatMap(category => category.items);
+  const shouldEmitSchema = emitSchema && import.meta.env.VITE_SEO_V2 === 'true';
+  const faqSchemaData = shouldEmitSchema ? faqSchema(allFAQItems) : null;
 
   const toggleCategory = (categoryIndex: number) => {
     setOpenCategories(prev => 
@@ -299,8 +306,10 @@ const FAQ: React.FC<FAQProps> = ({ type = "website" }) => {
   };
 
   return (
-    <section id="faq" className="relative py-16 px-4 sm:px-6 lg:px-8 bg-black">
-      <div className="max-w-3xl mx-auto">
+    <>
+      {faqSchemaData && <SEOEnhanced schemas={[faqSchemaData]} />}
+      <section id="faq" className="relative py-16 px-4 sm:px-6 lg:px-8 bg-black">
+        <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
           <h2 className="text-3xl sm:text-4xl font-medium text-white mb-3">
@@ -403,6 +412,7 @@ const FAQ: React.FC<FAQProps> = ({ type = "website" }) => {
         </div>
       </div>
     </section>
+    </>
   );
 };
 

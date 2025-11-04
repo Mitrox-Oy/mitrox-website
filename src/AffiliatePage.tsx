@@ -4,8 +4,11 @@ import SpaceBackground from "./components/SpaceBackground";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import SEOHead from "./components/SEOHead";
+import SEOEnhanced from "./components/SEOEnhanced";
 import ScrollToTop from "./components/ScrollToTop";
 import { ArrowRight, Award, CheckCircle, Users, X } from "lucide-react";
+import { buildMeta, organizationSchema, breadcrumbSchema } from "../lib/seo";
+import { SEO_CONFIG } from "../config/seo.fi";
 
 export default function AffiliatePage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -89,14 +92,33 @@ export default function AffiliatePage() {
     }
   };
 
+  // SEO_V2 enhancements (only when flag is enabled)
+  const isSEO_V2 = import.meta.env.VITE_SEO_V2 === "true";
+  const meta = isSEO_V2
+    ? buildMeta({
+        title: SEO_CONFIG.pages.affiliate.title,
+        description: SEO_CONFIG.pages.affiliate.description,
+        path: "/affiliate",
+        keywords: SEO_CONFIG.pages.affiliate.keywords,
+      })
+    : undefined;
+  const schemas = isSEO_V2
+    ? [
+        organizationSchema(),
+        breadcrumbSchema(SEO_CONFIG.pages.affiliate.breadcrumbs),
+      ]
+    : [];
+
   return (
     <div className="min-h-screen bg-black text-white">
       <SpaceBackground className="top-0" />
       <SEOHead
-        title="Affiliate-ohjelma - Mitrox Oy | Hanki ilmaisia kuukausia"
-        description="Liity Mitroxin affiliate-ohjelmaan ja saa ilmaisia kuukausia palveluistamme jokaisesta tuomastasi asiakkaasta. Myös uusi asiakas hyötyy ilmaisista kuukausista."
-        url="https://mitrox.io/affiliate"
+        title={meta?.title || "Affiliate-ohjelma - Mitrox Oy | Hanki ilmaisia kuukausia"}
+        description={meta?.description || "Liity Mitroxin affiliate-ohjelmaan ja saa ilmaisia kuukausia palveluistamme jokaisesta tuomastasi asiakkaasta. Myös uusi asiakas hyötyy ilmaisista kuukausista."}
+        url={meta?.url || "https://mitrox.io/affiliate"}
+        keywords={meta?.keywords}
       />
+      {isSEO_V2 && <SEOEnhanced meta={meta} schemas={schemas} lang="fi" />}
       <Header />
 
       {/* Hero Section */}

@@ -4,6 +4,7 @@ import SpaceBackground from "./components/SpaceBackground";
 import Header from "./components/Header";
 import BottomNavbar from "./components/BottomNavbar";
 import SEOHead from "./components/SEOHead";
+import SEOEnhanced from "./components/SEOEnhanced";
 import TrustSection from "./components/TrustSection";
 import ProcessSection from "./components/ProcessSection";
 import Features from "./components/Features";
@@ -14,6 +15,8 @@ import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import ColorBends from "./components/ColorBends";
 import { ChevronDown } from "lucide-react";
+import { buildMeta, organizationSchema, breadcrumbSchema, serviceSchema } from "../lib/seo";
+import { SEO_CONFIG } from "../config/seo.fi";
 
 const AIAgentHero: React.FC = () => {
   const [showContent, setShowContent] = useState<boolean>(false);
@@ -148,15 +151,39 @@ const AIAgentHero: React.FC = () => {
 };
 
 export default function AIAgentPage() {
+  // SEO_V2 enhancements (only when flag is enabled)
+  const isSEO_V2 = import.meta.env.VITE_SEO_V2 === "true";
+  const meta = isSEO_V2
+    ? buildMeta({
+        title: SEO_CONFIG.pages.advisor.title,
+        description: SEO_CONFIG.pages.advisor.description,
+        path: "/advisor",
+        keywords: SEO_CONFIG.pages.advisor.keywords,
+      })
+    : undefined;
+  const schemas = isSEO_V2
+    ? [
+        organizationSchema(),
+        breadcrumbSchema(SEO_CONFIG.pages.advisor.breadcrumbs),
+        serviceSchema({
+          type: "advisor",
+          name: SEO_CONFIG.pages.advisor.serviceName,
+          areaServed: "FI",
+        }),
+      ]
+    : [];
+
   return (
     <div id="top" className="min-h-screen bg-black relative">
       {/* Space background for everything except hero */}
       <SpaceBackground className="top-[100vh]" />
       <SEOHead
-        title="Mitrox AI Advisor - Mitrox.io"
-        description="Älykäs Mitrox AI Advisor palvelee asiakkaasi 24/7, kasvattaa myyntiä ja vapauttaa tiimisi keskittymään kasvuun. Premium-tason tekoälyneuvoja B2B-yrityksille."
-        url="https://mitrox.io/advisor"
+        title={meta?.title || "Mitrox AI Advisor - Mitrox.io"}
+        description={meta?.description || "Älykäs Mitrox AI Advisor palvelee asiakkaasi 24/7, kasvattaa myyntiä ja vapauttaa tiimisi keskittymään kasvuun. Premium-tason tekoälyneuvoja B2B-yrityksille."}
+        url={meta?.url || "https://mitrox.io/advisor"}
+        keywords={meta?.keywords}
       />
+      {isSEO_V2 && <SEOEnhanced meta={meta} schemas={schemas} lang="fi" />}
       <Header />
       <BottomNavbar />
       <AIAgentHero />
@@ -165,7 +192,7 @@ export default function AIAgentPage() {
       <section className="relative bg-black">
         <Features />
         <Pricing />
-        <FAQ type="advisor" />
+        <FAQ type="advisor" emitSchema={isSEO_V2} />
       </section>
       <ContactForm />
       <Footer />
