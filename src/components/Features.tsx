@@ -35,7 +35,7 @@ const Features: React.FC = () => {
 
   return (
     <section
-      id="process"
+      id="mitrox-benefits"
       className="relative bg-black py-24 sm:py-32 overflow-hidden"
     >
       {/* Pixel Blast Background */}

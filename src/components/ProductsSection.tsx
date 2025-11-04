@@ -76,11 +76,11 @@ const ProductsSection: React.FC = () => {
           {products.map((product) => (
             <div
               key={product.id}
-              className={`group relative flex min-h-[420px] flex-col overflow-hidden rounded-2xl border border-white/[0.06] bg-black/40 px-9 py-12 transition duration-500 hover:border-white/[0.18] ${
+              className={`group relative flex min-h-[420px] flex-col overflow-hidden rounded-2xl border border-white/[0.06] bg-black/80 px-9 py-12 transition duration-500 hover:border-white/[0.18] ${
                 product.comingSoon ? "opacity-70" : ""
               }`}
             >
-              <div className="absolute inset-0 rounded-2xl bg-white/[0.02] opacity-0 transition duration-500 group-hover:opacity-100" />
+              <div className="absolute inset-0 rounded-2xl bg-black/60 opacity-0 transition duration-500 group-hover:opacity-100" />
               {product.comingSoon && (
                 <span className="absolute right-6 top-6 z-10 rounded-full border border-white/10 px-3 py-1 text-[0.6rem] uppercase tracking-[0.35em] text-white/55">
                     Tulossa pian
@@ -88,7 +88,9 @@ const ProductsSection: React.FC = () => {
               )}
               <div className="relative z-10 flex h-full flex-col gap-6">
                 <div className="flex flex-col gap-2">
-                  <h3 className="text-[1.6rem] font-medium text-white">{product.title}</h3>
+                  <h3 className="text-[1.6rem] font-medium text-white">
+                    {product.title}
+                  </h3>
                   {product.subtitle && (
                     <span className="text-[0.7rem] uppercase tracking-[0.4em] text-white/35">
                       {product.subtitle}
@@ -96,32 +98,32 @@ const ProductsSection: React.FC = () => {
                   )}
                 </div>
                 <p className="text-sm leading-relaxed text-white/45">
-                {product.description}
-              </p>
+                  {product.description}
+                </p>
 
                 <div className="mt-auto pt-6">
                 {product.comingSoon ? (
                   <button
                     disabled
-                      className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2 text-[0.65rem] font-medium uppercase tracking-[0.4em] text-white/35"
+                    className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2 text-[0.65rem] font-medium uppercase tracking-[0.4em] text-white/35"
                   >
                     {product.buttonText}
                   </button>
                 ) : product.link ? (
                   <Link
                     to={product.link}
-                      className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2 text-[0.65rem] font-medium uppercase tracking-[0.4em] text-white/85 transition hover:border-white/30 hover:text-white"
+                    className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2 text-[0.65rem] font-medium uppercase tracking-[0.4em] text-white transition hover:border-white/30"
                   >
                     {product.buttonText}
-                      <ArrowUpRight className="h-3.5 w-3.5" />
+                    <ArrowUpRight className="h-3.5 w-3.5" />
                   </Link>
                 ) : (
                   <button
                     onClick={product.action || undefined}
-                      className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2 text-[0.65rem] font-medium uppercase tracking-[0.4em] text-white/85 transition hover:border-white/30 hover:text-white"
+                    className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2 text-[0.65rem] font-medium uppercase tracking-[0.4em] text-white transition hover:border-white/30"
                   >
                     {product.buttonText}
-                      <ArrowUpRight className="h-3.5 w-3.5" />
+                    <ArrowUpRight className="h-3.5 w-3.5" />
                   </button>
                 )}
                 </div>

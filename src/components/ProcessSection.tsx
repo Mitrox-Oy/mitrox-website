@@ -130,8 +130,7 @@ const ProcessSection: React.FC<ProcessSectionProps> = ({ type = "website" }) => 
 
         {/* Steps */}
         <div className="relative">
-          {/* Mobile vertical rail */}
-          <div className="md:hidden absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-white/0 via-white/20 to-white/0" />
+
 
           {/* Desktop horizontal rail */}
           <div className="hidden md:block absolute top-[34px] left-[10%] right-[10%] h-px bg-gradient-to-r from-white/0 via-white/18 to-white/0" />
@@ -178,14 +177,16 @@ const ProcessSection: React.FC<ProcessSectionProps> = ({ type = "website" }) => 
         </div>
 
         {/* CTA */}
-        <div className="mt-16 text-center">
-          <button
-            onClick={() => setIsFormOpen(true)}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black hover:bg-gray-100 rounded-lg font-medium transition-all"
-          >
-            Aloita tänään. Täytä kysely tästä <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
+        {type === "website" && (
+          <div className="mt-16 text-center">
+            <button
+              onClick={() => setIsFormOpen(true)}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black hover:bg-gray-100 rounded-lg font-medium transition-all"
+            >
+              Aloita tänään. Täytä kysely tästä <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Inquiry Form Modal */}

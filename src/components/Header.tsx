@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Menu, X, ArrowRight, ChevronDown, Globe2, Sparkles } from "lucide-react";
 import logo from "../assets/logo.png";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const NAV = [
   { label: "Etusivu", href: "hero" },
@@ -18,12 +18,12 @@ const PRODUCTS: ProductNavItem[] = [
 
 const Header: React.FC = () => {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
   const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
   const productsTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
   const location = useLocation();
+  const navigate = useNavigate();
 
   const isProductPage = location.pathname === "/websites" || location.pathname === "/advisor";
 
@@ -41,13 +41,6 @@ const Header: React.FC = () => {
       setProductsOpen(false);
     }, 150); // Small delay to allow moving to dropdown
   };
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   // smooth scroll
   useEffect(() => {
@@ -126,15 +119,15 @@ const Header: React.FC = () => {
                         key={item.href}
                         to={isPage ? item.href : `/#${item.href}`}
                         onClick={(e) => {
-                          // If on product page, always go to landing page
-                          if (!isPage && (isProductPage || location.pathname !== "/")) {
+                          if (!isPage) {
                             e.preventDefault();
-                            // Always go to root for home link when not already on "/"
-                            if (item.href === "hero") window.location.href = "/";
-                            else window.location.href = `/#${item.href}`;
-                          } else if (!isPage) {
-                            if (location.pathname === "/") {
-                              e.preventDefault();
+                            if (location.pathname !== "/") {
+                              if (item.href === "hero") {
+                                navigate("/");
+                              } else {
+                                navigate({ pathname: "/", hash: `#${item.href}` });
+                              }
+                            } else {
                               handleScroll(item.href);
                             }
                           }
@@ -261,7 +254,7 @@ const Header: React.FC = () => {
           fontFamily: 'GeistSans, "GeistSans Fallback", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"'
         }}
       >
-        <div className="flex justify-between items-end px-4 py-4">
+        <div className="flex justify-between items-end px-4 py-4 gap-3">
           {/* Mobile logo - Left corner */}
           <Link
             to="/"
@@ -285,7 +278,7 @@ const Header: React.FC = () => {
           {/* Mobile menu button - Right corner */}
           <button
             onClick={() => setOpen((v) => !v)}
-            className="inline-flex items-center justify-center rounded-full bg-black/40 backdrop-blur-xl backdrop-saturate-150 shadow-2xl p-4 text-white hover:bg-white/10 transition-colors pointer-events-auto"
+            className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-black/40 backdrop-blur-xl backdrop-saturate-150 shadow-2xl p-4 text-white hover:bg-white/10 transition-colors pointer-events-auto"
             aria-label="Valikko"
             aria-expanded={open}
             aria-controls="mobile-nav"
@@ -298,8 +291,8 @@ const Header: React.FC = () => {
         <div
           id="mobile-nav"
           className={[
-            "absolute bottom-full right-4 mb-2 overflow-hidden transition-all duration-300 ease-out pointer-events-auto origin-bottom-right",
-            open ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2 pointer-events-none",
+            "absolute bottom-full right-4 mb-2 overflow-hidden transition-all duration-300 ease-out pointer-events-none origin-bottom-right",
+            open ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-2",
           ].join(" ")}
         >
           <div className="rounded-2xl bg-black/40 backdrop-blur-xl backdrop-saturate-150 shadow-2xl p-3 w-56">
@@ -313,14 +306,15 @@ const Header: React.FC = () => {
                     key={item.href}
                     to={isPage ? item.href : `/#${item.href}`}
                     onClick={(e) => {
-                      // If not on home, navigate to root for home link
-                      if (!isPage && (isProductPage || location.pathname !== "/")) {
+                      if (!isPage) {
                         e.preventDefault();
-                        if (item.href === "hero") window.location.href = "/";
-                        else window.location.href = `/#${item.href}`;
-                      } else if (!isPage) {
-                        if (location.pathname === "/") {
-                          e.preventDefault();
+                        if (location.pathname !== "/") {
+                          if (item.href === "hero") {
+                            navigate("/");
+                          } else {
+                            navigate({ pathname: "/", hash: `#${item.href}` });
+                          }
+                        } else {
                           handleScroll(item.href);
                         }
                       }
@@ -360,14 +354,7 @@ const Header: React.FC = () => {
                           }}
                           className="block rounded-full px-4 py-1.5 text-white/60 hover:text-white/80 hover:bg-white/10 transition-colors text-xs font-light"
                         >
-                          <span className="flex flex-col gap-0.5 text-left">
-                            <span>{product.label}</span>
-                            {product.subtitle && (
-                              <span className="text-[0.55rem] uppercase tracking-[0.35em] text-white/35">
-                                {product.subtitle}
-                              </span>
-                            )}
-                          </span>
+                          {product.label}
                         </Link>
                       );
                     })}

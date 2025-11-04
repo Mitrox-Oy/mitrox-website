@@ -25,7 +25,7 @@ type Plan = {
 const plans: Plan[] = [
   {
     name: "Starter Advisor",
-    price: 63,
+    price: 79,
     description: "1000 viestiä/kk",
     popular: false,
     features: [
@@ -150,23 +150,23 @@ const Pricing: React.FC = () => {
                 className="relative group flex"
               >
                 {/* Popular badge */}
-                {isPopular && (
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
-                    <div className="bg-white text-black px-4 py-1.5 rounded-full text-xs font-medium">
-                      Suositeltu
-                    </div>
-                  </div>
-                )}
-
                 {/* Card */}
                 <div className="relative w-full flex flex-col rounded-2xl p-8 bg-white/[0.02] backdrop-blur-xl border border-white/10 hover:bg-white/[0.04] hover:border-white/20 transition-all duration-300">
                   
                   {/* Limited Launch Price Badge */}
-                  <div className="absolute -top-3 right-4 z-10">
+                  <div className="absolute top-3 right-4 z-10 md:-top-3">
                     <div className="bg-black/90 text-green-400 px-1.5 py-0.5 rounded-full text-xs font-semibold border border-green-400/50 whitespace-nowrap">
                       Rajoitettu lanseeraushinta
                     </div>
                   </div>
+
+                  {isPopular && (
+                    <div className="absolute top-11 right-4 z-10 md:left-1/2 md:right-auto md:-translate-x-1/2 md:top-3">
+                      <div className="bg-white text-black px-4 py-1.5 rounded-full text-xs font-medium">
+                        Suositeltu
+                      </div>
+                    </div>
+                  )}
                   
                   {/* Header */}
                   <div className="mb-8">

@@ -36,6 +36,13 @@ const Hero = () => {
     }
   };
 
+  const handleScrollToContact = () => {
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <section
       id="hero"
@@ -106,13 +113,13 @@ const Hero = () => {
                 Tutustu tuotteisiin
                 <ChevronDown className="w-4 h-4" />
               </button>
-              <a
-                href="#contact"
+              <button
+                onClick={handleScrollToContact}
                 className="w-full sm:w-auto px-6 sm:px-8 py-3 rounded-full bg-white text-black hover:bg-gray-100 font-medium transition-all duration-300 flex items-center justify-center"
                 style={{ fontFamily: 'GeistSans, "GeistSans Fallback", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"', fontWeight: 400 }}
               >
                 Ota yhteyttä
-              </a>
+              </button>
             </div>
           </div>
         </div>

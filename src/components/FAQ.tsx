@@ -283,6 +283,13 @@ const FAQ: React.FC<FAQProps> = ({ type = "website", emitSchema = false }) => {
   const faqData = type === "advisor" ? aiAgentFAQData : websiteFAQData;
   const [openCategories, setOpenCategories] = useState<number[]>([]);
   const [openQuestions, setOpenQuestions] = useState<{ [key: string]: boolean }>({});
+  const scrollToContact = () => {
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
 
   // Collect all FAQ items for schema emission
   const allFAQItems: FAQItem[] = faqData.flatMap(category => category.items);
@@ -324,7 +331,8 @@ const FAQ: React.FC<FAQProps> = ({ type = "website", emitSchema = false }) => {
         <div className="space-y-3">
           {faqData.map((category, categoryIndex) => {
             const isCategoryOpen = openCategories.includes(categoryIndex);
-            
+            const categoryPanelId = `faq-category-${categoryIndex}`;
+
             return (
               <div
                 key={categoryIndex}
@@ -332,9 +340,11 @@ const FAQ: React.FC<FAQProps> = ({ type = "website", emitSchema = false }) => {
               >
                 {/* Category Header */}
                 <button
+                  type="button"
                   onClick={() => toggleCategory(categoryIndex)}
                   className="w-full py-4 px-5 text-left flex items-center justify-between hover:bg-white/[0.02] transition-colors group"
                   aria-expanded={isCategoryOpen}
+                  aria-controls={categoryPanelId}
                 >
                   <h3 className="text-base font-medium text-white group-hover:text-white pr-4 transition-colors">
                     {category.title}
@@ -348,6 +358,7 @@ const FAQ: React.FC<FAQProps> = ({ type = "website", emitSchema = false }) => {
                 
                 {/* Category Questions */}
                 <div
+                  id={categoryPanelId}
                   className={`overflow-hidden transition-all duration-300 ease-out ${
                     isCategoryOpen ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
                   }`}
@@ -355,17 +366,20 @@ const FAQ: React.FC<FAQProps> = ({ type = "website", emitSchema = false }) => {
                   <div className="px-5 pb-3 space-y-1">
                     {category.items.map((item, questionIndex) => {
                       const questionKey = `${categoryIndex}-${questionIndex}`;
+                      const questionPanelId = `faq-item-${questionKey}`;
                       const isQuestionOpen = openQuestions[questionKey];
-                      
+
                       return (
                         <div
                           key={questionIndex}
                           className="border-b border-white/5 last:border-b-0"
                         >
                           <button
+                            type="button"
                             onClick={() => toggleQuestion(categoryIndex, questionIndex)}
                             className="w-full py-3 text-left flex items-center justify-between hover:bg-white/[0.02] transition-colors group"
                             aria-expanded={isQuestionOpen}
+                            aria-controls={questionPanelId}
                           >
                             <h4 className="text-sm font-normal text-white/90 group-hover:text-white pr-4 transition-colors">
                               {item.question}
@@ -378,6 +392,7 @@ const FAQ: React.FC<FAQProps> = ({ type = "website", emitSchema = false }) => {
                           </button>
                           
                           <div
+                            id={questionPanelId}
                             className={`overflow-hidden transition-all duration-200 ease-out ${
                               isQuestionOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                             }`}
@@ -403,12 +418,13 @@ const FAQ: React.FC<FAQProps> = ({ type = "website", emitSchema = false }) => {
           <p className="text-gray-600 text-xs mb-4">
             Eikö kysymyksesi löytynyt listalta?
           </p>
-          <a
-            href="#contact"
+          <button
+            type="button"
+            onClick={scrollToContact}
             className="inline-flex items-center gap-1 text-white/70 hover:text-white text-xs underline underline-offset-2 transition-colors"
           >
             Ota yhteyttä
-          </a>
+          </button>
         </div>
       </div>
     </section>

@@ -91,49 +91,32 @@ const WebsitePricing: React.FC = () => {
             </button>
 
             {/* Billing Cycle Selector */}
-            <div className="inline-block">
-              <div className="relative inline-flex rounded-full bg-white/5 backdrop-blur-xl border border-white/10 p-1 gap-1">
-                <button
-                  onClick={() => setBilling("monthly")}
-                  className={`relative z-10 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                    billing === "monthly" ? "text-white bg-white/10" : "text-gray-400 hover:text-gray-200"
-                  }`}
-                >
-                  Kuukausittain
-                </button>
-                <button
-                  onClick={() => setBilling("yearly")}
-                  className={`relative z-10 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                    billing === "yearly" ? "text-white bg-white/10" : "text-gray-400 hover:text-gray-200"
-                  }`}
-                >
-                  Vuosittain
-                  <span className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-xs text-green-400 font-semibold bg-black/90 rounded-full px-1.5 py-0.5 border border-green-400/50 whitespace-nowrap">
-                    -10%
-                  </span>
-                </button>
-                <button
-                  onClick={() => setBilling("2year")}
-                  className={`relative z-10 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                    billing === "2year" ? "text-white bg-white/10" : "text-gray-400 hover:text-gray-200"
-                  }`}
-                >
-                  2 vuotta
-                  <span className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-xs text-green-400 font-semibold bg-black/90 rounded-full px-1.5 py-0.5 border border-green-400/50 whitespace-nowrap">
-                    -15%
-                  </span>
-                </button>
-                <button
-                  onClick={() => setBilling("5year")}
-                  className={`relative z-10 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                    billing === "5year" ? "text-white bg-white/10" : "text-gray-400 hover:text-gray-200"
-                  }`}
-                >
-                  5 vuotta
-                  <span className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-xs text-green-400 font-semibold bg-black/90 rounded-full px-1.5 py-0.5 border border-green-400/50 whitespace-nowrap">
-                    -20%
-                  </span>
-                </button>
+            <div className="w-full sm:w-auto">
+              <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
+                {([
+                  { key: "monthly", label: "Kuukausittain", discount: null },
+                  { key: "yearly", label: "Vuosittain", discount: "-10%" },
+                  { key: "2year", label: "2 vuotta", discount: "-15%" },
+                  { key: "5year", label: "5 vuotta", discount: "-20%" },
+                ] as const).map((option) => {
+                  const isActive = billing === option.key;
+                  return (
+                    <button
+                      key={option.key}
+                      onClick={() => setBilling(option.key)}
+                      className={`flex min-w-[140px] flex-1 items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors sm:flex-none sm:min-w-[130px] ${
+                        isActive ? "text-white bg-white/10" : "text-gray-400 hover:text-gray-200 bg-white/5"
+                      }`}
+                    >
+                      <span className="whitespace-nowrap">{option.label}</span>
+                      {option.discount && (
+                        <span className="text-[0.7rem] font-semibold text-green-400">
+                          {option.discount}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>
