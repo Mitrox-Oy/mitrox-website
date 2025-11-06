@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   MessageSquare,
   Brain,
@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import WebsiteInquiryForm from "./WebsiteInquiryForm";
 import type { LucideIcon } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext";
 
 type Step = {
   id: string;
@@ -21,72 +22,96 @@ type Step = {
 
 type ProcessType = "website" | "advisor";
 
-const WEBSITE_STEPS: Step[] = [
+const createWebsiteSteps = (isFinnish: boolean): Step[] => [
   {
     id: "01",
-    title: "Kyselylomake",
-    desc: "Täytät napakan briefin – kerrot tavoitteet, kohdeyleisön ja brändin fiiliksen. Mitä selkeämmin vastaat, sitä nopeammin ja paremmin rakennamme sinulle lopputuloksen.",
-    details:
-      "Muodostamme briefistä projektin rungon: sovimme aikataulun, vastuunjaon ja mittarit, jotta eteneminen on läpinäkyvää alusta loppuun.",
+    title: isFinnish ? "Kyselylomake" : "Project brief",
+    desc: isFinnish
+      ? "Täytät napakan briefin – kerrot tavoitteet, kohdeyleisön ja brändin fiiliksen. Mitä selkeämmin vastaat, sitä nopeammin ja paremmin rakennamme sinulle lopputuloksen."
+      : "You complete a focused brief – outlining your goals, target audience, and brand feel. The clearer the input, the faster and better we build the outcome.",
+    details: isFinnish
+      ? "Muodostamme briefistä projektin rungon: sovimme aikataulun, vastuunjaon ja mittarit, jotta eteneminen on läpinäkyvää alusta loppuun."
+      : "We turn the brief into a project blueprint: timeline, responsibilities, and success metrics, keeping everything transparent from start to finish.",
     icon: MessageSquare,
   },
   {
     id: "02",
-    title: "Rakentaminen",
-    desc: "Rakennamme kokonaisuuden modulaarisesti – design, copy ja tekninen toteutus etenevät rinnakkain.",
-    details:
-      "Suunnittelemme käyttöliittymän, toteutamme responsiivisen rakenteen ja optimoimme suorituskyvyn samalla, kun sisältö viimeistellään tyylikirjan mukaisesti.",
+    title: isFinnish ? "Rakentaminen" : "Build",
+    desc: isFinnish
+      ? "Rakennamme kokonaisuuden modulaarisesti – design, copy ja tekninen toteutus etenevät rinnakkain."
+      : "We construct the experience in modular phases – design, copy, and development progress in sync.",
+    details: isFinnish
+      ? "Suunnittelemme käyttöliittymän, toteutamme responsiivisen rakenteen ja optimoimme suorituskyvyn samalla, kun sisältö viimeistellään tyylikirjan mukaisesti."
+      : "Interface, responsive layout, and performance are refined alongside content that follows your brand playbook.",
     icon: Brain,
   },
   {
     id: "03",
-    title: "Katselmus",
-    desc: "Esittelemme interaktiivisen demoversion, jossa sivusto toimii oikeassa ympäristössä.",
-    details:
-      "Käymme läpi sisällöt, animoinnit ja lomakkeet yhdessä, keräämme palautteen ja hiomme yksityiskohdat kuntoon ennen tuotantoon siirtymistä.",
+    title: isFinnish ? "Katselmus" : "Review",
+    desc: isFinnish
+      ? "Esittelemme interaktiivisen demoversion, jossa sivusto toimii oikeassa ympäristössä."
+      : "We present an interactive demo so you can experience the site in a realistic environment.",
+    details: isFinnish
+      ? "Käymme läpi sisällöt, animoinnit ja lomakkeet yhdessä, keräämme palautteen ja hiomme yksityiskohdat kuntoon ennen tuotantoon siirtymistä."
+      : "Together we review content, motion, and forms, gather feedback, and polish every detail before launch.",
     icon: Cog,
   },
   {
     id: "04",
-    title: "Julkaisu",
-    desc: "Julkaisemme hallitusti ja varmistamme, että integraatiot toimivat ilman katkoksia.",
-    details:
-      "Aktivoimme analytiikan, hakukoneperustukset ja varmuuskopiot. Saat selkeän aloitussuunnitelman sekä tuen ensimmäiselle seurantajaksolle.",
+    title: isFinnish ? "Julkaisu" : "Launch",
+    desc: isFinnish
+      ? "Julkaisemme hallitusti ja varmistamme, että integraatiot toimivat ilman katkoksia."
+      : "We launch smoothly and ensure every integration works without interruption.",
+    details: isFinnish
+      ? "Aktivoimme analytiikan, hakukoneperustukset ja varmuuskopiot. Saat selkeän aloitussuunnitelman sekä tuen ensimmäiselle seurantajaksolle."
+      : "Analytics, SEO groundwork, and backups are activated. You receive a concise start plan and support for the first monitoring period.",
     icon: Rocket,
   },
 ];
 
-const AI_AGENT_STEPS: Step[] = [
+const createAdvisorSteps = (isFinnish: boolean): Step[] => [
   {
     id: "01",
-    title: "Idekartoitus",
-    desc: "Pidämme fokusoituneen 30 minuutin sparrauksen, jossa määritämme neuvojan roolin ja KPI:t.",
-    details:
-      "Linjoille tulevat käyttötapaukset, äänensävy, integraatiot ja datalähteet. Lopputuloksena saat selkeän roadmapin ja mittarit.",
+    title: isFinnish ? "Idekartoitus" : "Discovery",
+    desc: isFinnish
+      ? "Pidämme tiiviin 30 minuutin sparrauksen, jossa määritämme, mitä neuvonantaja tekee ja mitä sillä halutaan saavuttaa."
+      : "A focused 30-minute workshop defines what the advisor does and the outcomes you want to achieve.",
+    details: isFinnish
+      ? "Käymme läpi käyttötapaukset, äänensävyn ja tietolähteet. Lopputuloksena saat selkeän suunnitelman ja tavoitteet, joiden mukaan etenemme."
+      : "We review use cases, tone of voice, and data sources – resulting in a clear plan and targets for the build.",
     icon: MessageSquare,
   },
   {
     id: "02",
-    title: "Toteutus",
-    desc: "Räätälöimme neuvojan sisällöt, integraatiot ja käyttöliittymän yrityksesi prosesseihin sopiviksi.",
-    details:
-      "Konfiguroimme vastaukset, automaatiot ja hallintapaneelin. Varmistamme, että data virtaa oikeisiin järjestelmiin ilman manuaalista työtä.",
+    title: isFinnish ? "Toteutus" : "Implementation",
+    desc: isFinnish
+      ? "Suunnittelemme ja rakennamme neuvojan sisällöt, integraatiot ja toiminnot yrityksesi tarpeiden mukaan."
+      : "We design and build the advisor’s content, integrations, and flows around your business goals.",
+    details: isFinnish
+      ? "Varmistamme, että tieto liikkuu järjestelmien välillä automaattisesti ja manuaalinen työ vähenee."
+      : "Automation keeps information moving between systems while reducing manual workload.",
     icon: Sparkles,
   },
   {
     id: "03",
-    title: "Testaus",
-    desc: "Ajamme validointisprintin, jossa testataan kriittiset keskustelupolut ja integraatiot.",
-    details:
-      "Hiomme sanaston, reaktiot ja fallbackit. Varmistamme, että neuvoja toimii moitteetta niin desktopissa, mobiilissa kuin chat-kanavissa.",
+    title: isFinnish ? "Testaus" : "Testing",
+    desc: isFinnish
+      ? "Testaamme ratkaisun huolellisesti eri tilanteissa ja kanavissa."
+      : "We test extensively across scenarios and channels to guarantee reliability.",
+    details: isFinnish
+      ? "Hienosäädämme sanaston, vastaukset ja käytettävyyden, jotta neuvonantaja toimii luonnollisesti ja virheettömästi."
+      : "Vocabulary, responses, and UX are fine-tuned so the advisor feels natural and accurate.",
     icon: Zap,
   },
   {
     id: "04",
-    title: "Käyttöönotto",
-    desc: "Julkaisemme neuvojan kanaviisi ja varmistamme, että tiimisi on valmis hyödyntämään sitä.",
-    details:
-      "Seuraamme KPI:tä yhdessä, optimoimme asetuksia ja tuemme jatkuvaa kehitystä – neuvoja kehittyy liiketoimintasi mukana kuukausi kuukaudelta.",
+    title: isFinnish ? "Käyttöönotto" : "Go live",
+    desc: isFinnish
+      ? "Julkaisemme yhdessä neuvonantajan sinun valitsemaan palveluun ja varmistamme, että kaikki toimii saumattomasti heti alusta alkaen."
+      : "We launch the advisor on your chosen channel and ensure everything works from day one.",
+    details: isFinnish
+      ? "Optimoimme ratkaisua jatkuvasti, jotta neuvonantaja tukee liiketoimintaasi entistä paremmin kuukausi kuukaudelta."
+      : "Continuous optimisation keeps the advisor aligned with your business goals month after month.",
     icon: Rocket,
   },
 ];
@@ -97,18 +122,28 @@ type ProcessSectionProps = {
 
 const ProcessSection: React.FC<ProcessSectionProps> = ({ type = "website" }) => {
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const STEPS = type === "advisor" ? AI_AGENT_STEPS : WEBSITE_STEPS;
+  const { language } = useLanguage();
+  const isFinnish = language === "fi";
+
+  const websiteSteps = useMemo(() => createWebsiteSteps(isFinnish), [isFinnish]);
+  const advisorSteps = useMemo(() => createAdvisorSteps(isFinnish), [isFinnish]);
+  const STEPS = type === "advisor" ? advisorSteps : websiteSteps;
 
   const getTitle = () => {
-    return type === "advisor" 
-      ? "Helppo ja huoleton prosessi"
-      : "Helppo ja huoleton prosessi";
+    if (type === "advisor") {
+      return isFinnish ? "Helppo ja huoleton prosessi" : "A smooth, guided process";
+    }
+    return isFinnish ? "Helppo ja huoleton prosessi" : "A smooth, guided process";
   };
 
   const getSubtitle = () => {
     return type === "advisor"
-      ? "Neljä selkeää vaihetta valmiiseen Mitrox AI Advisoriin – me hoidamme kaiken puolestasi."
-      : "Neljä selkeää vaihetta valmiiseen verkkosivustoon – me hoidamme kaiken puolestasi.";
+      ? isFinnish
+        ? "Neljä selkeää vaihetta valmiiseen Mitrox AI Advisoriin – me hoidamme kaiken puolestasi."
+        : "Four clear steps to your Mitrox AI Advisor – we handle everything."
+      : isFinnish
+      ? "Neljä selkeää vaihetta valmiiseen verkkosivustoon – me hoidamme kaiken puolestasi."
+      : "Four clear steps to launch your website – we take care of the details.";
   };
 
   return (
@@ -123,7 +158,7 @@ const ProcessSection: React.FC<ProcessSectionProps> = ({ type = "website" }) => 
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium text-white mb-4">
             {getTitle()}
           </h2>
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+          <p className="text-lg text-body-subtle max-w-2xl mx-auto">
             {getSubtitle()}
           </p>
         </div>
@@ -135,18 +170,18 @@ const ProcessSection: React.FC<ProcessSectionProps> = ({ type = "website" }) => 
           {/* Desktop horizontal rail */}
           <div className="hidden md:block absolute top-[34px] left-[10%] right-[10%] h-px bg-gradient-to-r from-white/0 via-white/18 to-white/0" />
 
-          <div className="flex flex-col divide-y divide-white/[0.08] md:flex-row md:divide-y-0">
+          <div className="flex flex-col divide-y divide-white/[0.08] md:flex-row md:divide-y-0 md:items-stretch">
             {STEPS.map((step) => {
               const Icon = step.icon;
               return (
                 <div
                   key={step.id}
-                  className="relative px-0 py-8 md:flex-1 md:px-6"
+                  className="relative px-0 py-8 md:flex-1 md:px-6 md:flex md:flex-col"
                 >
                   {/* Mobile node */}
                   <div className="absolute left-5 top-12 h-3 w-3 rounded-full bg-white md:hidden" />
 
-                  <div className="flex flex-col gap-5">
+                  <div className="flex flex-col gap-5 md:h-full">
                     {/* Number */}
                     <span className="flex h-12 w-12 items-center justify-center rounded-full border border-white/15 bg-white/[0.04] text-sm font-medium tracking-[0.2em] text-white/80">
                       {step.id.replace(/^0/, "")}
@@ -161,11 +196,12 @@ const ProcessSection: React.FC<ProcessSectionProps> = ({ type = "website" }) => 
                     </div>
 
                     {/* Copy */}
-                    <div className="space-y-3 md:max-w-xs">
-                      <p className="text-sm leading-relaxed text-white/70">
+                    <div className="space-y-3 md:max-w-xs md:flex-1 md:flex md:flex-col">
+                      <p className="text-sm leading-relaxed text-body-subtle">
                         {step.desc}
                       </p>
-                      <p className="text-sm leading-relaxed text-white/55 border-l border-white/[0.08] pl-4 md:border-none md:pl-0 md:border-t md:pt-3 md:text-white/60">
+                      <div className="md:flex-1" />
+                      <p className="text-sm leading-relaxed text-body-muted border-l border-white/[0.08] pl-4 md:border-none md:pl-0 md:border-t md:pt-3">
                         {step.details}
                       </p>
                     </div>
@@ -183,7 +219,7 @@ const ProcessSection: React.FC<ProcessSectionProps> = ({ type = "website" }) => 
               onClick={() => setIsFormOpen(true)}
               className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black hover:bg-gray-100 rounded-lg font-medium transition-all"
             >
-              Aloita tänään. Täytä kysely tästä <ArrowRight className="w-4 h-4" />
+              {isFinnish ? "Aloita tänään. Täytä kysely tästä" : "Start today. Open the project brief"} <ArrowRight className="w-4 h-4" />
             </button>
           </div>
         )}

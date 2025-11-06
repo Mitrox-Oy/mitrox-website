@@ -421,7 +421,7 @@ const FAQ: React.FC<FAQProps> = ({ type = "website", emitSchema = false }) => {
           <button
             type="button"
             onClick={scrollToContact}
-            className="inline-flex items-center gap-1 text-white/70 hover:text-white text-xs underline underline-offset-2 transition-colors"
+            className="inline-flex items-center gap-1 text-body-subtle hover:text-white text-xs underline underline-offset-2 transition-colors"
           >
             Ota yhteyttä
           </button>

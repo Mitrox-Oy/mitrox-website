@@ -1,40 +1,41 @@
-import React, { useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
+import { useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 
-const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX'; // TODO: Replace with actual GA4 measurement ID
+const GA_MEASUREMENT_ID = 'G-XNTJ0XJJ0B';
 
 const Analytics: React.FC = () => {
-  useEffect(() => {
-    // Initialize dataLayer
-    window.dataLayer = window.dataLayer || [];
-    function gtag(...args: any[]) {
-      window.dataLayer.push(args);
-    }
-    
-    // Make gtag available globally
-    window.gtag = gtag;
-    
-    gtag('js', new Date());
-    gtag('config', GA_MEASUREMENT_ID, {
-      page_title: document.title,
-      page_location: window.location.href
-    });
-  }, []);
+  const location = useLocation();
+  const hasInitialized = useRef(false);
 
-  return (
-    <Helmet>
-      <script
-        async
-        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-      />
-    </Helmet>
-  );
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function gtagFallback(...args: unknown[]) {
+      window.dataLayer?.push(args);
+    };
+
+    if (!hasInitialized.current) {
+      window.gtag('js', new Date());
+      hasInitialized.current = true;
+    }
+
+    window.gtag('config', GA_MEASUREMENT_ID, {
+      page_path: location.pathname + location.search,
+      page_location: window.location.href,
+      page_title: document.title,
+    });
+  }, [location]);
+
+  return null;
 };
 
 declare global {
   interface Window {
-    gtag: (...args: any[]) => void;
-    dataLayer: any[];
+    gtag: (...args: unknown[]) => void;
+    dataLayer: unknown[];
   }
 }
 

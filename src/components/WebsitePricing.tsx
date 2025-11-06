@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Check, ArrowRight, Calculator } from "lucide-react";
 import WebsiteInquiryForm from "./WebsiteInquiryForm";
+import { useLanguage } from "../context/LanguageContext";
 
-const formatEUR = (value: number) =>
-  new Intl.NumberFormat("fi-FI", {
+const formatEUR = (value: number, locale: string) =>
+  new Intl.NumberFormat(locale, {
     style: "currency",
     currency: "EUR",
     maximumFractionDigits: 0,
@@ -84,7 +85,7 @@ const WebsitePricing: React.FC = () => {
             {/* Calculator Toggle */}
             <button
               onClick={() => setShowCalculator(!showCalculator)}
-              className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full bg-transparent hover:bg-white/5 border border-white/10 hover:border-white/20 text-white/70 hover:text-white transition-all duration-300 text-sm font-light"
+              className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full bg-transparent hover:bg-white/5 border border-white/10 hover:border-white/20 text-body-subtle hover:text-white transition-all duration-300 text-sm font-light"
             >
               <Calculator className="w-3.5 h-3.5" />
               {showCalculator ? "Piilota hinnoittelulaskuri" : "Laske hinta projektillesi"}

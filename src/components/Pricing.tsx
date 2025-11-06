@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Check, ArrowRight } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext";
 
-const formatEUR = (value: number) =>
-  new Intl.NumberFormat("fi-FI", {
+const formatEUR = (value: number, locale: string) =>
+  new Intl.NumberFormat(locale, {
     style: "currency",
     currency: "EUR",
     maximumFractionDigits: 0,
@@ -22,38 +23,68 @@ type Plan = {
   promo?: string;
 };
 
-const plans: Plan[] = [
+const createPlans = (isFinnish: boolean): Plan[] => [
   {
     name: "Starter Advisor",
     price: 79,
-    description: "1000 viestiä/kk",
+    description: isFinnish ? "1000 viestiä / kk" : "1,000 conversations / month",
     popular: false,
     features: [
-      "50 räätälöityä vastausta yrityksellesi — personoitu tyyli ja sävy",
-      "Valittava äänensävy ja puhetapa – mukautuu brändisi kieleen",
-      "Mahdollisuus liittää jopa 30 tietolähdettä",
-      "Starter-tuki – vastaus 72 tunnin sisällä (sähköposti)",
-      "Mitroxin vakio-ulkoasu – valmis käyttöön heti",
-      "Suomenkielinen käyttöliittymä ja ohjeistus",
-      "Perusanalytiikka kävijöistä ja keskusteluista",
+      isFinnish
+        ? "50 räätälöityä vastausta yrityksellesi — personoitu tyyli ja sävy"
+        : "50 tailored responses for your business — consistent tone and style",
+      isFinnish
+        ? "Valittava äänensävy ja puhetapa – mukautuu brändisi kieleen"
+        : "Selectable tone of voice that adapts to your brand",
+      isFinnish
+        ? "Mahdollisuus liittää jopa 30 tietolähdettä"
+        : "Connect up to 30 knowledge sources",
+      isFinnish
+        ? "Starter-tuki – vastaus 72 tunnin sisällä (sähköposti)"
+        : "Starter support – replies within 72 hours (email)",
+      isFinnish
+        ? "Mitroxin vakio-ulkoasu – valmis käyttöön heti"
+        : "Mitrox standard interface – ready to launch instantly",
+      isFinnish
+        ? "Suomenkielinen käyttöliittymä ja ohjeistus"
+        : "Finnish user interface and onboarding",
+      isFinnish
+        ? "Perusanalytiikka kävijöistä ja keskusteluista"
+        : "Core analytics for visitors and conversations",
     ],
     limitations: [],
   },
   {
     name: "Pro Advisor",
     price: 129,
-    description: "5000 viestiä/kk",
+    description: isFinnish ? "5000 viestiä / kk" : "5,000 conversations / month",
     popular: true,
     features: [
-      "Kaikki Starter-paketin ominaisuudet",
-      "Keskusteleva Chatbot-agentti – oppii vastaamaan kuin oikea tiiminjäsen",
-      "Liitettävissä jopa 80 tietolähdettä",
-      "Sisäänrakennettu ajanvarauskalenteri",
-      "WhatsApp-integraatio asiakaspalveluun ja myyntiin",
-      "Pro-tuki – vastaukset 24 tunnin sisällä",
-      "Kaksikielinen (FI/EN) agentti",
-      "Muokattava ulkoasu ja brändivärit",
-      "Laajennettu raportointi ja käyttäjäkohtaiset tilastot",
+      isFinnish ? "Kaikki Starter-paketin ominaisuudet" : "Everything in the Starter package",
+      isFinnish
+        ? "Keskusteleva chatbot-agentti – oppii vastaamaan kuin oikea tiiminjäsen"
+        : "Conversational AI agent that learns to respond like your team",
+      isFinnish
+        ? "Liitettävissä jopa 80 tietolähdettä"
+        : "Connect up to 80 knowledge sources",
+      isFinnish
+        ? "Sisäänrakennettu ajanvarauskalenteri"
+        : "Built-in booking calendar",
+      isFinnish
+        ? "WhatsApp-integraatio asiakaspalveluun ja myyntiin"
+        : "WhatsApp integration for support and sales",
+      isFinnish
+        ? "Pro-tuki – vastaukset 24 tunnin sisällä"
+        : "Priority support – replies within 24 hours",
+      isFinnish
+        ? "Kaksikielinen (FI/EN) agentti"
+        : "Bilingual agent (FI/EN)",
+      isFinnish
+        ? "Muokattava ulkoasu ja brändivärit"
+        : "Customisable interface and brand colours",
+      isFinnish
+        ? "Laajennettu raportointi ja käyttäjäkohtaiset tilastot"
+        : "Extended reporting with per-user insights",
     ],
     limitations: [],
   },
@@ -61,30 +92,38 @@ const plans: Plan[] = [
 
 const Pricing: React.FC = () => {
   const [billing, setBilling] = useState<BillingCycle>("yearly");
+  const { language } = useLanguage();
+  const isFinnish = language === "fi";
+  const locale = isFinnish ? "fi-FI" : "en-GB";
+  const plans = useMemo(() => createPlans(isFinnish), [isFinnish]);
 
   const getDisplayPrice = (plan: Plan) => {
     if (plan.price === "Tarjous") return { main: "Tarjous", sub: "", period: "" };
     const monthly = plan.price as number;
-    if (monthly === 0) return { main: "0€", sub: "", period: "kk" };
+    if (monthly === 0) return { main: "0€", sub: "", period: isFinnish ? "kk" : "mo" };
 
     if (billing === "yearly") {
       const effectiveMonthly = Math.round(monthly * (1 - YEARLY_DISCOUNT));
       const yearlySavings = Math.round(monthly * 12 * YEARLY_DISCOUNT);
       return {
-        main: `${formatEUR(effectiveMonthly)}`,
-        sub: `Säästät ${formatEUR(yearlySavings)} / vuosi`,
-        period: "kk",
+        main: `${formatEUR(effectiveMonthly, locale)}`,
+        sub: isFinnish
+          ? `Säästät ${formatEUR(yearlySavings, locale)} / vuosi`
+          : `Save ${formatEUR(yearlySavings, locale)} per year`,
+        period: isFinnish ? "kk" : "mo",
       };
     }
-    return { main: `${formatEUR(monthly)}`, sub: "", period: "kk" };
+    return { main: `${formatEUR(monthly, locale)}`, sub: "", period: isFinnish ? "kk" : "mo" };
   };
 
   const getCTA = () => {
-    return "Aloita maksutta";
+    return isFinnish ? "Aloita maksutta" : "Get started for free";
   };
 
   const getFootnote = (plan: Plan) => {
-    if (plan.name === "Starter Bot" || plan.name === "Pro Bot") return "Ilmainen 14 päivän kokeilujakso";
+    if (plan.name === "Starter Bot" || plan.name === "Pro Bot") {
+      return isFinnish ? "Ilmainen 14 päivän kokeilujakso" : "Free 14-day trial";
+    }
     return "";
   };
 
@@ -99,10 +138,10 @@ const Pricing: React.FC = () => {
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl font-light text-white mb-4">
-            Hinnoittelu
+            {isFinnish ? "Hinnoittelu" : "Pricing"}
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Valitse yrityksellesi sopiva paketti
+            {isFinnish ? "Valitse yrityksellesi sopiva paketti" : "Choose the plan that fits your company"}
           </p>
 
           {/* Toggle */}
@@ -121,7 +160,7 @@ const Pricing: React.FC = () => {
                   billing === "monthly" ? "text-white" : "text-gray-400 hover:text-gray-200"
                 }`}
               >
-                Kuukausittain
+                {isFinnish ? "Kuukausittain" : "Monthly"}
               </button>
               <button
                 onClick={() => setBilling("yearly")}
@@ -129,7 +168,7 @@ const Pricing: React.FC = () => {
                   billing === "yearly" ? "text-white" : "text-gray-400 hover:text-gray-200"
                 }`}
               >
-                Vuosittain
+                {isFinnish ? "Vuosittain" : "Yearly"}
                 <span className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-xs text-green-400 font-semibold bg-black/90 rounded-full px-1.5 py-0.5 border border-green-400/50 whitespace-nowrap">
                   -20%
                 </span>
@@ -156,14 +195,14 @@ const Pricing: React.FC = () => {
                   {/* Limited Launch Price Badge */}
                   <div className="absolute top-3 right-4 z-10 md:-top-3">
                     <div className="bg-black/90 text-green-400 px-1.5 py-0.5 rounded-full text-xs font-semibold border border-green-400/50 whitespace-nowrap">
-                      Rajoitettu lanseeraushinta
+                      {isFinnish ? "Rajoitettu lanseeraushinta" : "Limited launch price"}
                     </div>
                   </div>
 
                   {isPopular && (
                     <div className="absolute top-11 right-4 z-10 md:left-1/2 md:right-auto md:-translate-x-1/2 md:top-3">
                       <div className="bg-white text-black px-4 py-1.5 rounded-full text-xs font-medium">
-                        Suositeltu
+                        {isFinnish ? "Suositeltu" : "Recommended"}
                       </div>
                     </div>
                   )}
@@ -191,7 +230,7 @@ const Pricing: React.FC = () => {
                       )}
                     </div>
                     <div className="text-xs text-gray-400 mt-1">
-                      Hinnat verottomina. ALV 25,5 % lisätään hintaan
+                      {isFinnish ? "Hinnat verottomina. ALV 25,5 % lisätään hintaan" : "Prices exclude VAT. 25.5% VAT applies."}
                     </div>
                     {billing === "yearly" && price.sub && (
                       <div className="text-xs text-gray-300 bg-white/5 px-3 py-1 rounded-full inline-block border border-white/10 mt-2">

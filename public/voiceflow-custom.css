@@ -1,0 +1,37 @@
+.vfrc-chat-input__container,
+.vfrc-chat-input__footer,
+.vfrc-input {
+  background-color: #ffffff !important;
+}
+
+.vfrc-input {
+  background-color: transparent !important;
+  color: #ffffff !important;
+  border-radius: 999px !important;
+  border: 1px solid rgb(255, 255, 255) !important;
+  padding: 0.65rem 1.1rem !important;
+  box-shadow: none !important;
+}
+
+.vfrc-input::placeholder {
+  color: rgb(255, 255, 255) !important;
+}
+
+.vfrc-chat-input__footer {
+  border-top: 1px solid rgb(255, 255, 255) !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+}
+
+.vfrc-send-button button {
+  background-color: #161616 !important;
+  color: #ffffff !important;
+  border-radius: 999px !important;
+  box-shadow: none !important;
+}
+
+.vfrc-send-button button:hover,
+.vfrc-send-button button:focus {
+  background-color: rgba(0, 0, 0, 0.85) !important;
+}
+

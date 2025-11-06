@@ -1,5 +1,6 @@
 // src/AboutPage.tsx
 import React from "react";
+import { useLanguage } from "./context/LanguageContext";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import SEOHead from "./components/SEOHead";
@@ -110,6 +111,8 @@ function TeamMemberCard({
 
 export default function AboutPage() {
   const [openHandle, setOpenHandle] = React.useState<string | null>(null);
+  const { language } = useLanguage();
+  const isFinnish = language === "fi";
 
   const team: Member[] = [
     {
@@ -173,22 +176,22 @@ export default function AboutPage() {
       }}
     >
       <SEOHead
-        title={meta?.title || "Tietoa meistä - Mitrox.io | Mitrox Tiimi"}
-        description={meta?.description || "Tutustut Mitrox.io-tiimiin. Nuoret suomalaiset asiantuntijat, jotka rakentavat Mitrox AI Advisoria yrityksille. Luotettavuus, helppous ja täsmällisyys ohjaavat toimintaamme."}
+        title={meta?.title || (isFinnish ? "Tietoa meistä - Mitrox.io | Mitrox Tiimi" : "About us - Mitrox.io | Mitrox Team")}
+        description={meta?.description || (isFinnish ? "Tutustut Mitrox.io-tiimiin. Nuoret suomalaiset asiantuntijat, jotka rakentavat Mitrox AI Advisoria yrityksille. Luotettavuus, helppous ja täsmällisyys ohjaavat toimintaamme." : "Meet the Mitrox.io team. Young Finnish specialists building Mitrox AI Advisor for businesses. Reliability, simplicity and precision guide our work.")}
         url={meta?.url || "https://mitrox.io/about"}
-        keywords={meta?.keywords || "mitrox tiimi, suomalainen tekoäly, Mitrox AI Advisor asiantuntijat, AI-ratkaisut Suomi"}
+        keywords={meta?.keywords || (isFinnish ? "mitrox tiimi, suomalainen tekoäly, Mitrox AI Advisor asiantuntijat, AI-ratkaisut Suomi" : "mitrox team, finnish ai, Mitrox AI Advisor experts, ai solutions")}
       />
-      {isSEO_V2 && <SEOEnhanced meta={meta} schemas={schemas} lang="fi" />}
+      {isSEO_V2 && <SEOEnhanced meta={meta} schemas={schemas} lang={isFinnish ? "fi" : "en"} />}
       <Header />
 
       {/* HERO */}
       <section className="pt-28 pb-12 text-center px-6">
         <h1 className="mt-5 text-4xl md:text-6xl font-semibold leading-tight tracking-tight text-white">
-          Selkeää teknologiaa. Aitoa osaamista.
+          {isFinnish ? "Selkeää teknologiaa. Aitoa osaamista." : "Clear technology. Real expertise."}
         </h1>
 
-        <p className="mt-4 text-white/60 max-w-2xl mx-auto">
-          Tiimimme yhdistää luovuuden, teknisen osaamisen ja huolellisuuden – tuloksena ratkaisuja, jotka kestävät aikaa ja käyttöä.
+        <p className="mt-4 text-body-muted max-w-2xl mx-auto">
+          {isFinnish ? "Tiimimme yhdistää luovuuden, teknisen osaamisen ja huolellisuuden – tuloksena ratkaisuja, jotka kestävät aikaa ja käyttöä." : "Our team blends creativity, technical skill and care – resulting in solutions that stand the test of time and use."}
         </p>
       </section>
 
@@ -202,7 +205,7 @@ export default function AboutPage() {
             "
           >
             <h2 className={`col-span-full ${monoHeading} text-left`} style={monoFont}>
-              [ TIIMI ]
+              {isFinnish ? "[ TIIMI ]" : "[ TEAM ]"}
             </h2>
 
             {team.map((m) => (
@@ -241,27 +244,26 @@ export default function AboutPage() {
           {/* Tekstit */}
           <div>
             <h2 className={monoHeading} style={monoFont}>
-              [ Meistä ]
+              {isFinnish ? "[ Meistä ]" : "[ About ]"}
             </h2>
 
             <h3 className="mt-6 text-lg md:text-xl font-semibold text-white/90">
-              Miten työskentelemme
+              {isFinnish ? "Miten työskentelemme" : "How we work"}
             </h3>
-            <p className="mt-3 text-white/65 leading-relaxed md:leading-8">
-              Selkeä prosessi, nopea toimitus ja jatkuva yhteistyö.
+            <p className="mt-3 text-body-subtle leading-relaxed md:leading-8">
+              {isFinnish ? "Selkeä prosessi, nopea toimitus ja jatkuva yhteistyö." : "Clear process, fast delivery and continuous collaboration."}
             </p>
-
-            <p className="mt-3 text-white/65 leading-relaxed md:leading-8">
-              Rakennamme ratkaisuja, jotka toimivat, näyttävät hyvältä ja kestävät aikaa – tinkimättä laadusta tai kokemuksesta.
+            <p className="mt-3 text-body-subtle leading-relaxed md:leading-8">
+              {isFinnish ? "Rakennamme ratkaisuja, jotka toimivat, näyttävät hyvältä ja kestävät aikaa – tinkimättä laadusta tai kokemuksesta." : "We build solutions that work, look great and last – without compromising quality or experience."}
             </p>
-            <p className="mt-6 text-white/65 leading-relaxed md:leading-8">
-              Jokainen projekti alkaa ymmärryksestä: mitä yrityksesi tarvitsee juuri nyt ja mikä vie sitä eteenpäin.
+            <p className="mt-6 text-body-subtle leading-relaxed md:leading-8">
+              {isFinnish ? "Jokainen projekti alkaa ymmärryksestä: mitä yrityksesi tarvitsee juuri nyt ja mikä vie sitä eteenpäin." : "Every project starts with understanding: what your company needs now and what will move it forward."}
             </p>
-            <p className="mt-3 text-white/65 leading-relaxed md:leading-8">
-              Emme käytä valmiita malleja, vaan suunnittelemme kokonaisuuden, joka tukee tavoitteitasi ja tekee arjesta helpompaa.
+            <p className="mt-3 text-body-subtle leading-relaxed md:leading-8">
+              {isFinnish ? "Emme käytä valmiita malleja, vaan suunnittelemme kokonaisuuden, joka tukee tavoitteitasi ja tekee arjesta helpompaa." : "We don’t use off‑the‑shelf templates; we design a whole that supports your goals and makes everyday life easier."}
             </p>
-            <p className="mt-3 text-white/65 leading-relaxed md:leading-8">
-              Kun sivusto tai ratkaisu on valmis, jatkamme kehitystä yhdessä kanssasi – pitkäjänteisesti, vastuullisesti ja luotettavasti.
+            <p className="mt-3 text-body-subtle leading-relaxed md:leading-8">
+              {isFinnish ? "Kun sivusto tai ratkaisu on valmis, jatkamme kehitystä yhdessä kanssasi – pitkäjänteisesti, vastuullisesti ja luotettavasti." : "Once a site or solution is ready, we continue development with you – long‑term, responsibly and reliably."}
             </p>
           </div>
         </div>
@@ -270,26 +272,26 @@ export default function AboutPage() {
         <div className="mt-14 mx-auto max-w-6xl border-t border-white/10 grid md:grid-cols-3 divide-x divide-white/10">
           <div className="p-6 md:p-8">
             <h3 className="text-base md:text-lg font-semibold text-white">
-              Luotettavuus
+              {isFinnish ? "Luotettavuus" : "Reliability"}
             </h3>
-            <p className="mt-3 text-sm text-white/60 leading-relaxed">
-              Pidämme lupauksemme ja toimitamme ajallaan. Asiakkaamme voivat luottaa jokaiseen vaiheeseen.
+            <p className="mt-3 text-sm text-body-muted leading-relaxed">
+              {isFinnish ? "Pidämme lupauksemme ja toimitamme ajallaan. Asiakkaamme voivat luottaa jokaiseen vaiheeseen." : "We keep our promises and deliver on time. Our clients can rely on every step."}
             </p>
           </div>
           <div className="p-6 md:p-8">
             <h3 className="text-base md:text-lg font-semibold text-white">
-              Helppous
+              {isFinnish ? "Helppous" : "Simplicity"}
             </h3>
-            <p className="mt-3 text-sm text-white/60 leading-relaxed">
-              Teemme monimutkaisesta yksinkertaista. Ratkaisumme säästävät aikaa ja energiaa – ilman turhaa säätöä.
+            <p className="mt-3 text-sm text-body-muted leading-relaxed">
+              {isFinnish ? "Teemme monimutkaisesta yksinkertaista. Ratkaisumme säästävät aikaa ja energiaa – ilman turhaa säätöä." : "We make the complex simple. Our solutions save time and energy – without unnecessary hassle."}
             </p>
           </div>
           <div className="p-6 md:p-8">
             <h3 className="text-base md:text-lg font-semibold text-white">
-              Täsmällisyys
+              {isFinnish ? "Täsmällisyys" : "Precision"}
             </h3>
-            <p className="mt-3 text-sm text-white/60 leading-relaxed">
-              Viimeistelty työ ja pitäviä aikatauluja. Laatu näkyy sekä lopputuloksessa että yhteistyössä.
+            <p className="mt-3 text-sm text-body-muted leading-relaxed">
+              {isFinnish ? "Viimeistelty työ ja pitäviä aikatauluja. Laatu näkyy sekä lopputuloksessa että yhteistyössä." : "Refined work and reliable schedules. Quality shows both in the result and in the collaboration."}
             </p>
           </div>
         </div>

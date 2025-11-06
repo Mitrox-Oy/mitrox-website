@@ -34,8 +34,8 @@ export default function PrivacyPolicyPage() {
 
   const sectionHeading =
     "mt-10 text-xl md:text-2xl font-semibold tracking-tight text-white";
-  const bodyText = "mt-3 text-white/70 leading-relaxed md:leading-8";
-  const listClass = "list-disc pl-6 mt-2 space-y-2 text-white/70";
+  const bodyText = "mt-3 text-body-subtle leading-relaxed md:leading-8";
+  const listClass = "list-disc pl-6 mt-2 space-y-2 text-body-subtle";
   const sectionClass = `${sectionHeading} scroll-mt-24`;
 
   const onTocClick = (id: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -71,7 +71,7 @@ export default function PrivacyPolicyPage() {
           <h1 className="text-3xl md:text-5xl font-semibold leading-tight tracking-tight">
             Tietosuojaseloste – Mitrox Oy
           </h1>
-          <p className="mt-4 text-white/70">Voimassa alkaen: 4.11.2025</p>
+          <p className="mt-4 text-body-muted">Voimassa alkaen: 4.11.2025</p>
 
           {/* Sisällysluettelo */}
           <nav className="mt-8 border border-white/10 bg-black/40 p-4" aria-label="Sisällysluettelo">

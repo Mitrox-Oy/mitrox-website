@@ -1,7 +1,11 @@
 import React from "react";
 import InteractiveMitroxLogo from "./InteractiveMitroxLogo";
+import { useLanguage } from "../context/LanguageContext";
 
 const CompanyStory: React.FC = () => {
+  const { language } = useLanguage();
+  const isFinnish = language === "fi";
+
   return (
     <section className="relative py-24 md:py-40 lg:py-48 px-4 sm:px-6 lg:px-8 bg-black">
       <div className="absolute inset-0 -z-10 overflow-hidden">
@@ -42,17 +46,23 @@ const CompanyStory: React.FC = () => {
           {/* Story Content */}
           <div>
             <h2 className="text-3xl sm:text-4xl font-medium text-white mb-6">
-              Meidän tarinamme
+              {isFinnish ? "Meidän tarinamme" : "Our story"}
             </h2>
-            <div className="space-y-4 text-gray-300 leading-relaxed">
+            <div className="space-y-4 text-body-subtle leading-relaxed">
               <p>
-                Mitrox syntyi uskosta siihen, että teknologia voi tehdä yritysten arjesta helpompaa, tehokkaampaa ja vaikuttavampaa. Perustajamme – joukko intohimoisia suomalaisia osaajia – yhdistivät voimansa luodakseen ratkaisuja, jotka oikeasti toimivat ja auttavat yrityksiä kasvamaan digitaalisessa ajassa.
+                {isFinnish
+                  ? "Mitrox syntyi uskosta siihen, että teknologia voi tehdä yritysten arjesta helpompaa, tehokkaampaa ja vaikuttavampaa. Perustajamme – joukko intohimoisia suomalaisia osaajia – yhdistivät voimansa luodakseen ratkaisuja, jotka oikeasti toimivat ja auttavat yrityksiä kasvamaan digitaalisessa ajassa."
+                  : "Mitrox was born from the belief that technology can make business life easier, more efficient, and more impactful. Our founders – a group of passionate Finnish experts – joined forces to build solutions that truly work and help companies grow in the digital era."}
               </p>
               <p>
-                Aloitimme pienestä, mutta selkeällä visiolla: rakentaa palveluita, joissa yhdistyvät laatu, nopeus ja älykkyys. Jokainen projekti on meille mahdollisuus kehittää osaamistamme ja ylittää odotukset. Asiakkaidemme menestys on myös meidän menestyksemme – siksi panostamme jokaiseen yksityiskohtaan, kuin se olisi oma projektimme.
+                {isFinnish
+                  ? "Aloitimme pienestä, mutta selkeällä visiolla: rakentaa palveluita, joissa yhdistyvät laatu, nopeus ja älykkyys. Jokainen projekti on meille mahdollisuus kehittää osaamistamme ja ylittää odotukset. Asiakkaidemme menestys on myös meidän menestyksemme – siksi panostamme jokaiseen yksityiskohtaan, kuin se olisi oma projektimme."
+                  : "We started small with a clear vision: build services where quality, speed, and intelligence meet. Every project is an opportunity to refine our craft and exceed expectations. Our clients’ success is our success – that’s why we care about every detail as if it were our own project."}
               </p>
               <p>
-                Tänään Mitrox on kasvanut tiimiksi, joka yhdistää teknisen osaamisen, luovuuden ja ymmärryksen liiketoiminnan todellisista tarpeista. Haluamme olla se kumppani, johon suomalaiset yritykset turvaavat, kun tarvitaan ratkaisuja, jotka eivät ainoastaan näytä hyvältä – vaan tuottavat tuloksia.
+                {isFinnish
+                  ? "Tänään Mitrox on kasvanut tiimiksi, joka yhdistää teknisen osaamisen, luovuuden ja ymmärryksen liiketoiminnan todellisista tarpeista. Haluamme olla se kumppani, johon suomalaiset yritykset turvaavat, kun tarvitaan ratkaisuja, jotka eivät ainoastaan näytä hyvältä – vaan tuottavat tuloksia."
+                  : "Today Mitrox has grown into a team that blends technical skill, creativity, and a deep understanding of real business needs. We strive to be the partner Finnish companies turn to when they need solutions that not only look good – but deliver results."}
               </p>
             </div>
           </div>
@@ -67,15 +77,17 @@ const CompanyStory: React.FC = () => {
         <div className="mt-24 pt-20 border-t border-white/10">
           <div className="max-w-6xl mx-auto flex flex-col md:flex-row md:items-start md:justify-between gap-10">
             <div className="md:max-w-xl">
-              <span className="text-xs uppercase tracking-[0.35em] text-white/35 mb-4 block">
-                [ Meidän visiomme ]
+              <span className="text-xs uppercase tracking-[0.35em] text-body-caption mb-4 block">
+                {isFinnish ? "[ Meidän visiomme ]" : "[ Our vision ]"}
               </span>
               <h3 className="text-3xl sm:text-4xl md:text-5xl font-medium text-white leading-tight">
-                Meidän Visiomme
+                {isFinnish ? "Meidän visiomme" : "Our vision"}
               </h3>
             </div>
-            <p className="md:max-w-md text-sm sm:text-base text-white leading-relaxed md:mt-[0.35rem]">
-              Uskomme, että tulevaisuuden menestyvät yritykset rakentuvat älykkään teknologian ja inhimillisen suunnittelun varaan. Siksi tavoitteemme on tehdä digitaalisesta kehityksestä helpompaa, nopeampaa ja laadukkaampaa – tavalla, joka aidosti tukee yritysten kasvua. Emme rakenna vain sivustoja tai työkaluja, vaan pitkän aikavälin ratkaisuja, jotka kestävät muutosta ja kasvavat yhdessä asiakkaidemme kanssa.
+            <p className="md:max-w-md text-sm sm:text-base text-body-subtle leading-relaxed md:mt-[0.35rem]">
+              {isFinnish
+                ? "Uskomme, että tulevaisuuden menestyvät yritykset rakentuvat älykkään teknologian ja inhimillisen suunnittelun varaan. Siksi tavoitteemme on tehdä digitaalisesta kehityksestä helpompaa, nopeampaa ja laadukkaampaa – tavalla, joka aidosti tukee yritysten kasvua. Emme rakenna vain sivustoja tai työkaluja, vaan pitkän aikavälin ratkaisuja, jotka kestävät muutosta ja kasvavat yhdessä asiakkaidemme kanssa."
+                : "We believe the most successful companies of the future are built on intelligent technology and human-centred design. Our goal is to make digital development easier, faster, and higher quality – in a way that genuinely supports business growth. We don’t just build websites or tools; we create long-term solutions that adapt to change and grow with our clients."}
             </p>
           </div>
         </div>

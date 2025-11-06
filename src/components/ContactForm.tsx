@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { MapPin } from "lucide-react";
 import SpaceBackground from "./SpaceBackground";
+import { useLanguage } from "../context/LanguageContext";
 
 type Person = { name: string; email: string };
 
@@ -15,18 +16,20 @@ const techPeople: Person[] = [
 
 const EmailRow: React.FC<Person & { label?: string }> = ({ name, email, label }) => {
   const [copied, setCopied] = useState(false);
+  const { language } = useLanguage();
+  const isFinnish = language === "fi";
   return (
     <li className="flex items-center justify-between gap-6 py-2">
       <div className="min-w-0">
         {label && (
-          <div className="text-[11px] uppercase tracking-[0.2em] text-white/70 font-semibold">
+          <div className="text-[11px] uppercase tracking-[0.2em] text-body-caption font-semibold">
             {label}
           </div>
         )}
         <div className="text-sm text-gray-200 truncate">{name}</div>
         <a
           href={`mailto:${email}`}
-          className="text-sm text-white/70 hover:text-white underline-offset-4 hover:underline break-all"
+          className="text-sm text-body-subtle hover:text-white underline-offset-4 hover:underline break-all"
         >
           {email}
         </a>
@@ -41,9 +44,9 @@ const EmailRow: React.FC<Person & { label?: string }> = ({ name, email, label })
           } catch {}
         }}
         className="shrink-0 rounded-md border border-white/10 px-2.5 py-1 text-xs text-gray-300 hover:bg-white/5"
-        aria-label="Kopioi sähköposti"
+        aria-label={isFinnish ? "Kopioi sähköposti" : "Copy email address"}
       >
-        {copied ? "Kopioitu" : "Kopioi"}
+        {copied ? (isFinnish ? "Kopioitu" : "Copied") : isFinnish ? "Kopioi" : "Copy"}
       </button>
     </li>
   );
@@ -57,6 +60,8 @@ const ContactForm: React.FC = () => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [botcheck, setBotcheck] = useState("");
   const sectionRef = useRef<HTMLElement>(null);
+  const { language } = useLanguage();
+  const isFinnish = language === "fi";
 
   const [formData, setFormData] = useState({
     name: "",
@@ -86,11 +91,11 @@ const ContactForm: React.FC = () => {
   };
 
   const invalidReason = () => {
-    if (!formData.name.trim()) return "Täytä nimesi.";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) return "Tarkista sähköposti.";
-    if (!formData.company.trim()) return "Täytä yritys.";
-    if (!formData.phone.trim()) return "Täytä puhelin.";
-    if (formData.message.trim().length < 5) return "Kirjoita viesti (väh. 5 merkkiä).";
+    if (!formData.name.trim()) return isFinnish ? "Täytä nimesi." : "Please add your name.";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) return isFinnish ? "Tarkista sähköposti." : "Please check the email address.";
+    if (!formData.company.trim()) return isFinnish ? "Täytä yritys." : "Please add your company.";
+    if (!formData.phone.trim()) return isFinnish ? "Täytä puhelin." : "Please add your phone number.";
+    if (formData.message.trim().length < 5) return isFinnish ? "Kirjoita viesti (väh. 5 merkkiä)." : "Please write a short message (min. 5 characters).";
     return null;
   };
 
@@ -114,7 +119,7 @@ const ContactForm: React.FC = () => {
         body: JSON.stringify({
           access_key: "193da3a3-3009-437b-8d44-2c1a539273fb", // käytetään suoraan
           to: "info@mitrox.io",                      // vastaanottaja
-          subject: `Uusi yhteydenotto: ${formData.company} – ${formData.name}`,
+          subject: `${isFinnish ? "Uusi yhteydenotto" : "New contact"}: ${formData.company} – ${formData.name}`,
           name: formData.name,
           email: formData.email,
           message: formData.message,
@@ -126,14 +131,16 @@ const ContactForm: React.FC = () => {
       });
 
       const data = await res.json();
-      if (!data?.success) throw new Error(data?.message || "Lähetys epäonnistui");
+      if (!data?.success) throw new Error(data?.message || (isFinnish ? "Lähetys epäonnistui" : "Submission failed"));
 
-      setSuccessMsg("Kiitos viestistä! Otamme sinuun yhteyttä pian.");
+      setSuccessMsg(
+        isFinnish ? "Kiitos viestistä! Otamme sinuun yhteyttä pian." : "Thanks for your message! We’ll get back to you shortly."
+      );
       setIsModalOpen(true);
       setFormData({ name: "", email: "", company: "", phone: "", message: "" });
       setBotcheck("");
     } catch (err: any) {
-      setErrorMsg(err?.message || "Jotain meni pieleen. Yritä hetken päästä uudelleen.");
+      setErrorMsg(err?.message || (isFinnish ? "Jotain meni pieleen. Yritä hetken päästä uudelleen." : "Something went wrong. Please try again in a moment."));
       setIsModalOpen(true);
     } finally {
       setIsSubmitting(false);
@@ -163,7 +170,7 @@ const ContactForm: React.FC = () => {
           <div className="absolute inset-0 bg-black/60" />
           <div className="relative w-full max-w-md rounded-xl bg-white/10 backdrop-blur-xl backdrop-saturate-150 p-6">
             <button
-              aria-label="Sulje"
+              aria-label={isFinnish ? "Sulje" : "Close"}
               onClick={() => setIsModalOpen(false)}
               className="absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-md text-gray-400 hover:text-white hover:bg-white/5"
             >
@@ -171,19 +178,27 @@ const ContactForm: React.FC = () => {
             </button>
 
             <h3 className="text-xl font-semibold text-white">
-              {successMsg ? "Viesti lähetetty" : errorMsg ? "Lähetys epäonnistui" : "Ilmoitus"}
+              {successMsg
+                ? isFinnish ? "Viesti lähetetty" : "Message sent"
+                : errorMsg
+                ? isFinnish ? "Lähetys epäonnistui" : "Submission failed"
+                : isFinnish ? "Ilmoitus" : "Notice"}
             </h3>
             <p className="mt-2 text-sm text-gray-400">
               {successMsg
                 ? successMsg
                 : errorMsg
                 ? errorMsg
-                : "Voit olla meihin yhteydessä myös suoraan sähköpostilla. Vastamme yleensä 24 tunnin sisällä."}
+                : isFinnish
+                ? "Voit olla meihin yhteydessä myös suoraan sähköpostilla. Vastamme yleensä 24 tunnin sisällä."
+                : "You can also reach us directly by email. We typically reply within 24 hours."}
             </p>
 
             <div className="mt-6 grid grid-cols-1 gap-6">
               <div>
-                <div className="mb-2 text-xs uppercase tracking-[0.18em] text-white/90 font-semibold">MYYNTI</div>
+                <div className="mb-2 text-xs uppercase tracking-[0.18em] text-white/90 font-semibold">
+                  {isFinnish ? "MYYNTI" : "SALES"}
+                </div>
                 <ul className="divide-y divide-white/10">
                   {salesPeople.map((p) => (
                     <EmailRow key={p.email} {...p} />
@@ -191,7 +206,9 @@ const ContactForm: React.FC = () => {
                 </ul>
               </div>
               <div>
-                <div className="mb-2 text-xs uppercase tracking-[0.18em] text-white/90 font-semibold">TEKNINEN</div>
+                <div className="mb-2 text-xs uppercase tracking-[0.18em] text-white/90 font-semibold">
+                  {isFinnish ? "TEKNINEN" : "TECH"}
+                </div>
                 <ul className="divide-y divide-white/10">
                   {techPeople.map((p) => (
                     <EmailRow key={p.email} {...p} />
@@ -200,16 +217,28 @@ const ContactForm: React.FC = () => {
               </div>
             </div>
 
-            <p className="mt-6 text-xs text-gray-500">Liitä viestiin yrityksesi nimi ja lyhyt kuvaus tarpeesta.</p>
+            <p className="mt-6 text-xs text-gray-500">
+              {isFinnish
+                ? "Liitä viestiin yrityksesi nimi ja lyhyt kuvaus tarpeesta."
+                : "Include your company name and a short description of your need."}
+            </p>
           </div>
         </div>
       )}
 
       {/* Otsikko */}
       <header className="text-center mb-14">
-        <h2 className="text-4xl sm:text-5xl font-semibold text-white">Ota yhteyttä</h2>
-        <p className="mt-3 text-gray-400">Kerro lyhyesti tarpeesi – palaamme mahdollisimman nopeasti.</p>
-        <p className="mt-2 text-gray-400 text-sm">Nuoret asiantuntijamme rakentavat räätälöidyn ratkaisun yrityksellesi.</p>
+        <h2 className="text-4xl sm:text-5xl font-semibold text-white">
+          {isFinnish ? "Ota yhteyttä" : "Contact us"}
+        </h2>
+        <p className="mt-3 text-gray-400">
+          {isFinnish ? "Kerro lyhyesti tarpeesi – palaamme mahdollisimman nopeasti." : "Tell us briefly what you need – we’ll get back to you as fast as possible."}
+        </p>
+        <p className="mt-2 text-gray-400 text-sm">
+          {isFinnish
+            ? "Nuoret asiantuntijamme rakentavat räätälöidyn ratkaisun yrityksellesi."
+            : "Our team of specialists will craft a tailored solution for your business."}
+        </p>
       </header>
 
       <div className="mx-auto grid max-w-5xl gap-10 lg:grid-cols-[1.05fr_1fr]">
@@ -221,7 +250,7 @@ const ContactForm: React.FC = () => {
 
             <form onSubmit={handleSubmit} className="space-y-5" noValidate>
             <div className="sr-only" aria-hidden="true">
-              <label htmlFor="botcheck">Jätä tyhjäksi</label>
+              <label htmlFor="botcheck">{isFinnish ? "Jätä tyhjäksi" : "Leave empty"}</label>
               <input
                 id="botcheck"
                 name="botcheck"
@@ -234,7 +263,9 @@ const ContactForm: React.FC = () => {
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-1.5">
-                <label htmlFor="name" className="text-sm text-gray-300">Nimi *</label>
+                <label htmlFor="name" className="text-sm text-gray-300">
+                  {isFinnish ? "Nimi *" : "Name *"}
+                </label>
                 <input
                   id="name"
                   name="name"
@@ -243,12 +274,14 @@ const ContactForm: React.FC = () => {
                   value={formData.name}
                   onChange={handleInputChange}
                   className="w-full rounded-lg border border-white/10 bg-black px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Nimi"
+                  placeholder={isFinnish ? "Nimi" : "Name"}
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label htmlFor="company" className="text-sm text-gray-300">Yritys *</label>
+                <label htmlFor="company" className="text-sm text-gray-300">
+                  {isFinnish ? "Yritys *" : "Company *"}
+                </label>
                 <input
                   id="company"
                   name="company"
@@ -257,14 +290,16 @@ const ContactForm: React.FC = () => {
                   value={formData.company}
                   onChange={handleInputChange}
                   className="w-full rounded-lg border border-white/10 bg-black px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Yrityksesi nimi"
+                  placeholder={isFinnish ? "Yrityksesi nimi" : "Company name"}
                 />
               </div>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-1.5">
-                <label htmlFor="email" className="text-sm text-gray-300">Sähköposti *</label>
+                <label htmlFor="email" className="text-sm text-gray-300">
+                  {isFinnish ? "Sähköposti *" : "Email *"}
+                </label>
                 <input
                   id="email"
                   name="email"
@@ -274,12 +309,14 @@ const ContactForm: React.FC = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   className="w-full rounded-lg border border-white/10 bg-black px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="sahkoposti@yritys.fi"
+                  placeholder={isFinnish ? "sahkoposti@yritys.fi" : "you@company.com"}
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label htmlFor="phone" className="text-sm text-gray-300">Puhelin *</label>
+                <label htmlFor="phone" className="text-sm text-gray-300">
+                  {isFinnish ? "Puhelin *" : "Phone *"}
+                </label>
                 <input
                   id="phone"
                   name="phone"
@@ -289,13 +326,15 @@ const ContactForm: React.FC = () => {
                   value={formData.phone}
                   onChange={handleInputChange}
                   className="w-full rounded-lg border border-white/10 bg-black px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="+358 40 123 4567"
+                  placeholder={isFinnish ? "+358 40 123 4567" : "+44 20 1234 5678"}
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label htmlFor="message" className="text-sm text-gray-300">Viesti *</label>
+              <label htmlFor="message" className="text-sm text-gray-300">
+                {isFinnish ? "Viesti *" : "Message *"}
+              </label>
               <textarea
                 id="message"
                 name="message"
@@ -304,7 +343,7 @@ const ContactForm: React.FC = () => {
                 value={formData.message}
                 onChange={handleInputChange}
                 className="w-full rounded-lg border border-white/10 bg-black px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                placeholder="Kuvaile lyhyesti tarpeesi…"
+                placeholder={isFinnish ? "Kuvaile lyhyesti tarpeesi…" : "Describe your needs briefly…"}
               />
             </div>
 
@@ -317,15 +356,21 @@ const ContactForm: React.FC = () => {
               {isSubmitting ? (
                 <>
                   <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-black/70 border-t-transparent" />
-                  Lähetetään…
+                  {isFinnish ? "Lähetetään…" : "Sending…"}
                 </>
               ) : (
-                <>Lähetä viesti</>
+                <>{isFinnish ? "Lähetä viesti" : "Send message"}</>
               )}
             </button>
 
             <p className="sr-only" role="status" aria-live="polite">
-              {isSubmitting ? "Lähetetään" : successMsg ? "Lähetys onnistui" : errorMsg ? "Lähetys epäonnistui" : ""}
+              {isSubmitting
+                ? isFinnish ? "Lähetetään" : "Sending"
+                : successMsg
+                ? isFinnish ? "Lähetys onnistui" : "Submission succeeded"
+                : errorMsg
+                ? isFinnish ? "Lähetys epäonnistui" : "Submission failed"
+                : ""}
             </p>
             </form>
           </div>

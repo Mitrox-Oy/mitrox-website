@@ -1,5 +1,6 @@
 // src/WebsiteBusinessPage.tsx
 import React, { useState, useEffect } from "react";
+import { useLanguage } from "./context/LanguageContext";
 import SpaceBackground from "./components/SpaceBackground";
 import Header from "./components/Header";
 import SEOHead from "./components/SEOHead";
@@ -17,9 +18,12 @@ import BottomNavbar from "./components/BottomNavbar";
 import { ChevronDown } from "lucide-react";
 import { buildMeta, organizationSchema, breadcrumbSchema, serviceSchema } from "../lib/seo";
 import { SEO_CONFIG } from "../config/seo.fi";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const WebsiteHero: React.FC = () => {
   const [showContent, setShowContent] = useState<boolean>(false);
+  const { language } = useLanguage();
+  const isFinnish = language === "fi";
 
   useEffect(() => {
     const prefersReduced =
@@ -94,12 +98,12 @@ const WebsiteHero: React.FC = () => {
               }`}
               style={{ fontFamily: "Epilogue, sans-serif", fontWeight: 600 }}
             >
-              Verkkosivut, jotka tekevät vaikutuksen
+              {isFinnish ? "Verkkosivut, jotka tekevät vaikutuksen" : "Websites that make an impact"}
             </h1>
 
             {/* Subtitle */}
             <p
-              className={`text-base sm:text-lg text-gray-200 mb-6 sm:mb-8 max-w-[42rem] mx-auto leading-relaxed font-light transition-all duration-700 ease-out px-2 ${
+              className={`text-base sm:text-lg text-body-subtle mb-6 sm:mb-8 max-w-[42rem] mx-auto leading-relaxed font-light transition-all duration-700 ease-out px-2 ${
                 showContent ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
               }`}
               style={{
@@ -109,7 +113,9 @@ const WebsiteHero: React.FC = () => {
                 fontWeight: 400,
               }}
             >
-              Luomme verkkosivun, joka tekee brändistäsi vakuuttavan ja asiakaskokemuksesta vaivattoman
+              {isFinnish
+                ? "Luomme verkkosivun, joka tekee brändistäsi vakuuttavan ja asiakaskokemuksesta vaivattoman"
+                : "We build a website that makes your brand convincing and the customer experience effortless"}
             </p>
 
             {/* Buttons */}
@@ -128,7 +134,7 @@ const WebsiteHero: React.FC = () => {
                   fontWeight: 400,
                 }}
               >
-                Katso portfolio
+                {isFinnish ? "Katso portfolio" : "View portfolio"}
                 <ChevronDown className="w-4 h-4" />
               </button>
               <button
@@ -140,7 +146,7 @@ const WebsiteHero: React.FC = () => {
                   fontWeight: 400,
                 }}
               >
-                Aloita tänään
+                {isFinnish ? "Aloita tänään" : "Start today"}
               </button>
             </div>
           </div>
@@ -151,6 +157,8 @@ const WebsiteHero: React.FC = () => {
 };
 
 export default function WebsiteBusinessPage() {
+  const { language } = useLanguage();
+  const isFinnish = language === "fi";
   // SEO_V2 enhancements (only when flag is enabled)
   const isSEO_V2 = import.meta.env.VITE_SEO_V2 === "true";
   const meta = isSEO_V2
@@ -178,22 +186,26 @@ export default function WebsiteBusinessPage() {
       {/* Space background for everything except hero */}
       <SpaceBackground className="top-[100vh]" />
       <SEOHead
-        title={meta?.title || "Ensiluokkaiset sivustot - Mitrox.io"}
-        description={meta?.description || "Luomme modernit ja käyttäjäystävälliset verkkosivut, jotka kertovat yrityksesi tarinan ja kasvattavat liiketoimintaasi."}
+        title={meta?.title || (isFinnish ? "Mitrox Sites - Mitrox.io" : "Mitrox Sites - Mitrox.io")}
+        description={meta?.description || (isFinnish
+          ? "Luomme modernit ja käyttäjäystävälliset verkkosivut, jotka kertovat yrityksesi tarinan ja kasvattavat liiketoimintaasi."
+          : "We create modern, user-friendly websites that tell your company story and grow your business.")}
         url={meta?.url || "https://mitrox.io/websites"}
         keywords={meta?.keywords}
       />
-      {isSEO_V2 && <SEOEnhanced meta={meta} schemas={schemas} lang="fi" />}
+      {isSEO_V2 && <SEOEnhanced meta={meta} schemas={schemas} lang={isFinnish ? "fi" : "en"} />}
       <Header />
-      <WebsiteHero />
-      <PortfolioShowcase />
-      <ProcessSection />
-      <section className="relative bg-black">
-        <Features />
-        <WebsitePricing />
-        <FAQ type="website" emitSchema={isSEO_V2} />
-      </section>
-      <ContactForm />
+      <ErrorBoundary>
+        <WebsiteHero />
+        <PortfolioShowcase />
+        <ProcessSection />
+        <section className="relative bg-black">
+          <Features />
+          <WebsitePricing />
+          <FAQ type="website" emitSchema={isSEO_V2} />
+        </section>
+        <ContactForm />
+      </ErrorBoundary>
       <Footer />
       <BottomNavbar />
       <ScrollToTop />

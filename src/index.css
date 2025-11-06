@@ -13,6 +13,58 @@ body {
   color-scheme: dark;
 }
 
+/* Body text - improved contrast for accessibility */
+.text-body-subtle {
+  color: rgba(255, 255, 255, 0.85); /* Increased from 0.75 for better readability */
+}
+
+.text-body-muted {
+  color: rgba(255, 255, 255, 0.7); /* Increased from 0.6 for better readability */
+}
+
+.text-body-caption {
+  color: rgba(255, 255, 255, 0.6); /* Increased from 0.45 for better readability */
+}
+
+.text-gray-400 {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.text-gray-300 {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.text-gray-500 {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+@layer base {
+  :root {
+    --ink-strong: 249 250 251;
+    --ink: 229 232 238;
+    --ink-soft: 200 204 214;
+    --ink-muted: 160 165 176;
+  }
+}
+
+@layer utilities {
+  .text-ink-strong {
+    color: rgb(var(--ink-strong));
+  }
+
+  .text-ink {
+    color: rgb(var(--ink));
+  }
+
+  .text-ink-soft {
+    color: rgb(var(--ink-soft));
+  }
+
+  .text-ink-muted {
+    color: rgb(var(--ink-muted));
+  }
+}
+
 /* Custom animations */
 @keyframes fadeInUp {
   from {

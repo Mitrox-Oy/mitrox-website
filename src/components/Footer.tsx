@@ -1,5 +1,7 @@
 import React from "react";
 import { Mail } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useLanguage } from "../context/LanguageContext";
 import logo from "../assets/logo.png";
 
 type FooterProps = {
@@ -35,20 +37,22 @@ const YouTubeIcon = ({ className = "h-5 w-5" }) => (
 
 const Footer: React.FC<FooterProps> = ({ email = "info@mitrox.io" }) => {
   const year = new Date().getFullYear();
+  const { language, setLanguage } = useLanguage();
+  const [menuOpen, setMenuOpen] = React.useState(false);
 
   return (
     <footer className="bg-black border-t border-white/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex flex-col items-center gap-6 text-center md:flex-row md:items-center md:justify-between md:text-left">
           {/* Logo */}
-          <a href="/" className="inline-flex items-center gap-3 shrink-0">
+          <Link to="/" className="inline-flex items-center gap-3 shrink-0">
             <img
               src={logo}
               alt="Mitrox Oy"
               className="h-8 w-auto select-none"
               draggable={false}
             />
-          </a>
+          </Link>
 
           {/* Email + Copyright + Y-tunnus */}
           <div className="flex flex-col items-center sm:flex-row sm:items-center gap-2 text-sm text-center sm:text-left">
@@ -62,17 +66,21 @@ const Footer: React.FC<FooterProps> = ({ email = "info@mitrox.io" }) => {
             <span className="hidden sm:inline text-gray-600">•</span>
             <div className="text-gray-400">
               <span>© {year} Mitrox Oy.</span>
-              <span className="block sm:inline sm:ml-1">Kaikki oikeudet pidätetään.</span>
+              <span className="block sm:inline sm:ml-1">
+                {language === "fi" ? "Kaikki oikeudet pidätetään." : "All rights reserved."}
+              </span>
             </div>
             <span className="hidden sm:inline text-gray-600">•</span>
-            <div className="text-gray-400">Y-tunnus: 3562179-8</div>
+            <div className="text-gray-400">
+              {language === "fi" ? "Y-tunnus: 3562179-8" : "Business ID: 3562179-8"}
+            </div>
             <span className="hidden sm:inline text-gray-600">•</span>
-            <a
-              href="#/privacy-policy"
+            <Link
+              to="/privacy-policy"
               className="text-gray-300 hover:text-blue-400 transition-colors"
             >
-              Tietosuojaseloste
-            </a>
+              {language === "fi" ? "Tietosuojaseloste" : "Privacy Policy"}
+            </Link>
           </div>
 
           {/* Sosiaalinen media: Instagram + YouTube */}
@@ -119,7 +127,47 @@ const Footer: React.FC<FooterProps> = ({ email = "info@mitrox.io" }) => {
             </a>
           </div>
         </div>
+        <div className="mt-3 flex justify-center">
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setMenuOpen((prev) => !prev)}
+              className="text-xs text-white/60 hover:text-white transition-colors"
+            >
+              {language === "fi" ? "Suomi" : "English"}
+            </button>
+            {menuOpen && (
+              <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 min-w-[140px] rounded-lg border border-white/10 bg-black/95 px-3 py-2 text-xs text-white shadow-lg">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setLanguage("fi");
+                    setMenuOpen(false);
+                  }}
+                  className={`block w-full rounded px-2 py-1 text-left transition-colors ${
+                    language === "fi" ? "bg-white/10 text-white" : "text-white/70 hover:text-white"
+                  }`}
+                >
+                  Suomi
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setLanguage("en");
+                    setMenuOpen(false);
+                  }}
+                  className={`mt-1 block w-full rounded px-2 py-1 text-left transition-colors ${
+                    language === "en" ? "bg-white/10 text-white" : "text-white/70 hover:text-white"
+                  }`}
+                >
+                  English
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
+      
     </footer>
   );
 };

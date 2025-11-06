@@ -162,6 +162,75 @@ const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = (
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
+  const [generatedPrompt, setGeneratedPrompt] = useState<string>("");
+
+  const generatePromptFromForm = (data: FormData) => {
+    const clientObject = {
+      brand_name: data.companyName || "",
+      one_liner: data.uniqueSellingPoint || "",
+      offering: Array.from(new Set([...(data.requiredPages || []), ...(data.specialFeatures ? [data.specialFeatures] : [])])).filter(Boolean),
+      target_audience: data.targetAudience || "",
+      tone: data.toneOfVoice || data.companyImage || "",
+      locale_primary: (data.languages && data.languages[0] === "Englanti") ? "en-US" : "fi-FI",
+      locales_extra: (data.languages || []).includes("Englanti") && (data.languages || []).includes("Suomi")
+        ? [ (data.languages[0] === "Englanti" ? "fi-FI" : "en-US") ]
+        : undefined,
+      contact: { email: data.email || "", phone: data.phone || undefined },
+      social: {},
+      brand_assets: {},
+      seo_keywords: [],
+      legal: {}
+    };
+
+    const integrationsList = (data.integrations || []).map((key) => {
+      const integration = INTEGRATION_OPTIONS.find((opt) => opt.key === key);
+      return `- ${integration?.label || key}${data.integrationFollowups[key]?.provider ? ` ( ${data.integrationFollowups[key]?.provider} )` : ""}`;
+    }).join("\n");
+
+    const goals = (data.mainGoals || []).map((g) => `- ${g}`).join("\n");
+    const pages = (data.requiredPages || []).map((p) => `- ${p}`).join("\n");
+
+    const preface = `SYVÄANALYYSIIN VIETÄVÄ TUOTANTO-OHJE – Mukauta esimerkkipohjaa (src/prompt/prompt.md) tämän asiakkaan briiffiin.`;
+
+    const prompt = [
+      preface,
+      "",
+      "1) TAVOITE JA ROOLIT",
+      "- Toteuta moderni, minimalistinen ja laadukas sivusto asiakkaalle tämän briiffin pohjalta.",
+      "",
+      "2) SISÄÄNTULO (CLIENT-OBJEKTI)",
+      "```json",
+      JSON.stringify(clientObject, null, 2),
+      "```",
+      "",
+      "3) YDINVAATIMUKSET (tiivistelmä lomakkeesta)",
+      `- Tavoitteet:\n${goals || "- (ei määritelty)"}`,
+      `- Sivut:\n${pages || "- (ei määritelty)"}`,
+      `- Kielet: ${(data.languages || []).join(", ") || "(ei määritelty)"}`,
+      `- Ainutlaatuisuus: ${data.uniqueSellingPoint || "(ei määritelty)"}`,
+      `- Erityistoiminnot: ${data.specialFeatures || "(ei määritelty)"}`,
+      `- Integraatiot:\n${integrationsList || "- (ei)"}`,
+      "",
+      "4) DESIGN-PREFERENSSIT",
+      `- Tyyli: ${data.designStyle || "(ei määritelty)"}`,
+      `- Värit: ${data.colorPreferences || "(ei määritelty)"}`,
+      `- Inspiraatio: ${data.referenceSites || "(ei määritelty)"}`,
+      `- Äänensävy: ${data.toneOfVoice || "(ei määritelty)"}`,
+      "",
+      "5) SISÄLTÖ JA SEO",
+      `- Sisällön omistus: ${data.contentOwnership || "(ei määritelty)"}`,
+      `- SEO-taso: ${data.seo || "(ei määritelty)"}`,
+      "",
+      "6) AIKATAULU JA MUUT",
+      `- Aikataulu: ${data.timeline || "(ei määritelty)"}`,
+      `- Lisäpalvelut: ${(data.additionalServices || []).join(", ") || "(ei)"}`,
+      `- Muut toiveet: ${data.additionalRequests || "(ei)"}`,
+      "",
+      "OHJE: Käytä src/prompt/prompt.md -pohjaa sellaisenaan. Täytä kaikki kohdat tämän briiffin mukaisesti ja merkitse puutteet turvallisilla oletuksilla (ilmoita oletus). Tuota lopuksi sivukartta, komponenttitaso ja QA-checklist." 
+    ].join("\n");
+
+    return prompt;
+  };
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -699,9 +768,18 @@ Lisätietoja: ${formData.message || "Ei"}
 
       if (result.success) {
         setSubmitStatus("success");
-        // Reset form after 3 seconds
-        setTimeout(() => {
-          setFormData({
+      } else {
+        setSubmitStatus("error");
+      }
+    } catch (error) {
+      setSubmitStatus("error");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const resetFormAndClose = () => {
+    setFormData({
             companyName: "",
             industry: "",
             targetAudience: "",
@@ -728,20 +806,10 @@ Lisätietoja: ${formData.message || "Ei"}
             additionalServices: [],
             additionalRequests: "",
           });
-          setCurrentStep(0);
-          setTimeout(() => {
-            onClose();
-            setSubmitStatus("idle");
-          }, 2000);
-        }, 3000);
-      } else {
-        setSubmitStatus("error");
-      }
-    } catch (error) {
-      setSubmitStatus("error");
-    } finally {
-      setIsSubmitting(false);
-    }
+    setCurrentStep(0);
+    setGeneratedPrompt("");
+    setSubmitStatus("idle");
+    onClose();
   };
 
   if (!isOpen) return null;
@@ -787,7 +855,7 @@ Lisätietoja: ${formData.message || "Ei"}
         >
           <div className="p-6">
             {submitStatus === "success" ? (
-              <div className="text-center py-12">
+              <div className="py-10 text-center">
                 <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4">
                   <svg
                     className="w-8 h-8 text-green-400"
@@ -803,12 +871,15 @@ Lisätietoja: ${formData.message || "Ei"}
                     />
                   </svg>
                 </div>
-                <h3 className="text-xl font-medium text-white mb-2">
-                  Hakemus lähetetty!
-                </h3>
-                <p className="text-gray-400">
-                  Otamme sinuun yhteyttä mahdollisimman pian.
-                </p>
+                <h3 className="text-xl font-medium text-white mb-2">Hakemus lähetetty!</h3>
+                <p className="text-gray-400 mb-6">Olemme vastaanottaneet vastauksesi. Otamme sinuun yhteyttä mahdollisimman pian.</p>
+                <button
+                  type="button"
+                  onClick={resetFormAndClose}
+                  className="px-5 py-2 rounded-lg bg-white text-black hover:bg-gray-100 transition-colors font-medium"
+                >
+                  Sulje
+                </button>
               </div>
             ) : submitStatus === "error" ? (
               <div className="text-center py-12">
@@ -836,7 +907,7 @@ Lisätietoja: ${formData.message || "Ei"}
                 </h3>
 
                 {"intro" in steps[currentStep] && steps[currentStep].intro && (
-                  <p className="text-sm text-white/70 mb-4">
+                <p className="text-sm text-body-subtle mb-4">
                     {steps[currentStep].intro}
                   </p>
                 )}

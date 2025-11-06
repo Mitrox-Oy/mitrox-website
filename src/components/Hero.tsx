@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
 import ColorBends from './ColorBends';
+import { useLanguage } from '../context/LanguageContext';
 
 const Hero = () => {
   const [showContent, setShowContent] = useState<boolean>(false);
   const [showTitle, setShowTitle] = useState<boolean>(false);
   const [showSubtitle, setShowSubtitle] = useState<boolean>(false);
   const [showButtons, setShowButtons] = useState<boolean>(false);
+  const { language } = useLanguage();
+  const isFinnish = language === 'fi';
 
   useEffect(() => {
     const prefersReduced =
@@ -86,17 +89,17 @@ const Hero = () => {
               }`}
               style={{ fontFamily: 'Epilogue, sans-serif', fontWeight: 600 }}
             >
-              Teknologia, joka tuntuu luonnolliselta
+              {isFinnish ? 'Teknologia, joka tuntuu luonnolliselta' : 'Technology that feels natural'}
             </h1>
 
             {/* Subtitle */}
             <p
-              className={`text-base sm:text-lg text-gray-200 mb-6 sm:mb-8 max-w-[42rem] mx-auto leading-relaxed font-light transition-all duration-1000 ease-out px-2 ${
+              className={`text-base sm:text-lg text-body-subtle mb-6 sm:mb-8 max-w-[42rem] mx-auto leading-relaxed font-light transition-all duration-1000 ease-out px-2 ${
                 showSubtitle ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
               }`}
               style={{ fontFamily: 'GeistSans, "GeistSans Fallback", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"', fontWeight: 400 }}
             >
-              Mitrox muuttaa monimutkaisen yksinkertaiseksi ja tehokkaaksi
+              {isFinnish ? 'Mitrox muuttaa monimutkaisen yksinkertaiseksi ja tehokkaaksi' : 'Mitrox turns complexity into clarity and efficiency'}
             </p>
 
             {/* Buttons */}
@@ -110,7 +113,7 @@ const Hero = () => {
                 className="w-full sm:w-auto px-6 sm:px-8 py-3 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 text-white font-medium hover:bg-black/60 hover:border-white/20 transition-all duration-300 flex items-center justify-center gap-2"
                 style={{ fontFamily: 'GeistSans, "GeistSans Fallback", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"', fontWeight: 400 }}
               >
-                Tutustu tuotteisiin
+                {isFinnish ? 'Tutustu tuotteisiin' : 'Explore products'}
                 <ChevronDown className="w-4 h-4" />
               </button>
               <button
@@ -118,7 +121,7 @@ const Hero = () => {
                 className="w-full sm:w-auto px-6 sm:px-8 py-3 rounded-full bg-white text-black hover:bg-gray-100 font-medium transition-all duration-300 flex items-center justify-center"
                 style={{ fontFamily: 'GeistSans, "GeistSans Fallback", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"', fontWeight: 400 }}
               >
-                Ota yhteyttä
+                {isFinnish ? 'Ota yhteyttä' : 'Contact us'}
               </button>
             </div>
           </div>

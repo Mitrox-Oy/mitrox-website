@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Globe, Bot, Sparkles, ArrowUpRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext";
 
 type Product = {
   id: string;
@@ -16,43 +17,52 @@ type Product = {
 };
 
 const ProductsSection: React.FC = () => {
-  const products: Product[] = [
-    {
-      id: "websites",
-      icon: Globe,
-      title: "Ensiluokkaiset sivustot",
-      subtitle: "Suunniteltu yrityksesi menestykseen",
-      description:
-        "Modernit ja käyttäjäystävälliset verkkosivut, jotka kertovat yrityksesi tarinan ja kasvattavat liiketoimintaasi. Yksilöllinen design joka vastaa brändisi visiota.",
-      buttonText: "Tutustu portfolioon",
-      link: "/websites",
-      action: null,
-      comingSoon: false,
-    },
-    {
-      id: "advisor",
-      icon: Bot,
-      title: "Mitrox AI Advisor",
-      subtitle: "Älykäs kasvukumppanisi",
-      description:
-        "Premium-tason tekoälyneuvoja, joka ohjaa, myy ja tukee asiakkaitasi 24/7. Rakenna luottamusta, karsi manuaalista työtä ja skaalaa myyntiäsi ilman lisäresursseja.",
-      buttonText: "Tutustu ratkaisuun",
-      link: "/advisor",
-      action: null,
-      comingSoon: false,
-    },
-    {
-      id: "coming-soon",
-      icon: Sparkles,
-      title: "Seuraava innovaatio",
-      description:
-        "Työskentelemme parhaillaan uuden innovatiivisen ratkaisun parissa. Pysy kuulolla ja saat tiedon ensimmäisten joukossa!",
-      buttonText: "Tulossa pian",
-      link: null,
-      action: null,
-      comingSoon: true,
-    },
-  ];
+  const { language } = useLanguage();
+  const isFinnish = language === "fi";
+
+  const products: Product[] = useMemo(
+    () => [
+      {
+        id: "websites",
+        icon: Globe,
+        title: "Mitrox Sites",
+        subtitle: isFinnish ? "Suunniteltu yrityksesi menestykseen" : "Designed for your business success",
+        description: isFinnish
+          ? "Modernit ja käyttäjäystävälliset verkkosivut, jotka kertovat yrityksesi tarinan ja kasvattavat liiketoimintaasi. Yksilöllinen design joka vastaa brändisi visiota."
+          : "Modern, user-friendly websites that tell your brand story and drive growth. Tailored design that matches your vision.",
+        buttonText: isFinnish ? "Tutustu portfolioon" : "View portfolio",
+        link: "/websites",
+        action: null,
+        comingSoon: false,
+      },
+      {
+        id: "advisor",
+        icon: Bot,
+        title: "Mitrox AI Advisor",
+        subtitle: isFinnish ? "Älykäs kasvukumppanisi" : "Your intelligent growth partner",
+        description: isFinnish
+          ? "Premium-tason tekoälyneuvoja, joka ohjaa, myy ja tukee asiakkaitasi 24/7. Rakenna luottamusta, karsi manuaalista työtä ja skaalaa myyntiäsi ilman lisäresursseja."
+          : "A premium AI advisor that guides, sells, and supports your customers 24/7. Build trust, automate manual work, and scale without extra headcount.",
+        buttonText: isFinnish ? "Tutustu ratkaisuun" : "Explore the solution",
+        link: "/advisor",
+        action: null,
+        comingSoon: false,
+      },
+      {
+        id: "coming-soon",
+        icon: Sparkles,
+        title: isFinnish ? "Seuraava innovaatio" : "The next innovation",
+        description: isFinnish
+          ? "Työskentelemme parhaillaan uuden innovatiivisen ratkaisun parissa. Pysy kuulolla ja saat tiedon ensimmäisten joukossa!"
+          : "We are crafting our next innovative solution. Stay tuned and be among the first to know!",
+        buttonText: isFinnish ? "Tulossa pian" : "Coming soon",
+        link: null,
+        action: null,
+        comingSoon: true,
+      },
+    ],
+    [isFinnish]
+  );
 
   return (
     <section
@@ -61,14 +71,16 @@ const ProductsSection: React.FC = () => {
     >
       <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="mb-20 flex flex-col gap-6">
-          <span className="text-[0.65rem] uppercase tracking-[0.5em] text-white/35">
-            [ Meidän tuotteemme ]
+          <span className="text-[0.65rem] uppercase tracking-[0.5em] text-body-caption">
+            {isFinnish ? "[ Meidän tuotteemme ]" : "[ Our products ]"}
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-[2.9rem] font-medium text-white">
-            Älykkäästi rakennettu menestys
+            {isFinnish ? "Älykkäästi rakennettu menestys" : "Success built intelligently"}
           </h2>
-          <p className="max-w-2xl text-sm sm:text-base text-white/45">
-            Uskomme, että menestys syntyy älykkäästä suunnittelusta – siksi jokainen sivusto ja ratkaisu rakennetaan strategisesti yrityksesi tavoitteiden ympärille.
+          <p className="max-w-2xl text-sm sm:text-base text-body-subtle">
+            {isFinnish
+              ? "Uskomme, että menestys syntyy älykkäästä suunnittelusta – siksi jokainen sivusto ja ratkaisu rakennetaan strategisesti yrityksesi tavoitteiden ympärille."
+              : "We believe success comes from thoughtful planning. Every site and solution we deliver is strategically built around your business goals."}
           </p>
         </div>
 
@@ -83,7 +95,7 @@ const ProductsSection: React.FC = () => {
               <div className="absolute inset-0 rounded-2xl bg-black/60 opacity-0 transition duration-500 group-hover:opacity-100" />
               {product.comingSoon && (
                 <span className="absolute right-6 top-6 z-10 rounded-full border border-white/10 px-3 py-1 text-[0.6rem] uppercase tracking-[0.35em] text-white/55">
-                    Tulossa pian
+                    {isFinnish ? "Tulossa pian" : "Coming soon"}
                 </span>
               )}
               <div className="relative z-10 flex h-full flex-col gap-6">
@@ -92,12 +104,12 @@ const ProductsSection: React.FC = () => {
                     {product.title}
                   </h3>
                   {product.subtitle && (
-                    <span className="text-[0.7rem] uppercase tracking-[0.4em] text-white/35">
+                    <span className="text-[0.7rem] uppercase tracking-[0.4em] text-body-caption">
                       {product.subtitle}
                     </span>
                   )}
                 </div>
-                <p className="text-sm leading-relaxed text-white/45">
+                <p className="text-sm leading-relaxed text-body-subtle">
                   {product.description}
                 </p>
 

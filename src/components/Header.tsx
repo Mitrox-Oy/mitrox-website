@@ -1,20 +1,9 @@
 // src/components/Header.tsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Menu, X, ArrowRight, ChevronDown, Globe2, Sparkles } from "lucide-react";
 import logo from "../assets/logo.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
-const NAV = [
-  { label: "Etusivu", href: "hero" },
-  { label: "Tietoa meistä", href: "/about" },
-];
-
-type ProductNavItem = { label: string; href: string; subtitle?: string };
-
-const PRODUCTS: ProductNavItem[] = [
-  { label: "Ensiluokkaiset sivustot", href: "/websites", subtitle: "Suunniteltu yrityksesi menestykseen" },
-  { label: "Mitrox AI Advisor", href: "/advisor", subtitle: "Älykäs kasvukumppanisi" },
-];
+import { useLanguage } from "../context/LanguageContext";
 
 const Header: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -24,8 +13,37 @@ const Header: React.FC = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
+  const { language } = useLanguage();
+
+  const navItems = useMemo(
+    () => [
+      { label: language === "fi" ? "Etusivu" : "Home", href: "hero" },
+      { label: language === "fi" ? "Tietoa meistä" : "About Us", href: "/about" },
+    ],
+    [language]
+  );
+
+  const productItems = useMemo(
+    () => [
+      {
+        label: "Mitrox Sites",
+        href: "/websites",
+        subtitle: language === "fi" ? "Suunniteltu yrityksesi menestykseen" : "Designed for your business success",
+      },
+      {
+        label: "Mitrox AI Advisor",
+        href: "/advisor",
+        subtitle: language === "fi" ? "Älykäs kasvukumppanisi" : "Your intelligent growth partner",
+      },
+    ],
+    [language]
+  );
+
+  const [sitesItem, advisorItem] = productItems;
 
   const isProductPage = location.pathname === "/websites" || location.pathname === "/advisor";
+
+  const affiliateLabel = language === "fi" ? "Affiliate-ohjelma" : "Affiliate program";
 
   // Handle products dropdown with delay
   const handleProductsMouseEnter = () => {
@@ -91,7 +109,7 @@ const Header: React.FC = () => {
                 <Link
                   to="/"
                   className="flex items-center select-none"
-                  aria-label="Mitrox Solutions – etusivu"
+                  aria-label={language === "fi" ? "Mitrox Solutions – etusivu" : "Mitrox Solutions – home"}
                   onClick={(e) => {
                     if (location.pathname === "/") {
                       e.preventDefault();
@@ -111,8 +129,8 @@ const Header: React.FC = () => {
                 {/* Navigation */}
                 <nav className="flex items-center gap-2">
                   {/* Etusivu - first */}
-                  {NAV[0] && (() => {
-                    const item = NAV[0];
+                  {navItems[0] && (() => {
+                    const item = navItems[0];
                     const isPage = item.href.startsWith("/");
                     return (
                       <Link
@@ -151,7 +169,7 @@ const Header: React.FC = () => {
                       aria-expanded={productsOpen}
                       aria-haspopup="true"
                     >
-                      Tuotteet
+                      {language === "fi" ? "Tuotteet" : "Products"}
                       <ChevronDown className={`w-4 h-4 transition-transform ${productsOpen ? 'rotate-180' : ''}`} />
                     </button>
 
@@ -168,9 +186,9 @@ const Header: React.FC = () => {
                             <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-white/10 text-white/80">
                               <Globe2 className="w-4 h-4" />
                             </span>
-                            <span className="flex-1 min-w-0">
-                              <span className="block text-sm">Ensiluokkaiset sivustot</span>
-                              <span className="block text-[0.6rem] uppercase tracking-[0.35em] text-white/45 mt-0.5">Suunniteltu yrityksesi menestykseen</span>
+                              <span className="flex-1 min-w-0">
+                              <span className="block text-sm">Mitrox Sites</span>
+                            <span className="block text-[0.6rem] uppercase tracking-[0.35em] text-body-caption mt-0.5">{sitesItem?.subtitle}</span>
                             </span>
                             <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                           </Link>
@@ -183,9 +201,9 @@ const Header: React.FC = () => {
                             <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-white/10 text-white/80">
                               <Sparkles className="w-4 h-4" />
                             </span>
-                            <span className="flex-1 min-w-0">
+                              <span className="flex-1 min-w-0">
                               <span className="block text-sm">Mitrox AI Advisor</span>
-                              <span className="block text-[0.6rem] uppercase tracking-[0.35em] text-white/45 mt-0.5">Älykäs kasvukumppanisi</span>
+                            <span className="block text-[0.6rem] uppercase tracking-[0.35em] text-body-caption mt-0.5">{advisorItem?.subtitle}</span>
                             </span>
                             <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                           </Link>
@@ -195,7 +213,7 @@ const Header: React.FC = () => {
                   </div>
 
                   {/* Rest of navigation items (Tietoa meistä) */}
-                  {NAV.slice(1).map((item) => {
+                  {navItems.slice(1).map((item) => {
                     const isPage = item.href.startsWith("/");
                     return (
                       <Link
@@ -223,7 +241,7 @@ const Header: React.FC = () => {
                   to="/affiliate"
                   className="px-5 py-2.5 bg-black/20 hover:bg-black/30 text-white rounded-full text-base font-light transition-all backdrop-blur-sm border border-white/20 hover:border-white/30"
                 >
-                  Affiliate
+                  {affiliateLabel}
                 </Link>
 
                 {/* Contact Button */}
@@ -238,7 +256,7 @@ const Header: React.FC = () => {
                     setOpen(false);
                   }}
                 >
-                  Ota yhteyttä
+                  {language === "fi" ? "Ota yhteyttä" : "Contact us"}
                 </a>
               </div>
             </div>
@@ -259,7 +277,7 @@ const Header: React.FC = () => {
           <Link
             to="/"
             className="inline-flex items-center justify-center rounded-full bg-black/40 backdrop-blur-xl backdrop-saturate-150 shadow-2xl p-4 text-white hover:bg-white/10 transition-colors pointer-events-auto"
-            aria-label="Mitrox Solutions – etusivu"
+            aria-label={language === "fi" ? "Mitrox Solutions – etusivu" : "Mitrox Solutions – home"}
             onClick={(e) => {
               if (location.pathname === "/") {
                 e.preventDefault();
@@ -279,7 +297,7 @@ const Header: React.FC = () => {
           <button
             onClick={() => setOpen((v) => !v)}
             className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-black/40 backdrop-blur-xl backdrop-saturate-150 shadow-2xl p-4 text-white hover:bg-white/10 transition-colors pointer-events-auto"
-            aria-label="Valikko"
+            aria-label={language === "fi" ? "Valikko" : "Menu"}
             aria-expanded={open}
             aria-controls="mobile-nav"
           >
@@ -298,8 +316,8 @@ const Header: React.FC = () => {
           <div className="rounded-2xl bg-black/40 backdrop-blur-xl backdrop-saturate-150 shadow-2xl p-3 w-56">
             <div className="flex flex-col gap-0.5">
               {/* Mobile Etusivu - first */}
-              {NAV[0] && (() => {
-                const item = NAV[0];
+              {navItems[0] && (() => {
+                const item = navItems[0];
                 const isPage = item.href.startsWith("/");
                 return (
                   <Link
@@ -333,12 +351,12 @@ const Header: React.FC = () => {
                   onClick={() => setMobileProductsOpen(!mobileProductsOpen)}
                   className="w-full flex items-center justify-between rounded-full px-4 py-1.5 text-white/80 hover:text-white hover:bg-white/10 transition-colors text-sm font-light"
                 >
-                  Tuotteet
+                  {language === "fi" ? "Tuotteet" : "Products"}
                   <ChevronDown className={`w-4 h-4 transition-transform ${mobileProductsOpen ? 'rotate-180' : ''}`} />
                 </button>
                 {mobileProductsOpen && (
                   <div className="ml-4 mt-1 flex flex-col gap-0.5">
-                    {PRODUCTS.map((product) => {
+                    {productItems.map((product) => {
                       const isPage = product.href.startsWith("/");
                       return (
                         <Link
@@ -352,7 +370,7 @@ const Header: React.FC = () => {
                             setOpen(false);
                             setMobileProductsOpen(false);
                           }}
-                          className="block rounded-full px-4 py-1.5 text-white/60 hover:text-white/80 hover:bg-white/10 transition-colors text-xs font-light"
+                          className="block rounded-full px-4 py-1.5 text-body-muted hover:text-white/80 hover:bg-white/10 transition-colors text-xs font-light"
                         >
                           {product.label}
                         </Link>
@@ -374,7 +392,7 @@ const Header: React.FC = () => {
                     }}
                     className="block rounded-full px-4 py-1.5 text-white/80 hover:text-white hover:bg-white/10 transition-colors text-sm font-light"
                   >
-                    Prosessi
+                    {language === "fi" ? "Prosessi" : "Process"}
                   </a>
                   <a
                     href="#pricing"
@@ -385,7 +403,7 @@ const Header: React.FC = () => {
                     }}
                     className="block rounded-full px-4 py-1.5 text-white/80 hover:text-white hover:bg-white/10 transition-colors text-sm font-light"
                   >
-                    Hinnasto
+                    {language === "fi" ? "Hinnasto" : "Pricing"}
                   </a>
                   <a
                     href="#faq"
@@ -402,7 +420,7 @@ const Header: React.FC = () => {
               )}
 
               {/* Mobile Rest of navigation items (Tietoa meistä) */}
-              {NAV.slice(1).map((item) => {
+              {navItems.slice(1).map((item) => {
                 const isPage = item.href.startsWith("/");
                 return (
                   <Link
@@ -430,7 +448,7 @@ const Header: React.FC = () => {
                 onClick={() => setOpen(false)}
                 className="block rounded-full px-4 py-1.5 text-white/80 hover:text-white hover:bg-white/10 transition-colors text-sm font-light"
               >
-                Affiliate
+                {affiliateLabel}
               </Link>
 
               {/* Mobile Contact - fifth */}
@@ -445,7 +463,7 @@ const Header: React.FC = () => {
                 }}
                 className="block rounded-full px-4 py-1.5 text-white/80 hover:text-white hover:bg-white/10 transition-colors text-sm font-light"
               >
-                Ota yhteyttä
+                {language === "fi" ? "Ota yhteyttä" : "Contact us"}
               </a>
             </div>
           </div>

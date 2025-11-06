@@ -1,17 +1,22 @@
 // src/components/BottomNavbar.tsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { ChevronUp, ChevronDown } from "lucide-react";
-
-const BOTTOM_NAV_ITEMS = [
-  { label: "Prosessi", href: "process" },
-  { label: "Hinnasto", href: "pricing" },
-  { label: "FAQ", href: "faq" },
-];
+import { useLanguage } from "../context/LanguageContext";
 
 const BottomNavbar: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(true);
   const [isFooterVisible, setIsFooterVisible] = useState(false);
   const [footerHeight, setFooterHeight] = useState(0);
+  const { language } = useLanguage();
+
+  const items = useMemo(
+    () => [
+      { label: language === "fi" ? "Prosessi" : "Process", href: "process" },
+      { label: language === "fi" ? "Hinnasto" : "Pricing", href: "pricing" },
+      { label: "FAQ", href: "faq" },
+    ],
+    [language]
+  );
 
   const handleScroll = (id: string) => {
     const el = document.getElementById(id);
@@ -38,7 +43,7 @@ const BottomNavbar: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
-  const computedBottom = isFooterVisible ? Math.min(footerHeight, 45) + 24 : isExpanded ? 0 : 16;
+  const computedBottom = isFooterVisible ? Math.min(footerHeight, 80) + 48 : isExpanded ? 0 : 16;
 
   return (
     <nav
@@ -60,7 +65,7 @@ const BottomNavbar: React.FC = () => {
             <div className="flex items-center gap-3">
               {isExpanded && (
                 <>
-                  {BOTTOM_NAV_ITEMS.map((item, index) => (
+                  {items.map((item, index) => (
                     <React.Fragment key={item.href}>
                       <a
                         href={`#${item.href}`}
@@ -68,11 +73,11 @@ const BottomNavbar: React.FC = () => {
                           e.preventDefault();
                           handleScroll(item.href);
                         }}
-                        className="text-white/70 hover:text-white transition-colors text-sm font-light px-4 py-1.5 rounded-full hover:bg-white/10 whitespace-nowrap"
+                        className="text-body-subtle hover:text-white transition-colors text-sm font-light px-4 py-1.5 rounded-full hover:bg-white/10 whitespace-nowrap"
                       >
                         {item.label}
                       </a>
-                      {index < BOTTOM_NAV_ITEMS.length - 1 && (
+                      {index < items.length - 1 && (
                         <div className="w-px h-4 bg-white/10" />
                       )}
                     </React.Fragment>
@@ -82,10 +87,10 @@ const BottomNavbar: React.FC = () => {
               )}
               <button
                 onClick={() => setIsExpanded(!isExpanded)}
-                className={`text-white/70 hover:text-white transition-colors font-light rounded-full hover:bg-white/10 flex items-center justify-center ${
+                className={`text-body-subtle hover:text-white transition-colors font-light rounded-full hover:bg-white/10 flex items-center justify-center ${
                   isExpanded ? "text-sm px-3 py-1.5" : "text-xs px-1.5 py-0.5"
                 }`}
-                aria-label={isExpanded ? "Piilota navigaatio" : "Näytä navigaatio"}
+                aria-label={isExpanded ? (language === "fi" ? "Piilota navigaatio" : "Hide navigation") : language === "fi" ? "Näytä navigaatio" : "Show navigation"}
               >
                 {isExpanded ? (
                   <ChevronDown className="w-4 h-4" />

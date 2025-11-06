@@ -1,9 +1,10 @@
 // Features.tsx
 
-import React from "react";
+import React, { useMemo } from "react";
 import { Zap, HeartHandshake, Workflow } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import PixelBlast from "./PixelBlast";
+import { useLanguage } from "../context/LanguageContext";
 
 type Feature = {
   icon: LucideIcon;
@@ -12,26 +13,35 @@ type Feature = {
 };
 
 const Features: React.FC = () => {
-  const features: Feature[] = [
-    {
-      icon: Workflow,
-      title: "Modernit Ratkaisut",
-      description:
-        "Suunnittelemme ja toteutamme ratkaisuja, jotka yhdistävät teknisen osaamisen ja viimeistellyn muotoilun. Tuloksena on verkkopalvelu, joka toimii saumattomasti ja näyttää yhtä hyvältä kuin se toimii.",
-    },
-    {
-      icon: Zap,
-      title: "Nopea Käyttöönotto",
-      description:
-        "Rakennamme tehokkaasti ja toimitamme ajallaan. Käyttöönotto sujuu ilman turhaa odottelua – yrityksesi on valmiina hyödyntämään uutta ratkaisua lähes heti.",
-    },
-    {
-      icon: HeartHandshake,
-      title: "Aina Apunasi",
-      description:
-        "Tarjoamme jatkuvaa tukea ja kehitystä. Olemme kumppani, johon voit nojata – aina, kun tarvitset neuvoa, päivityksiä tai uusia ideoita yrityksesi kasvuun.",
-    },
-  ];
+  const { language } = useLanguage();
+  const isFinnish = language === "fi";
+
+  const features: Feature[] = useMemo(
+    () => [
+      {
+        icon: Workflow,
+        title: isFinnish ? "Modernit Ratkaisut" : "Modern solutions",
+        description: isFinnish
+          ? "Suunnittelemme ja toteutamme ratkaisuja, jotka yhdistävät teknisen osaamisen ja viimeistellyn muotoilun. Tuloksena on verkkopalvelu, joka toimii saumattomasti ja näyttää yhtä hyvältä kuin se toimii."
+          : "We design and deliver solutions that combine technical expertise with refined design. The result is a digital experience that works flawlessly and looks as good as it performs.",
+      },
+      {
+        icon: Zap,
+        title: isFinnish ? "Nopea Käyttöönotto" : "Fast implementation",
+        description: isFinnish
+          ? "Rakennamme tehokkaasti ja toimitamme ajallaan. Käyttöönotto sujuu ilman turhaa odottelua – yrityksesi on valmiina hyödyntämään uutta ratkaisua lähes heti."
+          : "We build efficiently and deliver on schedule. Implementation happens without unnecessary waiting – your organisation can leverage the new solution almost immediately.",
+      },
+      {
+        icon: HeartHandshake,
+        title: isFinnish ? "Aina Apunasi" : "Always by your side",
+        description: isFinnish
+          ? "Tarjoamme jatkuvaa tukea ja kehitystä. Olemme kumppani, johon voit nojata – aina, kun tarvitset neuvoa, päivityksiä tai uusia ideoita yrityksesi kasvuun."
+          : "We provide ongoing support and continuous improvement. We are a partner you can rely on whenever you need advice, updates, or fresh ideas to grow your business.",
+      },
+    ],
+    [isFinnish]
+  );
 
   return (
     <section
@@ -62,14 +72,16 @@ const Features: React.FC = () => {
 
       <div className="relative z-10 mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="mb-16 flex flex-col gap-5">
-          <span className="text-[0.7rem] uppercase tracking-[0.5em] text-white/50">
-            [ Miksi valita Mitrox ]
+          <span className="text-[0.7rem] uppercase tracking-[0.5em] text-body-caption">
+            {isFinnish ? "[ Miksi valita Mitrox ]" : "[ Why choose Mitrox ]"}
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium text-white">
-            Miksi valita Mitrox?
+            {isFinnish ? "Miksi valita Mitrox?" : "Why choose Mitrox?"}
           </h2>
-          <p className="max-w-3xl text-base leading-relaxed text-white/70">
-            Suomalainen teknologiayritys, joka yhdistää älyn, designin ja tehokkuuden. Ymmärrämme liiketoimintasi tarpeet ja rakennamme ratkaisuja, jotka vievät yritystäsi eteenpäin – luotettavasti ja tyylillä.
+          <p className="max-w-3xl text-base leading-relaxed text-body-subtle">
+            {isFinnish
+              ? "Suomalainen teknologiayritys, joka yhdistää älyn, designin ja tehokkuuden. Ymmärrämme liiketoimintasi tarpeet ja rakennamme ratkaisuja, jotka vievät yritystäsi eteenpäin – luotettavasti ja tyylillä."
+              : "A Finnish technology company that blends intelligence, design, and efficiency. We understand your business needs and craft solutions that move your company forward – reliably and with style."}
           </p>
         </div>
 
@@ -81,7 +93,7 @@ const Features: React.FC = () => {
             >
               <div className="flex h-full flex-col gap-4">
                 <h3 className="text-xl font-medium text-white">{feature.title}</h3>
-                <p className="text-sm leading-relaxed text-white/60">
+                <p className="text-sm leading-relaxed text-body-muted">
                   {feature.description}
                 </p>
               </div>

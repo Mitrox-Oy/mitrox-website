@@ -1,5 +1,6 @@
 // src/AIAgentPage.tsx
 import React, { useState, useEffect } from "react";
+import { useLanguage } from "./context/LanguageContext";
 import SpaceBackground from "./components/SpaceBackground";
 import Header from "./components/Header";
 import BottomNavbar from "./components/BottomNavbar";
@@ -17,9 +18,12 @@ import ColorBends from "./components/ColorBends";
 import { ChevronDown } from "lucide-react";
 import { buildMeta, organizationSchema, breadcrumbSchema, serviceSchema } from "../lib/seo";
 import { SEO_CONFIG } from "../config/seo.fi";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const AIAgentHero: React.FC = () => {
   const [showContent, setShowContent] = useState<boolean>(false);
+  const { language } = useLanguage();
+  const isFinnish = language === "fi";
 
   useEffect(() => {
     const prefersReduced =
@@ -96,17 +100,17 @@ const AIAgentHero: React.FC = () => {
             </h1>
 
             <p
-              className={`text-[0.75rem] sm:text-sm uppercase tracking-[0.5em] text-white/50 mb-6 sm:mb-7 transition-all duration-700 ease-out ${
+              className={`text-[0.75rem] sm:text-sm uppercase tracking-[0.5em] text-body-caption mb-6 sm:mb-7 transition-all duration-700 ease-out ${
                 showContent ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
               }`}
               style={{ transitionDelay: showContent ? "120ms" : "0ms" }}
             >
-              Älykäs kasvukumppanisi
+              {isFinnish ? "Älykäs kasvukumppanisi" : "Your intelligent growth partner"}
             </p>
 
             {/* Subtitle */}
             <p
-              className={`text-base sm:text-lg text-gray-200 mb-6 sm:mb-8 max-w-[44rem] mx-auto leading-relaxed font-light transition-all duration-700 ease-out px-2 ${
+              className={`text-base sm:text-lg text-body-subtle mb-6 sm:mb-8 max-w-[44rem] mx-auto leading-relaxed font-light transition-all duration-700 ease-out px-2 ${
                 showContent ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
               }`}
               style={{
@@ -116,7 +120,9 @@ const AIAgentHero: React.FC = () => {
                 fontWeight: 400,
               }}
             >
-              Suunnittelemme B2B-myynnille rakennetun tekoälyneuvojan, joka palvelee 24/7, ohjaa asiakkaasi oikeaan ratkaisuun ja vapauttaa tiimisi keskittymään kannattavaan kasvuun.
+              {isFinnish
+                ? "Suunnittelemme B2B-myynnille rakennetun tekoälyneuvojan, joka palvelee 24/7, ohjaa asiakkaasi oikeaan ratkaisuun ja vapauttaa tiimisi keskittymään kannattavaan kasvuun."
+                : "We design an AI advisor built for B2B sales that serves 24/7, guides customers to the right solution, and frees your team to focus on profitable growth."}
             </p>
 
             {/* Buttons */}
@@ -135,7 +141,7 @@ const AIAgentHero: React.FC = () => {
                   fontWeight: 400,
                 }}
               >
-                Kokeile Advisoria
+                {isFinnish ? "Kokeile Advisoria" : "Try the Advisor"}
                 <ChevronDown className="w-4 h-4" />
               </button>
               <button
@@ -147,7 +153,7 @@ const AIAgentHero: React.FC = () => {
                   fontWeight: 400,
                 }}
               >
-                Ota yhteyttä
+                {isFinnish ? "Ota yhteyttä" : "Contact us"}
               </button>
             </div>
           </div>
@@ -158,6 +164,8 @@ const AIAgentHero: React.FC = () => {
 };
 
 export default function AIAgentPage() {
+  const { language } = useLanguage();
+  const isFinnish = language === "fi";
   // SEO_V2 enhancements (only when flag is enabled)
   const isSEO_V2 = import.meta.env.VITE_SEO_V2 === "true";
   const meta = isSEO_V2
@@ -185,23 +193,27 @@ export default function AIAgentPage() {
       {/* Space background for everything except hero */}
       <SpaceBackground className="top-[100vh]" />
       <SEOHead
-        title={meta?.title || "Mitrox AI Advisor - Mitrox.io"}
-        description={meta?.description || "Älykäs Mitrox AI Advisor palvelee asiakkaasi 24/7, kasvattaa myyntiä ja vapauttaa tiimisi keskittymään kasvuun. Premium-tason tekoälyneuvoja B2B-yrityksille."}
+        title={meta?.title || (isFinnish ? "Mitrox AI Advisor - Mitrox.io" : "Mitrox AI Advisor - Mitrox.io")}
+        description={meta?.description || (isFinnish
+          ? "Älykäs Mitrox AI Advisor palvelee asiakkaasi 24/7, kasvattaa myyntiä ja vapauttaa tiimisi keskittymään kasvuun. Premium-tason tekoälyneuvoja B2B-yrityksille."
+          : "Mitrox AI Advisor serves your customers 24/7, grows sales, and frees your team to focus on growth. A premium AI advisor for B2B companies.")}
         url={meta?.url || "https://mitrox.io/advisor"}
         keywords={meta?.keywords}
       />
-      {isSEO_V2 && <SEOEnhanced meta={meta} schemas={schemas} lang="fi" />}
+      {isSEO_V2 && <SEOEnhanced meta={meta} schemas={schemas} lang={isFinnish ? "fi" : "en"} />}
       <Header />
       <BottomNavbar />
-      <AIAgentHero />
-      <TrustSection />
-      <ProcessSection type="advisor" />
-      <section className="relative bg-black">
-        <Features />
-        <Pricing />
-        <FAQ type="advisor" emitSchema={isSEO_V2} />
-      </section>
-      <ContactForm />
+      <ErrorBoundary>
+        <AIAgentHero />
+        <TrustSection />
+        <ProcessSection type="advisor" />
+        <section className="relative bg-black">
+          <Features />
+          <Pricing />
+          <FAQ type="advisor" emitSchema={isSEO_V2} />
+        </section>
+        <ContactForm />
+      </ErrorBoundary>
       <Footer />
       <ScrollToTop />
     </div>
