@@ -16,7 +16,7 @@ Tämä on pitkä, vaiheittainen ja yksityiskohtainen ohje, jonka voit liittää 
 Käytä alla olevaa skeemaa. Jos jokin puuttuu, täytä **turvallisilla oletuksilla** ja merkitse `// TODO`-kommentilla.
 
 ```ts
-type Client = {
+type Client = {www
   brand_name: string
   one_liner: string
   offering: string[]
