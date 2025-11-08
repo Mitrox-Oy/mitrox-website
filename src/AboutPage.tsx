@@ -187,11 +187,11 @@ export default function AboutPage() {
       {/* HERO */}
       <section className="pt-28 pb-12 text-center px-6">
         <h1 className="mt-5 text-4xl md:text-6xl font-semibold leading-tight tracking-tight text-white">
-          {isFinnish ? "Selkeää teknologiaa. Aitoa osaamista." : "Clear technology. Real expertise."}
+          {isFinnish ? "Selkeää teknologiaa. Aitoa osaamista." : "Clear technology. True craftsmanship."}
         </h1>
 
         <p className="mt-4 text-body-muted max-w-2xl mx-auto">
-          {isFinnish ? "Tiimimme yhdistää luovuuden, teknisen osaamisen ja huolellisuuden – tuloksena ratkaisuja, jotka kestävät aikaa ja käyttöä." : "Our team blends creativity, technical skill and care – resulting in solutions that stand the test of time and use."}
+          {isFinnish ? "Tiimimme yhdistää luovuuden, teknisen osaamisen ja huolellisuuden – tuloksena ratkaisuja, jotka kestävät aikaa ja käyttöä." : "Our team blends creativity, precision, and care — building digital solutions that perform beautifully and endure over time."}
         </p>
       </section>
 
@@ -251,19 +251,19 @@ export default function AboutPage() {
               {isFinnish ? "Miten työskentelemme" : "How we work"}
             </h3>
             <p className="mt-3 text-body-subtle leading-relaxed md:leading-8">
-              {isFinnish ? "Selkeä prosessi, nopea toimitus ja jatkuva yhteistyö." : "Clear process, fast delivery and continuous collaboration."}
+              {isFinnish ? "Selkeä prosessi, nopea toimitus ja jatkuva yhteistyö." : "Clear process. Fast delivery. Continuous collaboration."}
             </p>
             <p className="mt-3 text-body-subtle leading-relaxed md:leading-8">
-              {isFinnish ? "Rakennamme ratkaisuja, jotka toimivat, näyttävät hyvältä ja kestävät aikaa – tinkimättä laadusta tai kokemuksesta." : "We build solutions that work, look great and last – without compromising quality or experience."}
+              {isFinnish ? "Rakennamme ratkaisuja, jotka toimivat, näyttävät hyvältä ja kestävät aikaa – tinkimättä laadusta tai kokemuksesta." : "We create digital solutions that not only look great but perform flawlessly — built to last without ever compromising quality or experience."}
             </p>
             <p className="mt-6 text-body-subtle leading-relaxed md:leading-8">
-              {isFinnish ? "Jokainen projekti alkaa ymmärryksestä: mitä yrityksesi tarvitsee juuri nyt ja mikä vie sitä eteenpäin." : "Every project starts with understanding: what your company needs now and what will move it forward."}
+              {isFinnish ? "Jokainen projekti alkaa ymmärryksestä: mitä yrityksesi tarvitsee juuri nyt ja mikä vie sitä eteenpäin." : "Every project begins with understanding: what your business needs now, and what will drive it forward."}
             </p>
             <p className="mt-3 text-body-subtle leading-relaxed md:leading-8">
-              {isFinnish ? "Emme käytä valmiita malleja, vaan suunnittelemme kokonaisuuden, joka tukee tavoitteitasi ja tekee arjesta helpompaa." : "We don’t use off‑the‑shelf templates; we design a whole that supports your goals and makes everyday life easier."}
+              {isFinnish ? "Emme käytä valmiita malleja, vaan suunnittelemme kokonaisuuden, joka tukee tavoitteitasi ja tekee arjesta helpompaa." : "We don't rely on ready-made templates. Every solution is custom-built to fit your goals and make daily work easier."}
             </p>
             <p className="mt-3 text-body-subtle leading-relaxed md:leading-8">
-              {isFinnish ? "Kun sivusto tai ratkaisu on valmis, jatkamme kehitystä yhdessä kanssasi – pitkäjänteisesti, vastuullisesti ja luotettavasti." : "Once a site or solution is ready, we continue development with you – long‑term, responsibly and reliably."}
+              {isFinnish ? "Kun sivusto tai ratkaisu on valmis, jatkamme kehitystä yhdessä kanssasi – pitkäjänteisesti, vastuullisesti ja luotettavasti." : "And once your site or system is live, we stay by your side — refining, supporting, and evolving it responsibly for the long term."}
             </p>
           </div>
         </div>
@@ -275,7 +275,7 @@ export default function AboutPage() {
               {isFinnish ? "Luotettavuus" : "Reliability"}
             </h3>
             <p className="mt-3 text-sm text-body-muted leading-relaxed">
-              {isFinnish ? "Pidämme lupauksemme ja toimitamme ajallaan. Asiakkaamme voivat luottaa jokaiseen vaiheeseen." : "We keep our promises and deliver on time. Our clients can rely on every step."}
+              {isFinnish ? "Pidämme lupauksemme ja toimitamme ajallaan. Asiakkaamme voivat luottaa jokaiseen vaiheeseen." : "We keep our word and deliver on time. Every phase is transparent, every promise kept."}
             </p>
           </div>
           <div className="p-6 md:p-8">
@@ -283,7 +283,7 @@ export default function AboutPage() {
               {isFinnish ? "Helppous" : "Simplicity"}
             </h3>
             <p className="mt-3 text-sm text-body-muted leading-relaxed">
-              {isFinnish ? "Teemme monimutkaisesta yksinkertaista. Ratkaisumme säästävät aikaa ja energiaa – ilman turhaa säätöä." : "We make the complex simple. Our solutions save time and energy – without unnecessary hassle."}
+              {isFinnish ? "Teemme monimutkaisesta yksinkertaista. Ratkaisumme säästävät aikaa ja energiaa – ilman turhaa säätöä." : "We make the complex simple. Our solutions save you time and energy — without unnecessary friction."}
             </p>
           </div>
           <div className="p-6 md:p-8">
@@ -291,7 +291,7 @@ export default function AboutPage() {
               {isFinnish ? "Täsmällisyys" : "Precision"}
             </h3>
             <p className="mt-3 text-sm text-body-muted leading-relaxed">
-              {isFinnish ? "Viimeistelty työ ja pitäviä aikatauluja. Laatu näkyy sekä lopputuloksessa että yhteistyössä." : "Refined work and reliable schedules. Quality shows both in the result and in the collaboration."}
+              {isFinnish ? "Viimeistelty työ ja pitäviä aikatauluja. Laatu näkyy sekä lopputuloksessa että yhteistyössä." : "We value detail and discipline. From scheduling to delivery, quality shows in both the process and the result."}
             </p>
           </div>
         </div>

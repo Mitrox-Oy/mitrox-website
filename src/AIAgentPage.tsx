@@ -108,7 +108,7 @@ const AIAgentHero: React.FC = () => {
               }`}
               style={{ transitionDelay: showContent ? "120ms" : "0ms" }}
             >
-              {isFinnish ? "Älykäs kasvukumppanisi" : "Your intelligent growth partner"}
+              {isFinnish ? "Älykäs kasvukumppanisi" : "Your 24/7 digital team member"}
             </p>
 
             {/* Subtitle */}
@@ -125,7 +125,7 @@ const AIAgentHero: React.FC = () => {
             >
               {isFinnish
                 ? "Suunnittelemme B2B-myynnille rakennetun tekoälyneuvojan, joka palvelee 24/7, ohjaa asiakkaasi oikeaan ratkaisuun ja vapauttaa tiimisi keskittymään kannattavaan kasvuun."
-                : "We design an AI advisor built for B2B sales that serves 24/7, guides customers to the right solution, and frees your team to focus on profitable growth."}
+                : "Designed for businesses that value both efficiency and experience. Your AI advisor supports customers around the clock and helps your team close more sales — effortlessly."}
             </p>
 
             {/* Buttons */}

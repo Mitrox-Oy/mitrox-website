@@ -40,7 +40,7 @@ const Header: React.FC = () => {
       {
         label: "Mitrox AI Advisor",
         href: getFullLocalizedPath("advisor", language),
-        subtitle: language === "fi" ? "Älykäs kasvukumppanisi" : "Your intelligent growth partner",
+        subtitle: language === "fi" ? "Älykäs kasvukumppanisi" : "Your 24/7 digital team member",
       },
     ],
     [language]

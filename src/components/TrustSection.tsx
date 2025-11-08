@@ -88,12 +88,12 @@ const TrustSection: React.FC = () => {
             {isFinnish ? "Kokeile Mitrox AI Advisoria" : "Try Mitrox AI Advisor"}
           </h2>
           <p className="text-[0.75rem] uppercase tracking-[0.45em] text-body-caption">
-            {isFinnish ? "ÄLYKÄS KASVUKUMPPANISI" : "YOUR INTELLIGENT GROWTH PARTNER"}
+            {isFinnish ? "ÄLYKÄS KASVUKUMPPANISI" : "Your 24/7 digital team member"}
           </p>
           <p className="text-body-subtle max-w-2xl mx-auto mt-4">
             {isFinnish
               ? "Keskustele neuvojalta Mitroxista, hinnoittelusta tai siitä, miten voimme vauhdittaa yrityksesi kasvua."
-              : "Chat with the advisor about Mitrox, pricing, or how we can accelerate your business growth."}
+              : "Chat with our AI Advisor about Mitrox, pricing, or how intelligent automation can accelerate your business growth."}
           </p>
         </div>
 
@@ -113,12 +113,12 @@ const TrustSection: React.FC = () => {
 
           <div className="lg:pl-10">
             <h3 className="text-white text-2xl font-medium mb-2">
-              {isFinnish ? "Testaa itse" : "Try it yourself"}
+              {isFinnish ? "Testaa itse" : "Experience it yourself"}
             </h3>
             <p className="text-body-subtle mb-6 max-w-md">
               {isFinnish
                 ? "Kysele neuvojalta Mitroxista, hinnoittelusta tai siitä, miten voimme vauhdittaa yrityksesi kasvua."
-                : "Ask the advisor about Mitrox, pricing, or how we can accelerate your business growth."}
+                : "Ask the Advisor about our services, pricing, or how Mitrox can help your business grow — instantly, anytime."}
             </p>
             <Link
               to="#pricing"

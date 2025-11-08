@@ -76,10 +76,10 @@ const createAdvisorSteps = (isFinnish: boolean): Step[] => [
     title: isFinnish ? "Idekartoitus" : "Discovery",
     desc: isFinnish
       ? "Pidämme tiiviin 30 minuutin sparrauksen, jossa määritämme, mitä neuvonantaja tekee ja mitä sillä halutaan saavuttaa."
-      : "A focused 30-minute workshop defines what the advisor does and the outcomes you want to achieve.",
+      : "In a focused 30-minute workshop, we define what your AI Advisor will do and what outcomes you want to achieve.",
     details: isFinnish
       ? "Käymme läpi käyttötapaukset, äänensävyn ja tietolähteet. Lopputuloksena saat selkeän suunnitelman ja tavoitteet, joiden mukaan etenemme."
-      : "We review use cases, tone of voice, and data sources – resulting in a clear plan and targets for the build.",
+      : "We map use cases, tone of voice, and data sources — resulting in a clear roadmap and measurable goals for the build.",
     icon: MessageSquare,
   },
   {
@@ -87,10 +87,10 @@ const createAdvisorSteps = (isFinnish: boolean): Step[] => [
     title: isFinnish ? "Toteutus" : "Implementation",
     desc: isFinnish
       ? "Suunnittelemme ja rakennamme neuvojan sisällöt, integraatiot ja toiminnot yrityksesi tarpeiden mukaan."
-      : "We design and build the advisor’s content, integrations, and flows around your business goals.",
+      : "We design and build your advisor's logic, content, and integrations around your business workflows.",
     details: isFinnish
       ? "Varmistamme, että tieto liikkuu järjestelmien välillä automaattisesti ja manuaalinen työ vähenee."
-      : "Automation keeps information moving between systems while reducing manual workload.",
+      : "Automation ensures smooth information flow between systems, reducing manual work and keeping everything in sync.",
     icon: Sparkles,
   },
   {
@@ -98,10 +98,10 @@ const createAdvisorSteps = (isFinnish: boolean): Step[] => [
     title: isFinnish ? "Testaus" : "Testing",
     desc: isFinnish
       ? "Testaamme ratkaisun huolellisesti eri tilanteissa ja kanavissa."
-      : "We test extensively across scenarios and channels to guarantee reliability.",
+      : "We rigorously test across multiple scenarios and channels to ensure reliability and a natural user experience.",
     details: isFinnish
       ? "Hienosäädämme sanaston, vastaukset ja käytettävyyden, jotta neuvonantaja toimii luonnollisesti ja virheettömästi."
-      : "Vocabulary, responses, and UX are fine-tuned so the advisor feels natural and accurate.",
+      : "Responses, tone, and UX are refined until the advisor feels seamless, human, and perfectly on-brand.",
     icon: Zap,
   },
   {
@@ -109,10 +109,10 @@ const createAdvisorSteps = (isFinnish: boolean): Step[] => [
     title: isFinnish ? "Käyttöönotto" : "Go live",
     desc: isFinnish
       ? "Julkaisemme yhdessä neuvonantajan sinun valitsemaan palveluun ja varmistamme, että kaikki toimii saumattomasti heti alusta alkaen."
-      : "We launch the advisor on your chosen channel and ensure everything works from day one.",
+      : "Your AI Advisor is launched on the chosen platform — fully functional from day one.",
     details: isFinnish
       ? "Optimoimme ratkaisua jatkuvasti, jotta neuvonantaja tukee liiketoimintaasi entistä paremmin kuukausi kuukaudelta."
-      : "Continuous optimisation keeps the advisor aligned with your business goals month after month.",
+      : "We monitor performance and continue optimizing to keep the advisor aligned with your evolving business goals.",
     icon: Rocket,
   },
 ];
@@ -132,7 +132,7 @@ const ProcessSection: React.FC<ProcessSectionProps> = ({ type = "website" }) => 
 
   const getTitle = () => {
     if (type === "advisor") {
-      return isFinnish ? "Helppo ja huoleton prosessi" : "A smooth, guided process";
+      return isFinnish ? "Helppo ja huoleton prosessi" : "A Smooth, Guided Process";
     }
     return isFinnish ? "Helppo ja huoleton prosessi" : "A smooth, guided process";
   };
@@ -141,7 +141,7 @@ const ProcessSection: React.FC<ProcessSectionProps> = ({ type = "website" }) => 
     return type === "advisor"
       ? isFinnish
         ? "Neljä selkeää vaihetta valmiiseen Mitrox AI Advisoriin – me hoidamme kaiken puolestasi."
-        : "Four clear steps to your Mitrox AI Advisor – we handle everything."
+        : "Four clear steps to create your Mitrox AI Advisor — we take care of every detail."
       : isFinnish
       ? "Neljä selkeää vaihetta valmiiseen verkkosivustoon – me hoidamme kaiken puolestasi."
       : "Four clear steps to launch your website – we take care of the details.";
