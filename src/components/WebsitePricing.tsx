@@ -15,6 +15,7 @@ type BillingCycle = "monthly" | "yearly" | "3year";
 
 const WebsitePricing: React.FC = () => {
   const { language } = useLanguage();
+  const isFinnish = language === "fi";
   const pricingId = useLocalizedSectionId("pricing");
   const [billing, setBilling] = useState<BillingCycle>("yearly");
   const [showCalculator, setShowCalculator] = useState(false);
@@ -88,10 +89,10 @@ const WebsitePricing: React.FC = () => {
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl font-light text-white mb-4">
-            Hinnoittelu
+            {isFinnish ? "Hinnoittelu" : "Pricing"}
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto mb-8">
-            Yksinkertainen ja läpinäkyvä hinnoittelu ilman piilotettuja kustannuksia
+            {isFinnish ? "Yksinkertainen ja läpinäkyvä hinnoittelu ilman piilotettuja kustannuksia" : "Simple and transparent pricing without hidden costs"}
           </p>
 
           <div className="flex flex-col items-center gap-4">
@@ -101,16 +102,16 @@ const WebsitePricing: React.FC = () => {
               className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full bg-transparent hover:bg-white/5 border border-white/10 hover:border-white/20 text-body-subtle hover:text-white transition-all duration-300 text-sm font-light"
             >
               <Calculator className="w-3.5 h-3.5" />
-              {showCalculator ? "Piilota hinnoittelulaskuri" : "Laske hinta projektillesi"}
+              {showCalculator ? (isFinnish ? "Piilota hinnoittelulaskuri" : "Hide pricing calculator") : (isFinnish ? "Laske hinta projektillesi" : "Calculate price for your project")}
             </button>
 
             {/* Billing Cycle Selector */}
             <div className="w-full sm:w-auto">
               <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
                 {([
-                  { key: "monthly", label: "Kuukausittain", discount: null },
-                  { key: "yearly", label: "Vuosittain", discount: "-10%" },
-                  { key: "3year", label: "3 vuotta", discount: "-20%" },
+                  { key: "monthly", label: isFinnish ? "Kuukausittain" : "Monthly", discount: null },
+                  { key: "yearly", label: isFinnish ? "Vuosittain" : "Yearly", discount: "-10%" },
+                  { key: "3year", label: isFinnish ? "3 vuotta" : "3 years", discount: "-20%" },
                 ] as const).map((option) => {
                   const isActive = billing === option.key;
                   return (
@@ -140,7 +141,7 @@ const WebsitePricing: React.FC = () => {
           <div className="max-w-4xl mx-auto mb-16">
             <div className="rounded-2xl p-8 lg:p-12 bg-white/[0.02] backdrop-blur-xl border border-white/10">
               <h3 className="text-2xl font-medium text-white mb-6 text-center">
-                Hinnoittelulaskuri
+                {isFinnish ? "Hinnoittelulaskuri" : "Pricing Calculator"}
               </h3>
 
               <div className="space-y-8">
@@ -148,10 +149,10 @@ const WebsitePricing: React.FC = () => {
                 <div>
                   <div className="flex items-center justify-between mb-4">
                     <label className="text-sm font-medium text-gray-300">
-                      Sivumäärä
+                      {isFinnish ? "Sivumäärä" : "Number of pages"}
                     </label>
                     <span className="text-xl font-medium text-white">
-                      {pageCount} {pageCount === 1 ? "sivu" : "sivua"}
+                      {pageCount} {pageCount === 1 ? (isFinnish ? "sivu" : "page") : (isFinnish ? "sivua" : "pages")}
                     </span>
                   </div>
                   <input
@@ -168,7 +169,7 @@ const WebsitePricing: React.FC = () => {
                   <div className="relative mt-2 h-5">
                     <span className="absolute left-0 text-xs text-gray-500 whitespace-nowrap">
                       <span className="sm:hidden">5</span>
-                      <span className="hidden sm:inline">5 (sisältyy aloitusmaksuun)</span>
+                      <span className="hidden sm:inline">5 {isFinnish ? "(sisältyy aloitusmaksuun)" : "(included in setup fee)"}</span>
                     </span>
                     <span className="absolute left-[33%] -translate-x-1/2 text-xs text-gray-500 whitespace-nowrap">10</span>
                     <span className="absolute left-[67%] -translate-x-1/2 text-xs text-gray-500 whitespace-nowrap">15</span>
@@ -180,10 +181,10 @@ const WebsitePricing: React.FC = () => {
                 <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10">
                   <div>
                     <label className="text-sm font-medium text-white block mb-1">
-                      Lisäkieli (Suomi ↔ Englanti)
+                      {isFinnish ? "Lisäkieli (Suomi ↔ Englanti)" : "Additional Language (Finnish ↔ English)"}
                     </label>
                     <p className="text-xs text-gray-400">
-                      Käännös ja viimeistely verkkosivustolle
+                      {isFinnish ? "Käännös ja viimeistely verkkosivustolle" : "Translation and finishing for the website"}
                     </p>
                   </div>
                   <button
@@ -208,7 +209,7 @@ const WebsitePricing: React.FC = () => {
                       Mitrox AI Advisor
                     </label>
                     <p className="text-xs text-gray-400">
-                      24/7 keskusteleva asiakasavustaja (+{formatEUR(AI_BOT_MONTHLY)}/kk)
+                      {isFinnish ? "24/7 keskusteleva asiakasavustaja" : "24/7 conversational customer assistant"} (+{formatEUR(AI_BOT_MONTHLY)}/{isFinnish ? "kk" : "mo"})
                     </p>
                   </div>
                   <button
@@ -230,10 +231,10 @@ const WebsitePricing: React.FC = () => {
         <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10">
           <div>
             <label className="text-sm font-medium text-white block mb-1">
-              Laajennettu hakukoneoptimointi
+              {isFinnish ? "Laajennettu hakukoneoptimointi" : "Extended Search Engine Optimization"}
             </label>
             <p className="text-xs text-gray-400">
-              Hakukoneoptimointi sisällölle ja rakenteelle (+{formatEUR(SEO_MONTHLY)}/kk)
+              {isFinnish ? "Hakukoneoptimointi sisällölle ja rakenteelle" : "Search engine optimization for content and structure"} (+{formatEUR(SEO_MONTHLY)}/{isFinnish ? "kk" : "mo"})
             </p>
           </div>
           <button
@@ -254,14 +255,14 @@ const WebsitePricing: React.FC = () => {
                 {/* Price Breakdown */}
                 <div className="space-y-4 pt-6 border-t border-white/10">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-400">Aloitusmaksu</span>
+                    <span className="text-sm text-gray-400">{isFinnish ? "Aloitusmaksu" : "Setup fee"}</span>
                     <div className="text-right">
                       <span className="text-lg font-medium text-white">
                         {formatEUR(calculateSetupFee())}
                       </span>
                       {pageCount > 5 && (
                         <p className="text-xs text-gray-500 mt-1">
-                          {formatEUR(SETUP_FEE_BASE)} (5 sivua) + {pageCount - 5} × {formatEUR(SETUP_FEE_PER_PAGE)}
+                          {formatEUR(SETUP_FEE_BASE)} ({isFinnish ? "5 sivua" : "5 pages"}) + {pageCount - 5} × {formatEUR(SETUP_FEE_PER_PAGE)}
                         </p>
                       )}
                     </div>
@@ -269,14 +270,14 @@ const WebsitePricing: React.FC = () => {
 
                   {includeLanguage && (
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-400">Lisäkieli</span>
+                      <span className="text-sm text-gray-400">{isFinnish ? "Lisäkieli" : "Additional language"}</span>
                       <div className="text-right">
                         <span className="text-lg font-medium text-white">
                           {formatEUR(calculateLanguageFee())}
                         </span>
                         {pageCount > 5 && (
                           <p className="text-xs text-gray-500 mt-1">
-                            {formatEUR(LANGUAGE_FEE_BASE)} (5 sivua) + {pageCount - 5} × {formatEUR(LANGUAGE_FEE_PER_PAGE)}
+                            {formatEUR(LANGUAGE_FEE_BASE)} ({isFinnish ? "5 sivua" : "5 pages"}) + {pageCount - 5} × {formatEUR(LANGUAGE_FEE_PER_PAGE)}
                           </p>
                         )}
                       </div>
@@ -284,56 +285,56 @@ const WebsitePricing: React.FC = () => {
                   )}
 
                   <div className="flex justify-between items-center pt-4 border-t border-white/10">
-                    <span className="text-base font-medium text-white">Yhteensä (aloitusmaksu)</span>
+                    <span className="text-base font-medium text-white">{isFinnish ? "Yhteensä (aloitusmaksu)" : "Total (setup fee)"}</span>
                     <span className="text-2xl font-medium text-white">
                       {formatEUR(totalSetupFee)}
                     </span>
                   </div>
 
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-400">Kuukausimaksu</span>
+                    <span className="text-sm text-gray-400">{isFinnish ? "Kuukausimaksu" : "Monthly fee"}</span>
                     <div className="text-right">
                       <span className="text-lg font-medium text-white">
-                        {formatEUR(monthlyFee)} /kk
+                        {formatEUR(monthlyFee)} /{isFinnish ? "kk" : "mo"}
                       </span>
                       {(includeAIBot || includeSEO) && (
                         <p className="text-xs text-gray-500 mt-1">
-                          {formatEUR(baseMonthlyFee)} (verkkosivusto)
+                          {formatEUR(baseMonthlyFee)} ({isFinnish ? "verkkosivusto" : "website"})
                           {includeAIBot && ` + ${formatEUR(AI_BOT_MONTHLY)} (Mitrox AI Advisor)`}
-                          {includeSEO && ` + ${formatEUR(SEO_MONTHLY)} (Laajennettu hakukoneoptimointi)`}
+                          {includeSEO && ` + ${formatEUR(SEO_MONTHLY)} (${isFinnish ? "Laajennettu hakukoneoptimointi" : "Extended SEO"})`}
                         </p>
                       )}
                       {billing === "monthly" && includeAIBot && AI_BOT_MONTHLY_SAVINGS > 0 && (
                         <p className="text-xs text-green-400 mt-1">
-                          Säästät {formatEUR(AI_BOT_MONTHLY_SAVINGS)} / kk (Starter Mitrox AI Advisor verrattuna normi hintaan)
+                          {isFinnish ? "Säästät" : "Save"} {formatEUR(AI_BOT_MONTHLY_SAVINGS)} / {isFinnish ? "kk" : "mo"} ({isFinnish ? "Starter Mitrox AI Advisor verrattuna normi hintaan" : "Starter Mitrox AI Advisor compared to standard price"})
                         </p>
                       )}
                       {billing !== "monthly" && (
                         <>
                           {!includeAIBot && (
                             <p className="text-xs text-gray-500 mt-1">
-                              {billing === "yearly" && `Säästät ${formatEUR(MONTHLY_PRICE * 12 - YEARLY_PRICE)} / vuosi`}
-                              {billing === "3year" && `Säästät ${formatEUR(MONTHLY_PRICE * 36 - THREE_YEAR_PRICE)} / 3 vuotta`}
+                              {billing === "yearly" && `${isFinnish ? "Säästät" : "Save"} ${formatEUR(MONTHLY_PRICE * 12 - YEARLY_PRICE)} / ${isFinnish ? "vuosi" : "year"}`}
+                              {billing === "3year" && `${isFinnish ? "Säästät" : "Save"} ${formatEUR(MONTHLY_PRICE * 36 - THREE_YEAR_PRICE)} / ${isFinnish ? "3 vuotta" : "3 years"}`}
                             </p>
                           )}
                           {includeAIBot && billing === "yearly" && AI_BOT_YEARLY_SAVINGS > 0 && (
                             <p className="text-xs text-green-400 mt-1">
-                              Säästät {formatEUR(AI_BOT_YEARLY_SAVINGS)} / vuosi (Starter Mitrox AI Advisor)
+                              {isFinnish ? "Säästät" : "Save"} {formatEUR(AI_BOT_YEARLY_SAVINGS)} / {isFinnish ? "vuosi" : "year"} (Starter Mitrox AI Advisor)
                             </p>
                           )}
                           {includeAIBot && billing === "3year" && AI_BOT_3YEAR_SAVINGS > 0 && (
                             <p className="text-xs text-green-400 mt-1">
-                              Säästät {formatEUR(AI_BOT_3YEAR_SAVINGS)} / 3 vuotta (Starter Mitrox AI Advisor)
+                              {isFinnish ? "Säästät" : "Save"} {formatEUR(AI_BOT_3YEAR_SAVINGS)} / {isFinnish ? "3 vuotta" : "3 years"} (Starter Mitrox AI Advisor)
                             </p>
                           )}
                           {includeSEO && billing === "yearly" && SEO_YEARLY_SAVINGS > 0 && (
                             <p className="text-xs text-green-400 mt-1">
-                              Säästät {formatEUR(SEO_YEARLY_SAVINGS)} / vuosi (Laajennettu hakukoneoptimointi)
+                              {isFinnish ? "Säästät" : "Save"} {formatEUR(SEO_YEARLY_SAVINGS)} / {isFinnish ? "vuosi" : "year"} ({isFinnish ? "Laajennettu hakukoneoptimointi" : "Extended SEO"})
                             </p>
                           )}
                           {includeSEO && billing === "3year" && SEO_3YEAR_SAVINGS > 0 && (
                             <p className="text-xs text-green-400 mt-1">
-                              Säästät {formatEUR(SEO_3YEAR_SAVINGS)} / 3 vuotta (Laajennettu hakukoneoptimointi)
+                              {isFinnish ? "Säästät" : "Save"} {formatEUR(SEO_3YEAR_SAVINGS)} / {isFinnish ? "3 vuotta" : "3 years"} ({isFinnish ? "Laajennettu hakukoneoptimointi" : "Extended SEO"})
                             </p>
                           )}
                         </>
@@ -344,20 +345,20 @@ const WebsitePricing: React.FC = () => {
                   <div className="pt-4 border-t border-white/10 bg-white/5 rounded-xl p-4">
                     <div className="flex justify-between items-baseline">
                       <span className="text-sm font-medium text-gray-300">
-                        {billing === "monthly" && "Ensimmäinen vuosi (arvio)"}
-                        {billing === "yearly" && "Ensimmäinen vuosi (arvio)"}
-                        {billing === "3year" && "3 vuoden kokonaishinta (arvio)"}
+                        {billing === "monthly" && (isFinnish ? "Ensimmäinen vuosi (arvio)" : "First year (estimate)")}
+                        {billing === "yearly" && (isFinnish ? "Ensimmäinen vuosi (arvio)" : "First year (estimate)")}
+                        {billing === "3year" && (isFinnish ? "3 vuoden kokonaishinta (arvio)" : "3 year total price (estimate)")}
                       </span>
                       <span className="text-3xl font-light text-white">
                         {formatEUR(totalSetupFee + (monthlyFee * (billing === "monthly" || billing === "yearly" ? 12 : 36)))}
                       </span>
                     </div>
                     <p className="text-xs text-gray-500 mt-2 text-right">
-                      {billing === "monthly" && "Sisältää aloitusmaksun + 12kk kuukausimaksu"}
-                      {billing === "yearly" && "Sisältää aloitusmaksun + 12kk kuukausimaksu"}
-                      {billing === "3year" && "Sisältää aloitusmaksun + 36kk kuukausimaksu"}
+                      {billing === "monthly" && (isFinnish ? "Sisältää aloitusmaksun + 12kk kuukausimaksu" : "Includes setup fee + 12 months monthly fee")}
+                      {billing === "yearly" && (isFinnish ? "Sisältää aloitusmaksun + 12kk kuukausimaksu" : "Includes setup fee + 12 months monthly fee")}
+                      {billing === "3year" && (isFinnish ? "Sisältää aloitusmaksun + 36kk kuukausimaksu" : "Includes setup fee + 36 months monthly fee")}
                       <br />
-                      Hinnat verottomina. ALV 25,5 % lisätään hintaan
+                      {isFinnish ? "Hinnat verottomina. ALV 25,5 % lisätään hintaan" : "Prices exclude VAT. 25.5% VAT applies"}
                     </p>
                   </div>
                 </div>
@@ -372,66 +373,66 @@ const WebsitePricing: React.FC = () => {
             {/* Limited Launch Price Badge */}
             <div className="absolute -top-3 right-4 z-10">
               <div className="bg-black/90 text-green-400 px-1.5 py-0.5 rounded-full text-xs font-semibold border border-green-400/50 whitespace-nowrap">
-                Rajoitettu lanseeraushinta
+                {isFinnish ? "Rajoitettu lanseeraushinta" : "Limited launch price"}
               </div>
             </div>
 
             <div className="text-center mb-8">
               <h3 className="text-2xl font-medium text-white mb-2">
-                Verkkosivupaketti
+                {isFinnish ? "Verkkosivupaketti" : "Website Package"}
               </h3>
               <p className="text-gray-400">
-                Yksinkertainen ja läpinäkyvä hinnoittelu
+                {isFinnish ? "Yksinkertainen ja läpinäkyvä hinnoittelu" : "Simple and transparent pricing"}
               </p>
             </div>
 
             {/* Setup Fee */}
             <div className="mb-8 pb-8 border-b border-white/10">
               <div className="text-center">
-                <div className="text-sm text-gray-400 mb-2">Aloitusmaksu</div>
+                <div className="text-sm text-gray-400 mb-2">{isFinnish ? "Aloitusmaksu" : "Setup fee"}</div>
                 <div className="text-3xl font-light text-white mb-2">
                   {formatEUR(599)}
                 </div>
                 <div className="text-xs text-gray-400 mb-1">
-                  Verkkosivusto sisältää jopa 5 sivua.<br />
-                  Lisäsivut {formatEUR(99)} / sivu
+                  {isFinnish ? "Verkkosivusto sisältää jopa 5 sivua." : "Website includes up to 5 pages."}<br />
+                  {isFinnish ? "Lisäsivut" : "Additional pages"} {formatEUR(99)} / {isFinnish ? "sivu" : "page"}
                 </div>
                 <div className="text-xs text-gray-400 mt-2">
-                  Hinnat verottomina. ALV 25,5 % lisätään hintaan
+                  {isFinnish ? "Hinnat verottomina. ALV 25,5 % lisätään hintaan" : "Prices exclude VAT. 25.5% VAT applies"}
                 </div>
               </div>
             </div>
 
             {/* Subscription */}
             <div className="text-center mb-8">
-              <div className="text-sm text-gray-400 mb-2">Kuukausimaksu</div>
+              <div className="text-sm text-gray-400 mb-2">{isFinnish ? "Kuukausimaksu" : "Monthly fee"}</div>
               <div className="flex items-baseline justify-center mb-2">
                 <span className="text-4xl font-light text-white">
                   {formatEUR(EFFECTIVE_MONTHLY)}
                 </span>
                 <span className="ml-2 text-gray-400 text-lg">
-                  /kk
+                  /{isFinnish ? "kk" : "mo"}
                 </span>
               </div>
               {billing === "yearly" && (
                 <div className="text-xs text-gray-300 bg-white/5 px-3 py-1 rounded-full inline-block border border-white/10 mb-2">
-                  Säästät {formatEUR(MONTHLY_PRICE * 12 - YEARLY_PRICE)} / vuosi
+                  {isFinnish ? "Säästät" : "Save"} {formatEUR(MONTHLY_PRICE * 12 - YEARLY_PRICE)} / {isFinnish ? "vuosi" : "year"}
                 </div>
               )}
               {billing === "3year" && (
                 <div className="text-xs text-gray-300 bg-white/5 px-3 py-1 rounded-full inline-block border border-white/10 mb-2">
-                  Säästät {formatEUR(MONTHLY_PRICE * 36 - THREE_YEAR_PRICE)} / 3 vuotta
+                  {isFinnish ? "Säästät" : "Save"} {formatEUR(MONTHLY_PRICE * 36 - THREE_YEAR_PRICE)} / {isFinnish ? "3 vuotta" : "3 years"}
                 </div>
               )}
               <div className="text-xs text-gray-400 mt-2">
-                Hinnat verottomina. ALV 25,5 % lisätään hintaan
+                {isFinnish ? "Hinnat verottomina. ALV 25,5 % lisätään hintaan" : "Prices exclude VAT. 25.5% VAT applies"}
               </div>
             </div>
 
             {/* Included Features */}
             <div className="mb-8">
               <h4 className="text-lg font-medium text-white mb-4 text-center">
-                Sisältyy kuukausimaksuun:
+                {isFinnish ? "Sisältyy kuukausimaksuun:" : "Included in monthly fee:"}
               </h4>
               <ul className="space-y-3 max-w-2xl mx-auto">
                 <li className="flex items-start gap-3">
@@ -439,7 +440,7 @@ const WebsitePricing: React.FC = () => {
                     <Check className="h-4 w-4 text-green-400" />
                   </div>
                   <span className="text-sm text-gray-300 leading-relaxed">
-                    Sivuston ylläpito ja turvallinen hosting
+                    {isFinnish ? "Sivuston ylläpito ja turvallinen hosting" : "Website maintenance and secure hosting"}
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
@@ -447,7 +448,7 @@ const WebsitePricing: React.FC = () => {
                     <Check className="h-4 w-4 text-green-400" />
                   </div>
                   <span className="text-sm text-gray-300 leading-relaxed">
-                    Kuukausittaiset analytiikka- ja kehitysraportit
+                    {isFinnish ? "Kuukausittaiset analytiikka- ja kehitysraportit" : "Monthly analytics and development reports"}
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
@@ -455,7 +456,7 @@ const WebsitePricing: React.FC = () => {
                     <Check className="h-4 w-4 text-green-400" />
                   </div>
                   <span className="text-sm text-gray-300 leading-relaxed">
-                    Premium-asiakastuki ja jatkuva huolenpito
+                    {isFinnish ? "Premium-asiakastuki ja jatkuva huolenpito" : "Premium customer support and ongoing care"}
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
@@ -463,7 +464,7 @@ const WebsitePricing: React.FC = () => {
                     <Check className="h-4 w-4 text-green-400" />
                   </div>
                   <span className="text-sm text-gray-300 leading-relaxed">
-                    Jopa 4 sisältö- tai designpäivitystä kuukaudessa
+                    {isFinnish ? "Jopa 4 sisältö- tai designpäivitystä kuukaudessa" : "Up to 4 content or design updates per month"}
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
@@ -471,7 +472,7 @@ const WebsitePricing: React.FC = () => {
                     <Check className="h-4 w-4 text-green-400" />
                   </div>
                   <span className="text-sm text-gray-300 leading-relaxed">
-                    Hakukoneoptimointi ja suorituskyvyn seuranta
+                    {isFinnish ? "Hakukoneoptimointi ja suorituskyvyn seuranta" : "Search engine optimization and performance monitoring"}
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
@@ -479,12 +480,12 @@ const WebsitePricing: React.FC = () => {
                     <Check className="h-4 w-4 text-green-400" />
                   </div>
                   <span className="text-sm text-gray-300 leading-relaxed">
-                    Tietoturvapäivitykset ja valvonta
+                    {isFinnish ? "Tietoturvapäivitykset ja valvonta" : "Security updates and monitoring"}
                   </span>
                 </li>
               </ul>
               <p className="text-xs text-gray-400 text-center mt-6 max-w-2xl mx-auto leading-relaxed">
-                Kaikki on huolehdittu puolestasi – sinä keskityt kasvuun.
+                {isFinnish ? "Kaikki on huolehdittu puolestasi – sinä keskityt kasvuun." : "Everything is taken care of for you – you focus on growth."}
               </p>
             </div>
 
@@ -492,7 +493,7 @@ const WebsitePricing: React.FC = () => {
             <div className="text-center mb-8">
               <div className="inline-block px-4 py-2 rounded-full bg-white/5 border border-white/10">
                 <span className="text-xs text-gray-300">
-                  14 päivän rahat takaisin -takuu projektin alusta
+                  {isFinnish ? "14 päivän rahat takaisin -takuu projektin alusta" : "14-day money-back guarantee from project start"}
                 </span>
               </div>
             </div>
@@ -503,11 +504,11 @@ const WebsitePricing: React.FC = () => {
                 onClick={() => setIsFormOpen(true)}
                 className="w-full max-w-md mx-auto py-3 px-6 rounded-xl font-medium text-sm bg-white text-black hover:bg-gray-100 transition-all duration-300 flex items-center justify-center gap-2"
               >
-                Aloita tänään. Täytä kysely tästä
+                {isFinnish ? "Aloita tänään. Täytä kysely tästä" : "Start today. Fill out the inquiry here"}
                 <ArrowRight className="h-4 w-4" />
               </button>
               <p className="text-center text-xs text-gray-400 mt-3">
-                Aloitetaan prosessi yhdessä.
+                {isFinnish ? "Aloitetaan prosessi yhdessä." : "Let's start the process together."}
               </p>
             </div>
           </div>
@@ -517,10 +518,10 @@ const WebsitePricing: React.FC = () => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h3 className="text-2xl sm:text-3xl font-medium text-white mb-4">
-              Vapaaehtoiset lisäpalvelut
+              {isFinnish ? "Vapaaehtoiset lisäpalvelut" : "Optional Add-Ons"}
             </h3>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              Laajenna verkkosivuasi lisäpalveluilla tarpeesi mukaan
+              {isFinnish ? "Laajenna verkkosivuasi lisäpalveluilla tarpeesi mukaan" : "Expand your website with add-on services as needed"}
             </p>
           </div>
 
@@ -532,78 +533,78 @@ const WebsitePricing: React.FC = () => {
               </h4>
               <div className="text-2xl font-light text-white mb-2">
                 {formatEUR(55)}
-                <span className="text-gray-400 text-base ml-1">/ kk alkaen</span>
+                <span className="text-gray-400 text-base ml-1">/ {isFinnish ? "kk" : "mo"} {isFinnish ? "alkaen" : "starting from"}</span>
               </div>
               <p className="text-xs text-gray-400 mb-4">
-                (erikoishinta verkkosivupaketin yhteydessä)
+                ({isFinnish ? "erikoishinta verkkosivupaketin yhteydessä" : "special price with website package"})
               </p>
               <p className="text-sm text-gray-400 leading-relaxed mb-3">
-                24/7 keskusteleva asiakasavustaja, joka vastaa asiakkaiden kysymyksiin ja kerää liidejä.
+                {isFinnish ? "24/7 keskusteleva asiakasavustaja, joka vastaa asiakkaiden kysymyksiin ja kerää liidejä." : "24/7 conversational customer assistant that answers customer questions and collects leads."}
               </p>
               <p className="text-xs text-gray-400 leading-relaxed">
-                Auttaa sinua palvelemaan ympäri vuorokauden.
+                {isFinnish ? "Auttaa sinua palvelemaan ympäri vuorokauden." : "Helps you serve customers around the clock."}
               </p>
             </div>
 
             {/* Additional Languages */}
             <div className="p-6 rounded-xl bg-white/[0.02] backdrop-blur-xl border border-white/10 hover:bg-white/[0.04] transition-all duration-300">
               <h4 className="text-lg font-medium text-white mb-3">
-                Lisäkieli (Suomi ↔ Englanti)
+                {isFinnish ? "Lisäkieli (Suomi ↔ Englanti)" : "Additional Language (Finnish ↔ English)"}
               </h4>
               <div className="text-2xl font-light text-white mb-4">
                 {formatEUR(199)}
-                <span className="text-gray-400 text-base ml-1"> alkaen</span>
+                <span className="text-gray-400 text-base ml-1"> {isFinnish ? "alkaen" : "starting from"}</span>
               </div>
               <p className="text-sm text-gray-400 leading-relaxed mb-2">
-                Käännös ja viimeistely enintään 5 sivulle.
+                {isFinnish ? "Käännös ja viimeistely enintään 5 sivulle." : "Translation and finishing for up to 5 pages."}
               </p>
               <p className="text-sm text-gray-400 leading-relaxed mb-4">
-                Lisäsivut {formatEUR(49)} / sivu.
+                {isFinnish ? "Lisäsivut" : "Additional pages"} {formatEUR(49)} / {isFinnish ? "sivu" : "page"}.
               </p>
               <p className="text-xs text-gray-400">
-                Sisältää ammattitason käännökset, visuaaliset säädöt ja hakukone­optimoidut metatiedot.
+                {isFinnish ? "Sisältää ammattitason käännökset, visuaaliset säädöt ja hakukone­optimoidut metatiedot." : "Includes professional translations, visual adjustments, and SEO-optimized metadata."}
               </p>
             </div>
 
             {/* Extended SEO Optimization */}
             <div className="p-6 rounded-xl bg-white/[0.02] backdrop-blur-xl border border-white/10 hover:bg-white/[0.04] transition-all duration-300">
               <h4 className="text-lg font-medium text-white mb-3">
-                Laajennettu hakukoneoptimointi
+                {isFinnish ? "Laajennettu hakukoneoptimointi" : "Extended Search Engine Optimization"}
               </h4>
               <div className="text-2xl font-light text-white mb-4">
                 {formatEUR(79)}
-                <span className="text-gray-400 text-base ml-1">/ kk alkaen</span>
+                <span className="text-gray-400 text-base ml-1">/ {isFinnish ? "kk" : "mo"} {isFinnish ? "alkaen" : "starting from"}</span>
               </div>
               <p className="text-sm text-gray-400 leading-relaxed mb-3">
-                Parannamme sivustosi löydettävyyttä ja suorituskykyä jatkuvasti.
+                {isFinnish ? "Parannamme sivustosi löydettävyyttä ja suorituskykyä jatkuvasti." : "We continuously improve your site's discoverability and performance."}
               </p>
               <p className="text-sm text-gray-400 leading-relaxed">
-                Kehitämme sisältöä, rakennetta ja nopeutta tavoitteidesi mukaan, jotta sivustosi nousee hakutuloksissa ja houkuttelee oikeat kävijät.
+                {isFinnish ? "Kehitämme sisältöä, rakennetta ja nopeutta tavoitteidesi mukaan, jotta sivustosi nousee hakutuloksissa ja houkuttelee oikeat kävijät." : "We develop content, structure, and speed according to your goals, so your site ranks higher in search results and attracts the right visitors."}
               </p>
             </div>
 
             {/* Extra Updates */}
             <div className="p-6 rounded-xl bg-white/[0.02] backdrop-blur-xl border border-white/10 hover:bg-white/[0.04] transition-all duration-300">
               <h4 className="text-lg font-medium text-white mb-4">
-                Ylimääräiset päivitykset
+                {isFinnish ? "Ylimääräiset päivitykset" : "Extra Updates"}
               </h4>
               <div className="text-2xl font-light text-white mb-2">
                 {formatEUR(19)}
-                <span className="text-gray-400 text-base ml-1">/ päivitys</span>
+                <span className="text-gray-400 text-base ml-1">/ {isFinnish ? "päivitys" : "update"}</span>
               </div>
               <p className="text-xs text-gray-400 mb-6 leading-relaxed">
-                Soveltuu, kun kuukausittainen päivitysmäärä ylittyy.
+                {isFinnish ? "Soveltuu, kun kuukausittainen päivitysmäärä ylittyy." : "Suitable when the monthly update limit is exceeded."}
               </p>
               
               <h5 className="text-base font-medium text-white mb-2">
-                Uudet sivut
+                {isFinnish ? "Uudet sivut" : "New Pages"}
               </h5>
               <div className="text-xl font-light text-white mb-2">
                 {formatEUR(99)}
-                <span className="text-gray-400 text-sm ml-1">/ sivu</span>
+                <span className="text-gray-400 text-sm ml-1">/ {isFinnish ? "sivu" : "page"}</span>
               </div>
               <p className="text-xs text-gray-400 leading-relaxed">
-                Täysin uusi sivu suunniteltuna ja julkaistuna sivustollesi.
+                {isFinnish ? "Täysin uusi sivu suunniteltuna ja julkaistuna sivustollesi." : "A completely new page designed and published on your website."}
               </p>
             </div>
           </div>
