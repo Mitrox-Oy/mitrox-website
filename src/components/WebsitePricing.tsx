@@ -504,7 +504,7 @@ const WebsitePricing: React.FC = () => {
                 onClick={() => setIsFormOpen(true)}
                 className="w-full max-w-md mx-auto py-3 px-6 rounded-xl font-medium text-sm bg-white text-black hover:bg-gray-100 transition-all duration-300 flex items-center justify-center gap-2"
               >
-                {isFinnish ? "Aloita tänään. Täytä kysely tästä" : "Start today. Fill out the inquiry here"}
+                {isFinnish ? "Aloita tänään. Täytä kysely tästä" : "Start your project — Open the project brief"}
                 <ArrowRight className="h-4 w-4" />
               </button>
               <p className="text-center text-xs text-gray-400 mt-3">

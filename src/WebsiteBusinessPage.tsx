@@ -99,7 +99,7 @@ const WebsiteHero: React.FC<{ referencesId: string; processId: string }> = ({ re
               }`}
               style={{ fontFamily: "Epilogue, sans-serif", fontWeight: 600 }}
             >
-              {isFinnish ? "Verkkosivut, jotka tekevät vaikutuksen" : "Websites that make an impact"}
+              {isFinnish ? "Verkkosivut, jotka tekevät vaikutuksen" : "Design that defines your brand online"}
             </h1>
 
             {/* Subtitle */}
@@ -116,7 +116,7 @@ const WebsiteHero: React.FC<{ referencesId: string; processId: string }> = ({ re
             >
               {isFinnish
                 ? "Luomme verkkosivun, joka tekee brändistäsi vakuuttavan ja asiakaskokemuksesta vaivattoman"
-                : "We build a website that makes your brand convincing and the customer experience effortless"}
+                : "Mitrox Sites combine timeless aesthetics with modern technology to create web experiences that inspire and convert."}
             </p>
 
             {/* Buttons */}
@@ -135,7 +135,7 @@ const WebsiteHero: React.FC<{ referencesId: string; processId: string }> = ({ re
                   fontWeight: 400,
                 }}
               >
-                {isFinnish ? "Katso portfolio" : "View portfolio"}
+                {isFinnish ? "Katso portfolio" : "See our work"}
                 <ChevronDown className="w-4 h-4" />
               </button>
               <button
@@ -147,7 +147,7 @@ const WebsiteHero: React.FC<{ referencesId: string; processId: string }> = ({ re
                   fontWeight: 400,
                 }}
               >
-                {isFinnish ? "Aloita tänään" : "Start today"}
+                {isFinnish ? "Aloita tänään" : "How it works"}
               </button>
             </div>
           </div>

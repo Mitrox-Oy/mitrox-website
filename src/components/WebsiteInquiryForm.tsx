@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import { X, Send, ChevronRight, ChevronLeft, ChevronDown } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext";
 
 interface FormData {
   // Yrityksen perustiedot
@@ -128,6 +129,8 @@ const ADDITIONAL_SERVICES_DESCRIPTIONS: { [key: string]: string } = {
 };
 
 const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+  const { language } = useLanguage();
+  const isFinnish = language === "fi";
   const [currentStep, setCurrentStep] = useState(0);
   const [openDropdowns, setOpenDropdowns] = useState<{ [key: string]: boolean }>({});
   const dropdownRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
@@ -164,16 +167,245 @@ const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = (
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
   const [generatedPrompt, setGeneratedPrompt] = useState<string>("");
 
-  const generatePromptFromForm = (data: FormData) => {
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      Object.keys(dropdownRefs.current).forEach((key) => {
+        if (dropdownRefs.current[key] && !dropdownRefs.current[key]?.contains(event.target as Node)) {
+          setOpenDropdowns((prev) => ({ ...prev, [key]: false }));
+        }
+      });
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Auto-select additional services based on language, SEO, and integration selections
+  // Note: We only ADD services automatically, never remove them - user has full control
+  useEffect(() => {
+    const NO_SERVICES = isFinnish ? "Ei lisäpalveluita tällä hetkellä" : "No additional services at this time";
+    
+    // Don't auto-select if user has explicitly chosen "Ei lisäpalveluita"
+    if (formData.additionalServices.includes(NO_SERVICES)) {
+      return;
+    }
+
+    const hasBothLanguages = (isFinnish 
+      ? (formData.languages.includes("Suomi") && formData.languages.includes("Englanti"))
+      : (formData.languages.includes("Finnish") && formData.languages.includes("English")));
+    const needsExtendedSEO = isFinnish 
+      ? formData.seo === "Kyllä, tarvitsen laajempaa SEO-optimointia"
+      : formData.seo === "Yes, I need extended SEO optimization";
+    const hasMitroxAdvisor = formData.integrations.includes("mitrox_advisor");
+    
+    const languageService = isFinnish 
+      ? "Lisäkieli (Suomi ↔ Englanti) – 199 € alkaen"
+      : "Additional language (Finnish ↔ English) – €199 starting";
+    const seoService = isFinnish
+      ? "Laajennettu hakukoneoptimointi – 69 €/kk"
+      : "Extended search engine optimization – €69/month";
+    const advisorService = isFinnish
+      ? "Mitrox Advisor – 55 €/kk alkaen"
+      : "Mitrox Advisor – €55/month starting";
+    
+    const newServices = [...formData.additionalServices];
+    let hasChanges = false;
+
+    // Auto-add language service if both languages selected (only if not already added)
+    if (hasBothLanguages && !newServices.includes(languageService)) {
+      newServices.push(languageService);
+      hasChanges = true;
+    }
+
+    // Auto-add SEO service ONLY if extended SEO is explicitly selected (only if not already added)
+    if (needsExtendedSEO && !newServices.includes(seoService)) {
+      newServices.push(seoService);
+      hasChanges = true;
+    }
+
+    // Auto-add Mitrox Advisor service if selected in integrations (only if not already added)
+    if (hasMitroxAdvisor && !newServices.includes(advisorService)) {
+      newServices.push(advisorService);
+      hasChanges = true;
+    }
+
+    // Note: We don't remove services automatically - user can always manually remove them if needed
+
+    if (hasChanges) {
+      setFormData((prev) => ({ ...prev, additionalServices: newServices }));
+    }
+  }, [formData.languages, formData.seo, formData.integrations, isFinnish]);
+
+  // Translated constants based on language
+  const GOALS_OPTIONS_TRANSLATED = useMemo(() => 
+    isFinnish ? [
+      "Liidien keräys",
+      "Tuotteiden/palveluiden esittely",
+      "Brändin vahvistaminen",
+      "Myynnin kasvattaminen",
+      "Asiakaspalvelu tai automaatio",
+      "Yhteystietojen jakaminen",
+      "Sisällöntuotanto / blogi",
+    ] : [
+      "Lead generation",
+      "Product/service showcase",
+      "Brand strengthening",
+      "Sales growth",
+      "Customer service or automation",
+      "Sharing contact information",
+      "Content production / blog",
+    ], [isFinnish]
+  );
+
+  const PAGE_OPTIONS_TRANSLATED = useMemo(() =>
+    isFinnish ? [
+      "Etusivu",
+      "Tietoa meistä",
+      "Tuotteet / Palvelut",
+      "Yhteystiedot",
+      "Blogi",
+      "Galleria / Portfolio",
+      "FAQ",
+      "Hinnoittelu",
+    ] : [
+      "Home",
+      "About us",
+      "Products / Services",
+      "Contact",
+      "Blog",
+      "Gallery / Portfolio",
+      "FAQ",
+      "Pricing",
+    ], [isFinnish]
+  );
+
+  const INTEGRATION_OPTIONS_TRANSLATED = useMemo(() =>
+    isFinnish ? [
+      {
+        key: "email_marketing",
+        label: "Uutiskirje ja kampanjat (Mailchimp, Brevo)",
+        helper: "Pidä yhteyttä asiakkaisiin sähköpostitse.",
+        placeholder: "Esim. Mailchimp, Brevo, HubSpot...",
+      },
+      {
+        key: "booking",
+        label: "Ajanvaraus verkossa (Calendly, Timma, Google Calendar)",
+        helper: "Asiakkaasi voivat varata ajan suoraan sivustoltasi.",
+        placeholder: "Esim. Calendly, Timma, Google Calendar...",
+      },
+      {
+        key: "social_embed",
+        label: "Some-sisällöt sivulle (Instagram-feed, YouTube-video)",
+        helper: "Näytä ajankohtaisia julkaisuja tai esittelyvideoita sivullasi.",
+        placeholder: "Esim. Instagram, YouTube, TikTok...",
+      },
+      {
+        key: "maps",
+        label: "Kartta ja ajo-ohjeet (Google Maps)",
+        helper: "Näytä yrityksesi sijainti ja helpota asiakkaiden saapumista.",
+        placeholder: "Esim. Google Maps, Apple Maps...",
+      },
+      {
+        key: "forms_leads",
+        label: "Yhteydenottolomakkeet ja liidit (Typeform, Tally)",
+        helper: "Kerää yhteydenottoja automaattisesti jatkokäyttöön.",
+        placeholder: "Esim. Typeform, Tally, Google Forms...",
+      },
+      {
+        key: "mitrox_advisor",
+        label: "Verkkosivun asiakasavustaja (Mitrox AI Advisor)",
+        helper: "24/7 avustaja, joka ohjaa kävijöitä ja auttaa keräämään liidejä.",
+        placeholder: "Mitrox AI Advisor",
+      },
+      {
+        key: "unknown",
+        label: "En osaa sanoa – ehdottakaa meille sopivin ratkaisu",
+        helper: "Jos et ole varma, jätä valinta meille.",
+        placeholder: "",
+      },
+    ] : [
+      {
+        key: "email_marketing",
+        label: "Newsletter and campaigns (Mailchimp, Brevo)",
+        helper: "Stay in touch with customers via email.",
+        placeholder: "E.g. Mailchimp, Brevo, HubSpot...",
+      },
+      {
+        key: "booking",
+        label: "Online booking (Calendly, Timma, Google Calendar)",
+        helper: "Your customers can book appointments directly from your site.",
+        placeholder: "E.g. Calendly, Timma, Google Calendar...",
+      },
+      {
+        key: "social_embed",
+        label: "Social content on site (Instagram feed, YouTube video)",
+        helper: "Display recent posts or demo videos on your site.",
+        placeholder: "E.g. Instagram, YouTube, TikTok...",
+      },
+      {
+        key: "maps",
+        label: "Map and directions (Google Maps)",
+        helper: "Show your business location and help customers find you.",
+        placeholder: "E.g. Google Maps, Apple Maps...",
+      },
+      {
+        key: "forms_leads",
+        label: "Contact forms and leads (Typeform, Tally)",
+        helper: "Collect inquiries automatically for follow-up.",
+        placeholder: "E.g. Typeform, Tally, Google Forms...",
+      },
+      {
+        key: "mitrox_advisor",
+        label: "Website customer assistant (Mitrox AI Advisor)",
+        helper: "24/7 assistant that guides visitors and helps collect leads.",
+        placeholder: "Mitrox AI Advisor",
+      },
+      {
+        key: "unknown",
+        label: "I'm not sure – suggest the best solution for us",
+        helper: "If you're not sure, leave the choice to us.",
+        placeholder: "",
+      },
+    ], [isFinnish]
+  );
+
+  const ADDITIONAL_SERVICES_OPTIONS_TRANSLATED = useMemo(() =>
+    isFinnish ? [
+      "Mitrox Advisor – 55 €/kk alkaen",
+      "Lisäkieli (Suomi ↔ Englanti) – 199 € alkaen",
+      "Laajennettu hakukoneoptimointi – 69 €/kk",
+      "Ei lisäpalveluita tällä hetkellä",
+    ] : [
+      "Mitrox Advisor – €55/month starting",
+      "Additional language (Finnish ↔ English) – €199 starting",
+      "Extended search engine optimization – €69/month",
+      "No additional services at this time",
+    ], [isFinnish]
+  );
+
+  const ADDITIONAL_SERVICES_DESCRIPTIONS_TRANSLATED = useMemo(() => ({
+    ...(isFinnish ? {
+      "Mitrox Advisor – 55 €/kk alkaen": "24/7 verkkosivun asiakasavustaja, joka vastaa kävijöiden kysymyksiin ja ohjaa oikeaan suuntaan.",
+      "Lisäkieli (Suomi ↔ Englanti) – 199 € alkaen": "Ammattitason käännös ja viimeistely viidelle sivulle, sisältäen SEO-optimoinnin.",
+      "Laajennettu hakukoneoptimointi – 69 €/kk": "Jatkuva hakukonenäkyvyyden kehitys ja säännölliset raportit.",
+    } : {
+      "Mitrox Advisor – €55/month starting": "24/7 website customer assistant that answers visitor questions and guides them in the right direction.",
+      "Additional language (Finnish ↔ English) – €199 starting": "Professional translation and finishing for five pages, including SEO optimization.",
+      "Extended search engine optimization – €69/month": "Continuous search engine visibility development and regular reports.",
+    })
+  }), [isFinnish]);
+
+  const generatePromptFromForm = React.useCallback((data: FormData) => {
     const clientObject = {
       brand_name: data.companyName || "",
       one_liner: data.uniqueSellingPoint || "",
       offering: Array.from(new Set([...(data.requiredPages || []), ...(data.specialFeatures ? [data.specialFeatures] : [])])).filter(Boolean),
       target_audience: data.targetAudience || "",
       tone: data.toneOfVoice || data.companyImage || "",
-      locale_primary: (data.languages && data.languages[0] === "Englanti") ? "en-US" : "fi-FI",
-      locales_extra: (data.languages || []).includes("Englanti") && (data.languages || []).includes("Suomi")
-        ? [ (data.languages[0] === "Englanti" ? "fi-FI" : "en-US") ]
+      locale_primary: (data.languages && (data.languages[0] === "Englanti" || data.languages[0] === "English")) ? "en-US" : "fi-FI",
+      locales_extra: ((data.languages || []).includes("Englanti") || (data.languages || []).includes("English")) && ((data.languages || []).includes("Suomi") || (data.languages || []).includes("Finnish"))
+        ? [ ((data.languages[0] === "Englanti" || data.languages[0] === "English") ? "fi-FI" : "en-US") ]
         : undefined,
       contact: { email: data.email || "", phone: data.phone || undefined },
       social: {},
@@ -183,7 +415,7 @@ const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = (
     };
 
     const integrationsList = (data.integrations || []).map((key) => {
-      const integration = INTEGRATION_OPTIONS.find((opt) => opt.key === key);
+      const integration = INTEGRATION_OPTIONS_TRANSLATED.find((opt) => opt.key === key);
       return `- ${integration?.label || key}${data.integrationFollowups[key]?.provider ? ` ( ${data.integrationFollowups[key]?.provider} )` : ""}`;
     }).join("\n");
 
@@ -230,98 +462,42 @@ const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = (
     ].join("\n");
 
     return prompt;
-  };
+  }, [INTEGRATION_OPTIONS_TRANSLATED]);
 
-  // Close dropdowns when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      Object.keys(dropdownRefs.current).forEach((key) => {
-        if (dropdownRefs.current[key] && !dropdownRefs.current[key]?.contains(event.target as Node)) {
-          setOpenDropdowns((prev) => ({ ...prev, [key]: false }));
-        }
-      });
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  // Auto-select additional services based on language, SEO, and integration selections
-  // Note: We only ADD services automatically, never remove them - user has full control
-  useEffect(() => {
-    const NO_SERVICES = "Ei lisäpalveluita tällä hetkellä";
-    
-    // Don't auto-select if user has explicitly chosen "Ei lisäpalveluita"
-    if (formData.additionalServices.includes(NO_SERVICES)) {
-      return;
-    }
-
-    const hasBothLanguages = formData.languages.includes("Suomi") && formData.languages.includes("Englanti");
-    const needsExtendedSEO = formData.seo === "Kyllä, tarvitsen laajempaa SEO-optimointia";
-    const hasMitroxAdvisor = formData.integrations.includes("mitrox_advisor");
-    
-    const languageService = "Lisäkieli (Suomi ↔ Englanti) – 199 € alkaen";
-    const seoService = "Laajennettu hakukoneoptimointi – 69 €/kk";
-    const advisorService = "Mitrox Advisor – 55 €/kk alkaen";
-    
-    const newServices = [...formData.additionalServices];
-    let hasChanges = false;
-
-    // Auto-add language service if both languages selected (only if not already added)
-    if (hasBothLanguages && !newServices.includes(languageService)) {
-      newServices.push(languageService);
-      hasChanges = true;
-    }
-
-    // Auto-add SEO service ONLY if extended SEO is explicitly selected (only if not already added)
-    if (needsExtendedSEO && !newServices.includes(seoService)) {
-      newServices.push(seoService);
-      hasChanges = true;
-    }
-
-    // Auto-add Mitrox Advisor service if selected in integrations (only if not already added)
-    if (hasMitroxAdvisor && !newServices.includes(advisorService)) {
-      newServices.push(advisorService);
-      hasChanges = true;
-    }
-
-    // Note: We don't remove services automatically - user can always manually remove them if needed
-
-    if (hasChanges) {
-      setFormData((prev) => ({ ...prev, additionalServices: newServices }));
-    }
-  }, [formData.languages, formData.seo, formData.integrations]);
-
-  const steps = [
+  const steps = useMemo(() => [
     {
-      title: "Yrityksen perustiedot",
-      microcopy: "Tämä auttaa meitä ymmärtämään yrityksesi ydintä ja kohdentamaan sivuston oikein.",
+      title: isFinnish ? "Yrityksen perustiedot" : "Company basics",
+      microcopy: isFinnish 
+        ? "Tämä auttaa meitä ymmärtämään yrityksesi ydintä ja kohdentamaan sivuston oikein."
+        : "This helps us understand your company's core and target the site correctly.",
       fields: [
         {
           name: "companyName",
-          label: "Yrityksen nimi *",
+          label: isFinnish ? "Yrityksen nimi *" : "Company name *",
           type: "text",
           required: true,
         },
         {
           name: "industry",
-          label: "Toimiala *",
+          label: isFinnish ? "Toimiala *" : "Industry *",
           type: "text",
-          placeholder: "Esim. Teknologia, Ravintola, Konsultointi...",
+          placeholder: isFinnish ? "Esim. Teknologia, Ravintola, Konsultointi..." : "E.g. Technology, Restaurant, Consulting...",
           required: true,
         },
         {
           name: "targetAudience",
-          label: "Kohdeyleisö *",
+          label: isFinnish ? "Kohdeyleisö *" : "Target audience *",
           type: "textarea",
-          placeholder: "Kuka käyttää verkkosivustoa (esim. B2B-asiakkaat, kuluttajat, tietyt ikäryhmät...)",
+          placeholder: isFinnish 
+            ? "Kuka käyttää verkkosivustoa (esim. B2B-asiakkaat, kuluttajat, tietyt ikäryhmät...)"
+            : "Who uses the website (e.g. B2B customers, consumers, specific age groups...)",
           required: true,
         },
         {
           name: "companyImage",
-          label: "Millaisen ensivaikutelman haluat antaa verkossa? *",
+          label: isFinnish ? "Millaisen ensivaikutelman haluat antaa verkossa? *" : "What first impression do you want to make online? *",
           type: "select",
-          options: [
+          options: isFinnish ? [
             "Ammattimainen ja luotettava",
             "Innovatiivinen ja moderni",
             "Lämmin ja helposti lähestyttävä",
@@ -329,40 +505,54 @@ const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = (
             "Rohkea ja erottuva",
             "Asiantunteva ja selkeä",
             "En osaa sanoa – ehdottakaa meille sopivaa linjaa",
+          ] : [
+            "Professional and reliable",
+            "Innovative and modern",
+            "Warm and approachable",
+            "Luxurious and refined",
+            "Bold and distinctive",
+            "Expert and clear",
+            "I'm not sure – suggest a suitable direction for us",
           ],
-          microcopy: "Ensivaikutelma auttaa meitä linjaamaan koko sivuston.",
+          microcopy: isFinnish 
+            ? "Ensivaikutelma auttaa meitä linjaamaan koko sivuston."
+            : "First impression helps us align the entire site.",
           required: true,
         },
         {
           name: "companyImageOther",
-          label: "Kerro tarkemmin",
+          label: isFinnish ? "Kerro tarkemmin" : "Tell us more",
           type: "textarea",
-          placeholder: "Jos valitsit 'Jokin muu', kerro tarkemmin...",
+          placeholder: isFinnish ? "Jos valitsit 'Jokin muu', kerro tarkemmin..." : "If you selected 'Something else', tell us more...",
         },
       ],
     },
     {
-      title: "Verkkosivun tavoite",
-      microcopy: "Kun tiedämme tavoitteesi, voimme rakentaa sivuston, joka tukee liiketoimintaasi suoraan.",
+      title: isFinnish ? "Verkkosivun tavoite" : "Website goals",
+      microcopy: isFinnish
+        ? "Kun tiedämme tavoitteesi, voimme rakentaa sivuston, joka tukee liiketoimintaasi suoraan."
+        : "When we know your goals, we can build a site that directly supports your business.",
       fields: [
         {
           name: "mainGoals",
-          label: "Mikä on verkkosivuston tärkein tavoite? (voi valita useita) *",
+          label: isFinnish ? "Mikä on verkkosivuston tärkein tavoite? (voi valita useita) *" : "What is the website's main goal? (can select multiple) *",
           type: "multiselect",
-          options: GOALS_OPTIONS,
+          options: GOALS_OPTIONS_TRANSLATED,
           required: true,
         },
       ],
     },
     {
-      title: "Visuaalinen tyyli ja äänensävy",
-      microcopy: "Tyyli ja sävy vaikuttavat kaikkeen – kuvamaailmaan, väreihin ja viestinnän rytmiin.",
+      title: isFinnish ? "Visuaalinen tyyli ja äänensävy" : "Visual style and tone of voice",
+      microcopy: isFinnish
+        ? "Tyyli ja sävy vaikuttavat kaikkeen – kuvamaailmaan, väreihin ja viestinnän rytmiin."
+        : "Style and tone affect everything – imagery, colors, and communication rhythm.",
       fields: [
         {
           name: "designStyle",
-          label: "Millaiselta haluat sivustosi tuntuvan? *",
+          label: isFinnish ? "Millaiselta haluat sivustosi tuntuvan? *" : "How do you want your site to feel? *",
           type: "select",
-          options: [
+          options: isFinnish ? [
             "Moderni ja minimalistinen",
             "Klassinen ja ammattimainen",
             "Luova ja uniikki",
@@ -371,27 +561,38 @@ const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = (
             "Värikäs ja energinen",
             "Rauhallinen ja luonnonläheinen",
             "Avoin ehdotuksille",
+          ] : [
+            "Modern and minimalist",
+            "Classic and professional",
+            "Creative and unique",
+            "Luxurious and premium",
+            "Corporate and reliable",
+            "Colorful and energetic",
+            "Calm and natural",
+            "Open to suggestions",
           ],
-          microcopy: "Tunne vaikuttaa kuvamaailmaan, väreihin ja asetteluun.",
+          microcopy: isFinnish
+            ? "Tunne vaikuttaa kuvamaailmaan, väreihin ja asetteluun."
+            : "Feel affects imagery, colors, and layout.",
           required: true,
         },
         {
           name: "colorPreferences",
-          label: "Värimieltymykset tai brändivärit",
+          label: isFinnish ? "Värimieltymykset tai brändivärit" : "Color preferences or brand colors",
           type: "textarea",
-          placeholder: "Esim. sininen ja valkoinen, luonnon sävyt...",
+          placeholder: isFinnish ? "Esim. sininen ja valkoinen, luonnon sävyt..." : "E.g. blue and white, natural tones...",
         },
         {
           name: "referenceSites",
-          label: "Inspiraatiosivustot tai esimerkit",
+          label: isFinnish ? "Inspiraatiosivustot tai esimerkit" : "Inspiration sites or examples",
           type: "textarea",
-          placeholder: "Linkitä verkkosivustoja, joiden tyyli miellyttää sinua.",
+          placeholder: isFinnish ? "Linkitä verkkosivustoja, joiden tyyli miellyttää sinua." : "Link websites whose style you like.",
         },
         {
           name: "toneOfVoice",
-          label: "Millaisella äänensävyllä haluat sivustosi puhuvan? *",
+          label: isFinnish ? "Millaisella äänensävyllä haluat sivustosi puhuvan? *" : "What tone of voice do you want your site to use? *",
           type: "select",
-          options: [
+          options: isFinnish ? [
             "Asiantunteva ja selkeä",
             "Rauhallinen ja luottamusta herättävä",
             "Lämmin ja helposti lähestyttävä",
@@ -399,142 +600,177 @@ const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = (
             "Energinen ja rohkea",
             "Ylellinen ja viimeistelty",
             "En ole varma – ehdota sopivaa tyyliä",
+          ] : [
+            "Expert and clear",
+            "Calm and trustworthy",
+            "Warm and approachable",
+            "Creative and relaxed",
+            "Energetic and bold",
+            "Luxurious and refined",
+            "I'm not sure – suggest a suitable style",
           ],
-          microcopy: "Äänensävy ohjaa kaikkea kirjoitusta ja viestinnän rytmiä.",
+          microcopy: isFinnish
+            ? "Äänensävy ohjaa kaikkea kirjoitusta ja viestinnän rytmiä."
+            : "Tone of voice guides all writing and communication rhythm.",
           required: true,
         },
       ],
     },
     {
-      title: "Sivut ja sisältö",
-      microcopy: "Mitä selkeämmin määrittelet sisällön, sitä vähemmän tarvitaan korjauskierroksia.",
+      title: isFinnish ? "Sivut ja sisältö" : "Pages and content",
+      microcopy: isFinnish
+        ? "Mitä selkeämmin määrittelet sisällön, sitä vähemmän tarvitaan korjauskierroksia."
+        : "The clearer you define the content, the fewer revision rounds needed.",
       fields: [
         {
           name: "requiredPages",
-          label: "Mitkä sivut tarvitaan? (voi valita useita) *",
+          label: isFinnish ? "Mitkä sivut tarvitaan? (voi valita useita) *" : "Which pages are needed? (can select multiple) *",
           type: "multiselect",
-          options: PAGE_OPTIONS,
+          options: PAGE_OPTIONS_TRANSLATED,
           required: true,
         },
         {
           name: "contentOwnership",
-          label: "Miten haluat hoitaa sivuston sisällön? *",
-          helper: "Kuvat, tekstit ja tarina yrityksestäsi.",
+          label: isFinnish ? "Miten haluat hoitaa sivuston sisällön? *" : "How do you want to handle the site's content? *",
+          helper: isFinnish ? "Kuvat, tekstit ja tarina yrityksestäsi." : "Images, texts, and your company's story.",
           type: "select",
-          options: [
-            "Me hoidamme kaiken sisällön puolestasi",
+          options: isFinnish ? [
+            "Mitrox hoitaa kaiken sisällön",
             "Toimitamme sisällön itse",
             "Tehdään yhdessä",
             "Tarvitsemme apua sisällön suunnittelussa",
+          ] : [
+            "Mitrox handles all content",
+            "We provide the content ourselves",
+            "We do it together",
+            "We need help with content planning",
           ],
-          microcopy: "Valintasi määrittää tekstityön ja kuvatuotannon laajuuden.",
+          microcopy: isFinnish
+            ? "Valintasi määrittää tekstityön ja kuvatuotannon laajuuden."
+            : "Your choice determines the scope of text work and image production.",
           required: true,
         },
         {
           name: "uniqueSellingPoint",
-          label: "Mikä tekee yrityksestäsi ainutlaatuisen? *",
+          label: isFinnish ? "Mikä tekee yrityksestäsi ainutlaatuisen? *" : "What makes your company unique? *",
           type: "textarea",
-          placeholder: "Kerro lyhyesti, miksi asiakkaan tulisi valita juuri teidät.",
+          placeholder: isFinnish ? "Kerro lyhyesti, miksi asiakkaan tulisi valita juuri teidät." : "Tell us briefly why the customer should choose you.",
           required: true,
         },
         {
           name: "specialFeatures",
-          label: "Erityistoiminnot tai vaatimukset",
+          label: isFinnish ? "Erityistoiminnot tai vaatimukset" : "Special features or requirements",
           type: "textarea",
-          placeholder: "Esimerkiksi galleria, varausjärjestelmä, kartta, integraatiot...",
+          placeholder: isFinnish ? "Esimerkiksi galleria, varausjärjestelmä, kartta, integraatiot..." : "For example gallery, booking system, map, integrations...",
         },
       ],
     },
     {
-      title: "Tekniset ja toiminnalliset integraatiot",
-      intro: "Valitse vain tarpeelliset. Me hoidamme suorituskyvyn, suojauksen ja analytiikan puolestasi.",
-      microcopy: "Valinnat auttavat mitoittamaan projektin oikein ja nopeuttavat toteutusta.",
+      title: isFinnish ? "Tekniset ja toiminnalliset integraatiot" : "Technical and functional integrations",
+      intro: isFinnish
+        ? "Valitse vain tarpeelliset. Me hoidamme suorituskyvyn, suojauksen ja analytiikan puolestasi."
+        : "Select only what's needed. We handle performance, security, and analytics for you.",
+      microcopy: isFinnish
+        ? "Valinnat auttavat mitoittamaan projektin oikein ja nopeuttavat toteutusta."
+        : "Choices help us size the project correctly and speed up implementation.",
       fields: [
         {
           name: "integrations",
-          label: "Mitkä integraatiot tarvitaan? (voi valita useita)",
+          label: isFinnish ? "Mitkä integraatiot tarvitaan? (voi valita useita)" : "Which integrations are needed? (can select multiple)",
           type: "multiselect_with_followups",
-          options: INTEGRATION_OPTIONS,
+          options: INTEGRATION_OPTIONS_TRANSLATED,
         },
         {
           name: "languages",
-          label: "Kielet *",
+          label: isFinnish ? "Kielet *" : "Languages *",
           type: "multiselect",
-          options: ["Suomi", "Englanti"],
+          options: isFinnish ? ["Suomi", "Englanti"] : ["Finnish", "English"],
           required: true,
         },
         {
           name: "seo",
-          label: "Hakukoneoptimointi (SEO) *",
+          label: isFinnish ? "Hakukoneoptimointi (SEO) *" : "Search engine optimization (SEO) *",
           type: "select",
-          options: [
+          options: isFinnish ? [
             "Kyllä, tarvitsen laajempaa SEO-optimointia",
             "Perustaso riittää (sisältyy palveluun)",
+          ] : [
+            "Yes, I need extended SEO optimization",
+            "Basic level is sufficient (included in service)",
           ],
           required: true,
         },
       ],
     },
     {
-      title: "Aikataulu ja yhteystiedot",
-      microcopy: "Aikataulu auttaa meitä priorisoimaan työsi heti oikealle tuotantolinjalle.",
+      title: isFinnish ? "Aikataulu ja yhteystiedot" : "Timeline and contact information",
+      microcopy: isFinnish
+        ? "Aikataulu auttaa meitä priorisoimaan työsi heti oikealle tuotantolinjalle."
+        : "Timeline helps us prioritize your work to the right production line immediately.",
       fields: [
         {
           name: "timeline",
-          label: "Aikataulu tai julkaisuajankohta",
+          label: isFinnish ? "Aikataulu tai julkaisuajankohta" : "Timeline or launch date",
           type: "select",
-          options: [
+          options: isFinnish ? [
             "Heti kun valmista",
             "Seuraavan kuukauden sisällä",
             "2 kuukauden sisällä",
             "Ei kiirettä",
+          ] : [
+            "As soon as ready",
+            "Within the next month",
+            "Within 2 months",
+            "No rush",
           ],
         },
         {
           name: "name",
-          label: "Nimi *",
+          label: isFinnish ? "Nimi *" : "Name *",
           type: "text",
           required: true,
         },
         {
           name: "email",
-          label: "Sähköposti *",
+          label: isFinnish ? "Sähköposti *" : "Email *",
           type: "email",
           required: true,
         },
         {
           name: "phone",
-          label: "Puhelinnumero",
+          label: isFinnish ? "Puhelinnumero" : "Phone number",
           type: "tel",
         },
         {
           name: "message",
-          label: "Lisätietoja tai kysymyksiä",
+          label: isFinnish ? "Lisätietoja tai kysymyksiä" : "Additional information or questions",
           type: "textarea",
-          placeholder: "Kerro lisää projektista, aikatauluista tai muista toiveista...",
+          placeholder: isFinnish ? "Kerro lisää projektista, aikatauluista tai muista toiveista..." : "Tell us more about the project, timelines, or other wishes...",
         },
       ],
     },
     {
-      title: "Lisäpalvelut",
-      microcopy: "Valinnat auttavat mitoittamaan projektin ja resursoinnin juuri sinun tarpeisiisi.",
+      title: isFinnish ? "Lisäpalvelut" : "Additional services",
+      microcopy: isFinnish
+        ? "Valinnat auttavat mitoittamaan projektin ja resursoinnin juuri sinun tarpeisiisi."
+        : "Choices help us size the project and resources to your exact needs.",
       fields: [
         {
           name: "additionalServices",
-          label: "Mitkä lisäpalvelut kiinnostavat sinua? *",
+          label: isFinnish ? "Mitkä lisäpalvelut kiinnostavat sinua? *" : "Which additional services interest you? *",
           type: "multiselect",
-          options: ADDITIONAL_SERVICES_OPTIONS,
+          options: ADDITIONAL_SERVICES_OPTIONS_TRANSLATED,
           required: true,
         },
         {
           name: "additionalRequests",
-          label: "Muita toiveita tai erikoistarpeita?",
+          label: isFinnish ? "Muita toiveita tai erikoistarpeita?" : "Other wishes or special requirements?",
           type: "textarea",
-          placeholder: "Esimerkiksi lisätoiminnallisuudet, integraatiot tai laajempi sisältötyö.",
+          placeholder: isFinnish ? "Esimerkiksi lisätoiminnallisuudet, integraatiot tai laajempi sisältötyö." : "For example additional functionality, integrations, or broader content work.",
         },
       ],
     },
-  ];
+  ], [isFinnish]);
 
   const totalSteps = steps.length;
 
@@ -549,17 +785,23 @@ const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = (
   const handleMultiSelectChange = (fieldName: string, value: string) => {
     setFormData((prev) => {
       const current = prev[fieldName as keyof FormData] as string[];
-      const NO_SERVICES = "Ei lisäpalveluita tällä hetkellä";
+      const NO_SERVICES_FI = "Ei lisäpalveluita tällä hetkellä";
+      const NO_SERVICES_EN = "No additional services at this time";
+      const NO_SERVICES = isFinnish ? NO_SERVICES_FI : NO_SERVICES_EN;
       
       // Special handling for additional services
       if (fieldName === "additionalServices") {
-        if (value === NO_SERVICES) {
-          // If "Ei lisäpalveluita" is clicked, toggle it and remove all others
-          if (current.includes(NO_SERVICES)) {
+        // Check both Finnish and English versions
+        const isNoServices = value === NO_SERVICES_FI || value === NO_SERVICES_EN;
+        const hasNoServices = current.includes(NO_SERVICES_FI) || current.includes(NO_SERVICES_EN);
+        
+        if (isNoServices) {
+          // If "No services" is clicked, toggle it and remove all others
+          if (hasNoServices) {
             // If already selected, just deselect it
             return { ...prev, [fieldName]: [] };
           } else {
-            // Select only "Ei lisäpalveluita"
+            // Select only "No services"
             return { ...prev, [fieldName]: [NO_SERVICES] };
           }
         } else {
@@ -568,8 +810,8 @@ const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = (
             ? current.filter((item) => item !== value)
             : [...current, value];
           
-          // Remove "Ei lisäpalveluita" if any other service is selected
-          newValue = newValue.filter((item) => item !== NO_SERVICES);
+          // Remove "No services" if any other service is selected
+          newValue = newValue.filter((item) => item !== NO_SERVICES_FI && item !== NO_SERVICES_EN);
           
           return { ...prev, [fieldName]: newValue };
         }
@@ -680,7 +922,7 @@ const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = (
         },
         technical: {
           integrations: formData.integrations.map((key) => {
-            const integration = INTEGRATION_OPTIONS.find((opt) => opt.key === key);
+            const integration = INTEGRATION_OPTIONS_TRANSLATED.find((opt) => opt.key === key);
             return {
               key: key,
               label: integration?.label || key,
@@ -725,9 +967,9 @@ Ainutlaatuinen myyntivaltti: ${formData.uniqueSellingPoint}
 Erityistoiminnot: ${formData.specialFeatures || "Ei"}
 
 Integraatiot: ${formData.integrations.length > 0 ? formData.integrations.map((key) => {
-            const integration = INTEGRATION_OPTIONS.find((opt) => opt.key === key);
+            const integration = INTEGRATION_OPTIONS_TRANSLATED.find((opt) => opt.key === key);
             return integration?.label || key;
-          }).join(", ") : "Ei"}
+          }).join(", ") : (isFinnish ? "Ei" : "None")}
 Kielet: ${formData.languages.join(", ")}
 SEO: ${formData.seo}
 
@@ -753,7 +995,9 @@ Lisätietoja: ${formData.message || "Ei"}
         },
         body: JSON.stringify({
           access_key: "193da3a3-3009-437b-8d44-2c1a539273fb",
-          subject: `Verkkosivuhakemus: ${formData.companyName}`,
+          subject: isFinnish 
+            ? `Verkkosivuhakemus: ${formData.companyName}`
+            : `Website inquiry: ${formData.companyName}`,
           from_name: formData.name,
           from_email: formData.email,
           to: "info@mitrox.io",
@@ -821,16 +1065,16 @@ Lisätietoja: ${formData.message || "Ei"}
         <div className="flex items-center justify-between p-6 border-b border-white/10">
           <div>
             <h2 className="text-2xl font-medium text-white mb-1">
-              Verkkosivuhakemus
+              {isFinnish ? "Verkkosivuhakemus" : "Website inquiry"}
             </h2>
             <p className="text-sm text-gray-400">
-              Vaihe {currentStep + 1} / {totalSteps}
+              {isFinnish ? "Vaihe" : "Step"} {currentStep + 1} / {totalSteps}
             </p>
           </div>
           <button
             onClick={onClose}
             className="w-10 h-10 flex items-center justify-center rounded-full bg-black/60 border border-white/20 hover:bg-black/80 transition-colors text-white"
-            aria-label="Sulje"
+            aria-label={isFinnish ? "Sulje" : "Close"}
           >
             <X className="w-5 h-5" />
           </button>
@@ -871,14 +1115,20 @@ Lisätietoja: ${formData.message || "Ei"}
                     />
                   </svg>
                 </div>
-                <h3 className="text-xl font-medium text-white mb-2">Hakemus lähetetty!</h3>
-                <p className="text-gray-400 mb-6">Olemme vastaanottaneet vastauksesi. Otamme sinuun yhteyttä mahdollisimman pian.</p>
+                <h3 className="text-xl font-medium text-white mb-2">
+                  {isFinnish ? "Hakemus lähetetty!" : "Application sent!"}
+                </h3>
+                <p className="text-gray-400 mb-6">
+                  {isFinnish 
+                    ? "Olemme vastaanottaneet vastauksesi. Otamme sinuun yhteyttä mahdollisimman pian."
+                    : "We have received your response. We will contact you as soon as possible."}
+                </p>
                 <button
                   type="button"
                   onClick={resetFormAndClose}
                   className="px-5 py-2 rounded-lg bg-white text-black hover:bg-gray-100 transition-colors font-medium"
                 >
-                  Sulje
+                  {isFinnish ? "Sulje" : "Close"}
                 </button>
               </div>
             ) : submitStatus === "error" ? (
@@ -887,17 +1137,19 @@ Lisätietoja: ${formData.message || "Ei"}
                   <X className="w-8 h-8 text-red-400" />
                 </div>
                 <h3 className="text-xl font-medium text-white mb-2">
-                  Virhe lähetyksessä
+                  {isFinnish ? "Virhe lähetyksessä" : "Submission error"}
                 </h3>
                 <p className="text-gray-400 mb-4">
-                  Jotain meni pieleen. Yritä hetken päästä uudelleen.
+                  {isFinnish 
+                    ? "Jotain meni pieleen. Yritä hetken päästä uudelleen."
+                    : "Something went wrong. Please try again in a moment."}
                 </p>
                 <button
                   type="button"
                   onClick={() => setSubmitStatus("idle")}
                   className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-100 transition-colors"
                 >
-                  Yritä uudelleen
+                  {isFinnish ? "Yritä uudelleen" : "Try again"}
                 </button>
               </div>
             ) : (
@@ -985,7 +1237,7 @@ Lisätietoja: ${formData.message || "Ei"}
                             } hover:border-white/20 focus:outline-none focus:border-white/20`}
                           >
                             <span>
-                              {(formData[field.name as keyof FormData] as string) || "Valitse..."}
+                              {(formData[field.name as keyof FormData] as string) || (isFinnish ? "Valitse..." : "Select...")}
                             </span>
                             <ChevronDown 
                               className={`w-4 h-4 transition-transform ${openDropdowns[field.name] ? "rotate-180" : ""}`}
@@ -1068,7 +1320,7 @@ Lisätietoja: ${formData.message || "Ei"}
                                   <div className="ml-7 space-y-3 p-4 rounded-lg bg-black/20 border border-white/5">
                                     <div>
                                       <label className="block text-xs font-medium text-gray-300 mb-2">
-                                        Palvelu tai työkalu
+                                        {isFinnish ? "Palvelu tai työkalu" : "Service or tool"}
                                       </label>
                                       <input
                                         type="text"
@@ -1076,13 +1328,13 @@ Lisätietoja: ${formData.message || "Ei"}
                                         onChange={(e) =>
                                           handleIntegrationFollowupChange(optionKey, "provider", e.target.value)
                                         }
-                                        placeholder={option.placeholder || "Esim. Mailchimp, Calendly..."}
+                                        placeholder={option.placeholder || (isFinnish ? "Esim. Mailchimp, Calendly..." : "E.g. Mailchimp, Calendly...")}
                                         className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/10 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-white/20 transition-colors"
                                       />
                                     </div>
                                     <div>
                                       <label className="block text-xs font-medium text-gray-300 mb-2">
-                                        Onko teillä jo tili?
+                                        {isFinnish ? "Onko teillä jo tili?" : "Do you already have an account?"}
                                       </label>
                                       <div 
                                         ref={(el) => (dropdownRefs.current[`${optionKey}_haveAccount`] = el)}
@@ -1115,7 +1367,7 @@ Lisätietoja: ${formData.message || "Ei"}
                                           } hover:border-white/20 focus:outline-none focus:border-white/20`}
                                         >
                                           <span>
-                                            {followupData.haveAccount || "Valitse..."}
+                                            {followupData.haveAccount || (isFinnish ? "Valitse..." : "Select...")}
                                           </span>
                                           <ChevronDown 
                                             className={`w-4 h-4 transition-transform ${openDropdowns[`${optionKey}_haveAccount`] ? "rotate-180" : ""}`}
@@ -1130,30 +1382,30 @@ Lisätietoja: ${formData.message || "Ei"}
                                             <button
                                               type="button"
                                               onClick={() => {
-                                                handleIntegrationFollowupChange(optionKey, "haveAccount", "Kyllä");
+                                                handleIntegrationFollowupChange(optionKey, "haveAccount", isFinnish ? "Kyllä" : "Yes");
                                                 setOpenDropdowns((prev) => ({ ...prev, [`${optionKey}_haveAccount`]: false }));
                                               }}
                                               className={`w-full px-3 py-2 text-left text-sm transition-colors ${
-                                                followupData.haveAccount === "Kyllä"
+                                                followupData.haveAccount === (isFinnish ? "Kyllä" : "Yes")
                                                   ? "bg-white/10 text-white"
                                                   : "text-gray-300 hover:bg-white/5 hover:text-white"
                                               }`}
                                             >
-                                              Kyllä
+                                              {isFinnish ? "Kyllä" : "Yes"}
                                             </button>
                                             <button
                                               type="button"
                                               onClick={() => {
-                                                handleIntegrationFollowupChange(optionKey, "haveAccount", "Ei");
+                                                handleIntegrationFollowupChange(optionKey, "haveAccount", isFinnish ? "Ei" : "No");
                                                 setOpenDropdowns((prev) => ({ ...prev, [`${optionKey}_haveAccount`]: false }));
                                               }}
                                               className={`w-full px-3 py-2 text-left text-sm transition-colors ${
-                                                followupData.haveAccount === "Ei"
+                                                followupData.haveAccount === (isFinnish ? "Ei" : "No")
                                                   ? "bg-white/10 text-white"
                                                   : "text-gray-300 hover:bg-white/5 hover:text-white"
                                               }`}
                                             >
-                                              Ei
+                                              {isFinnish ? "Ei" : "No"}
                                             </button>
                                           </div>
                                         )}
@@ -1161,14 +1413,14 @@ Lisätietoja: ${formData.message || "Ei"}
                                     </div>
                                     <div>
                                       <label className="block text-xs font-medium text-gray-300 mb-2">
-                                        Lyhyt kuvaus tarpeesta
+                                        {isFinnish ? "Lyhyt kuvaus tarpeesta" : "Brief description of need"}
                                       </label>
                                       <textarea
                                         value={followupData.purpose}
                                         onChange={(e) =>
                                           handleIntegrationFollowupChange(optionKey, "purpose", e.target.value)
                                         }
-                                        placeholder="Kerro lyhyesti, miten integraatiota käytetään..."
+                                        placeholder={isFinnish ? "Kerro lyhyesti, miten integraatiota käytetään..." : "Tell us briefly how the integration is used..."}
                                         rows={3}
                                         className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/10 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-white/20 transition-colors resize-none"
                                       />
@@ -1188,7 +1440,7 @@ Lisätietoja: ${formData.message || "Ei"}
                               formData[field.name as keyof FormData] as string[]
                             ).includes(optionValue);
                             const description = field.name === "additionalServices" 
-                              ? ADDITIONAL_SERVICES_DESCRIPTIONS[optionValue] 
+                              ? ADDITIONAL_SERVICES_DESCRIPTIONS_TRANSLATED[optionValue] 
                               : undefined;
                             return (
                               <label
@@ -1247,7 +1499,9 @@ Lisätietoja: ${formData.message || "Ei"}
               {/* Tip text */}
               <div className="px-6 pt-4 pb-3">
                 <p className="text-xs text-gray-400 leading-relaxed text-center">
-                  Vinkki: Mitä tarkemmin vastaat kysymyksiin, sitä nopeammin pääsemme käynnistämään projektin ja varmistamaan täydellisen lopputuloksen.
+                  {isFinnish 
+                    ? "Vinkki: Mitä tarkemmin vastaat kysymyksiin, sitä nopeammin pääsemme käynnistämään projektin ja varmistamaan täydellisen lopputuloksen."
+                    : "Tip: The more detailed your answers, the faster we can start the project and ensure a perfect outcome."}
                 </p>
               </div>
 
@@ -1260,7 +1514,7 @@ Lisätietoja: ${formData.message || "Ei"}
                 className="flex items-center gap-2 px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white hover:bg-black/60 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <ChevronLeft className="w-4 h-4" />
-                Edellinen
+                {isFinnish ? "Edellinen" : "Previous"}
               </button>
 
               <div className="flex gap-2">
@@ -1285,7 +1539,7 @@ Lisätietoja: ${formData.message || "Ei"}
                   disabled={!canProceed()}
                   className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white text-black hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
                 >
-                  Seuraava
+                  {isFinnish ? "Seuraava" : "Next"}
                   <ChevronRight className="w-4 h-4" />
                 </button>
               ) : (
@@ -1298,11 +1552,11 @@ Lisätietoja: ${formData.message || "Ei"}
                   {isSubmitting ? (
                     <>
                       <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-black/70 border-t-transparent" />
-                      Lähetetään...
+                      {isFinnish ? "Lähetetään..." : "Sending..."}
                     </>
                   ) : (
                     <>
-                      Lähetä hakemus
+                      {isFinnish ? "Lähetä hakemus" : "Submit application"}
                       <Send className="w-4 h-4" />
                     </>
                   )}

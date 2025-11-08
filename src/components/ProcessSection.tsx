@@ -29,10 +29,10 @@ const createWebsiteSteps = (isFinnish: boolean): Step[] => [
     title: isFinnish ? "Kyselylomake" : "Project brief",
     desc: isFinnish
       ? "Täytät napakan briefin – kerrot tavoitteet, kohdeyleisön ja brändin fiiliksen. Mitä selkeämmin vastaat, sitä nopeammin ja paremmin rakennamme sinulle lopputuloksen."
-      : "You complete a focused brief – outlining your goals, target audience, and brand feel. The clearer the input, the faster and better we build the outcome.",
+      : "You'll complete a short, focused brief outlining your goals, audience, and brand personality.\n\nThe clearer the input, the faster and more accurately we can design your solution.",
     details: isFinnish
       ? "Muodostamme briefistä projektin rungon: sovimme aikataulun, vastuunjaon ja mittarit, jotta eteneminen on läpinäkyvää alusta loppuun."
-      : "We turn the brief into a project blueprint: timeline, responsibilities, and success metrics, keeping everything transparent from start to finish.",
+      : "From there, we create a full project blueprint, defining scope, timeline, responsibilities, and success metrics. So you always know what happens next.\n\nRegular updates keep communication transparent throughout the process.",
     icon: MessageSquare,
   },
   {
@@ -40,10 +40,10 @@ const createWebsiteSteps = (isFinnish: boolean): Step[] => [
     title: isFinnish ? "Rakentaminen" : "Build",
     desc: isFinnish
       ? "Rakennamme kokonaisuuden modulaarisesti – design, copy ja tekninen toteutus etenevät rinnakkain."
-      : "We construct the experience in modular phases – design, copy, and development progress in sync.",
+      : "We move from concept to creation in modular phases, combining design, content, and development work in sync.",
     details: isFinnish
       ? "Suunnittelemme käyttöliittymän, toteutamme responsiivisen rakenteen ja optimoimme suorituskyvyn samalla, kun sisältö viimeistellään tyylikirjan mukaisesti."
-      : "Interface, responsive layout, and performance are refined alongside content that follows your brand playbook.",
+      : "Our approach ensures every element, layout, performance, and copy supports your brand's message.\n\nResponsiveness, accessibility, and technical precision are refined as we go, so the site is visually seamless and functionally flawless across all devices.",
     icon: Brain,
   },
   {
@@ -51,10 +51,10 @@ const createWebsiteSteps = (isFinnish: boolean): Step[] => [
     title: isFinnish ? "Katselmus" : "Review",
     desc: isFinnish
       ? "Esittelemme interaktiivisen demoversion, jossa sivusto toimii oikeassa ympäristössä."
-      : "We present an interactive demo so you can experience the site in a realistic environment.",
+      : "You'll receive an interactive demo where you can explore the site exactly as your visitors will.",
     details: isFinnish
       ? "Käymme läpi sisällöt, animoinnit ja lomakkeet yhdessä, keräämme palautteen ja hiomme yksityiskohdat kuntoon ennen tuotantoon siirtymistä."
-      : "Together we review content, motion, and forms, gather feedback, and polish every detail before launch.",
+      : "Together we review design, motion, and content details, collecting clear feedback to fine-tune the experience.\n\nEvery animation, image, and interaction is polished until it feels perfectly aligned with your brand ready for launch day.",
     icon: Cog,
   },
   {
@@ -62,10 +62,10 @@ const createWebsiteSteps = (isFinnish: boolean): Step[] => [
     title: isFinnish ? "Julkaisu" : "Launch",
     desc: isFinnish
       ? "Julkaisemme hallitusti ja varmistamme, että integraatiot toimivat ilman katkoksia."
-      : "We launch smoothly and ensure every integration works without interruption.",
+      : "Once everything is approved, we handle deployment and integration. Ensuring the site launches smoothly and performs reliably from day one.",
     details: isFinnish
       ? "Aktivoimme analytiikan, hakukoneperustukset ja varmuuskopiot. Saat selkeän aloitussuunnitelman sekä tuen ensimmäiselle seurantajaksolle."
-      : "Analytics, SEO groundwork, and backups are activated. You receive a concise start plan and support for the first monitoring period.",
+      : "Analytics, SEO groundwork, and backups are activated automatically. You'll also receive a concise start-up guide and monitoring support to keep your site performing at its best.",
     icon: Rocket,
   },
 ];
@@ -222,7 +222,7 @@ const ProcessSection: React.FC<ProcessSectionProps> = ({ type = "website" }) => 
               onClick={() => setIsFormOpen(true)}
               className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black hover:bg-gray-100 rounded-lg font-medium transition-all"
             >
-              {isFinnish ? "Aloita tänään. Täytä kysely tästä" : "Start today. Open the project brief"} <ArrowRight className="w-4 h-4" />
+              {isFinnish ? "Aloita tänään. Täytä kysely tästä" : "Start your project — Open the project brief"} <ArrowRight className="w-4 h-4" />
             </button>
           </div>
         )}

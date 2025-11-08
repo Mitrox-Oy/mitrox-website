@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "../context/LanguageContext";
 
 const VF_SCRIPT = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
 
@@ -7,6 +8,8 @@ const TrustSection: React.FC = () => {
   const embedRef = useRef<HTMLDivElement | null>(null);
   const initializedRef = useRef(false);
   const [isLoading, setIsLoading] = useState(true);
+  const { language } = useLanguage();
+  const isFinnish = language === "fi";
 
   useEffect(() => {
     const container = embedRef.current;
@@ -82,13 +85,15 @@ const TrustSection: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium text-white mb-3">
-            Kokeile Mitrox AI Advisoria
+            {isFinnish ? "Kokeile Mitrox AI Advisoria" : "Try Mitrox AI Advisor"}
           </h2>
           <p className="text-[0.75rem] uppercase tracking-[0.45em] text-body-caption">
-            ÄLYKÄS KASVUKUMPPANISI
+            {isFinnish ? "ÄLYKÄS KASVUKUMPPANISI" : "YOUR INTELLIGENT GROWTH PARTNER"}
           </p>
           <p className="text-body-subtle max-w-2xl mx-auto mt-4">
-            Keskustele neuvojalta Mitroxista, hinnoittelusta tai siitä, miten voimme vauhdittaa yrityksesi kasvua.
+            {isFinnish
+              ? "Keskustele neuvojalta Mitroxista, hinnoittelusta tai siitä, miten voimme vauhdittaa yrityksesi kasvua."
+              : "Chat with the advisor about Mitrox, pricing, or how we can accelerate your business growth."}
           </p>
         </div>
 
@@ -107,15 +112,19 @@ const TrustSection: React.FC = () => {
           </div>
 
           <div className="lg:pl-10">
-            <h3 className="text-white text-2xl font-medium mb-2">Testaa itse</h3>
+            <h3 className="text-white text-2xl font-medium mb-2">
+              {isFinnish ? "Testaa itse" : "Try it yourself"}
+            </h3>
             <p className="text-body-subtle mb-6 max-w-md">
-              Kysele neuvojalta Mitroxista, hinnoittelusta tai siitä, miten voimme vauhdittaa yrityksesi kasvua.
+              {isFinnish
+                ? "Kysele neuvojalta Mitroxista, hinnoittelusta tai siitä, miten voimme vauhdittaa yrityksesi kasvua."
+                : "Ask the advisor about Mitrox, pricing, or how we can accelerate your business growth."}
             </p>
             <Link
               to="#pricing"
               className="inline-flex items-center px-6 py-3 rounded-full bg-white text-black hover:bg-gray-100 transition font-medium"
             >
-              Tilaa Mitrox AI Advisor
+              {isFinnish ? "Tilaa Mitrox AI Advisor" : "Subscribe to Mitrox AI Advisor"}
             </Link>
           </div>
         </div>

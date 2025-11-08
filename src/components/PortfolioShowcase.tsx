@@ -8,6 +8,7 @@ import studioKa from "../assets/studio-ka.png";
 import PortfolioModal from "./PortfolioModal";
 import type { PortfolioItem } from "./PortfolioModal";
 import { useLocalizedSectionId } from "../hooks/useLocalizedSectionId";
+import { useLanguage } from "../context/LanguageContext";
 
 export interface PortfolioShowcaseProps {
   items?: Array<{
@@ -20,6 +21,8 @@ export interface PortfolioShowcaseProps {
 const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ items }) => {
   const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
   const referencesId = useLocalizedSectionId("references");
+  const { language } = useLanguage();
+  const isFinnish = language === "fi";
 
   // Default portfolio items with actual images
   const defaultItems: PortfolioItem[] = items || [
@@ -65,10 +68,12 @@ const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ items }) => {
           {/* Header */}
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium text-white mb-4">
-              Inspiraatiota tulevaan sivustoosi
+              {isFinnish ? "Inspiraatiota tulevaan sivustoosi" : "Inspiration for your next website"}
             </h2>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-              Tutustu esimerkkisivustoihin, jotka kuvaavat Mitroxin suunnittelun laatua ja tyyliä.
+              {isFinnish
+                ? "Tutustu esimerkkisivustoihin, jotka kuvaavat Mitroxin suunnittelun laatua ja tyyliä."
+                : "Explore real examples that reflect Mitrox's design quality, clarity, and attention to detail."}
             </p>
           </div>
 
