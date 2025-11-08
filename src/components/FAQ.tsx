@@ -17,7 +17,7 @@ const websiteFAQData: FAQCategory[] = [
     items: [
       {
         question: "Mitä verkkosivusto maksaa?",
-        answer: "Aloitusmaksu on 599 €, joka sisältää jopa 5 sivua ja sivuston suunnittelun yrityksesi tarpeisiin. Lisäsivut maksavat 99 € / sivu. Kuukausimaksu on 39 € / kk tai 35 € / kk vuosilaskutuksella. Tuemme myös 2 tai 5 vuoden maksuja alennuksilla. Hinnat ovat verottomia (ALV 25,5 % lisätään)."
+        answer: "Aloitusmaksu on 599 €, joka sisältää jopa 5 sivua ja sivuston suunnittelun yrityksesi tarpeisiin. Lisäsivut maksavat 99 € / sivu. Kuukausimaksu on 39 € / kk tai 35 € / kk vuosilaskutuksella. Tuemme myös 3 vuoden maksua 20% alennuksella. Hinnat ovat verottomia (ALV 25,5 % lisätään)."
       },
       {
         question: "Sisältyykö hintaan ALV?",
@@ -29,7 +29,7 @@ const websiteFAQData: FAQCategory[] = [
       },
       {
         question: "Voinko maksaa useamman vuoden kerrallaan?",
-        answer: "Kyllä. Tuemme 2 tai 5 vuoden maksuja myös. Nämä ovat tarkoitettu yrityksille ketkä kaipaavat vakautta pitkäksi aikaa."
+        answer: "Kyllä. Tuemme 3 vuoden maksua 20% alennuksella. Tämä on tarkoitettu yrityksille ketkä kaipaavat vakautta pitkäksi aikaa."
       },
       {
         question: "Mikä on perustamismaksu ja miksi sitä peritään?",
@@ -116,7 +116,7 @@ const websiteFAQData: FAQCategory[] = [
       },
       {
         question: "Mitä on laajempi hakukoneoptimointi?",
-        answer: "Laajennettu SEO parantaa sivustosi näkyvyyttä Googlessa jatkuvasti. Se sisältää sisällön ja rakenteen kehittämisen, nopeuden optimoinnin sekä säännöllisen seurannan ja raportoinnin — jotta sivustosi löytyy paremmin ja toimii nopeammin. Hinta on 69 € / kk."
+        answer: "Laajennettu hakukoneoptimointi parantaa sivustosi näkyvyyttä Googlessa jatkuvasti. Se sisältää sisällön ja rakenteen kehittämisen, nopeuden optimoinnin sekä säännöllisen seurannan ja raportoinnin — jotta sivustosi löytyy paremmin ja toimii nopeammin. Hinta on 79 € / kk alkaen."
       },
       {
         question: "Mitä muita lisäpalveluita voin tilata myöhemmin?",
@@ -149,7 +149,7 @@ const aiAgentFAQData: FAQCategory[] = [
     items: [
       {
         question: "Mitä Mitrox AI Advisor maksaa?",
-        answer: "Starter Advisor maksaa alkaen 69 €/kk ja Pro Advisor alkaen 103 €/kk. Tarjoamme myös 14 päivän maksuttoman kokeilujakson ja vuosilaskutuksen 20% alennuksella."
+        answer: "Starter Advisor maksaa alkaen 63 €/kk ja Pro Advisor alkaen 103 €/kk. Tarjoamme myös 14 päivän maksuttoman kokeilujakson ja vuosilaskutuksen 20% alennuksella."
       },
       {
         question: "Sisältyykö hintaan ALV?",
@@ -232,7 +232,7 @@ const aiAgentFAQData: FAQCategory[] = [
     items: [
       {
         question: "Mitä eroa on Starter ja Pro -paketeilla?",
-        answer: "Pro-paketti sisältää kaikki Starter-ominaisuudet plus: laajennetun dialogin ja muistitoiminnot, 80 verkkosivua (vs. 30), ajanvarauskalenterin, WhatsApp-integraatiot, kaksikielisyyden (FI/EN), muokattavan käyttöliittymän ja nopeamman asiakastuen (24h vs. 72h)."
+        answer: "Pro-paketti sisältää kaikki Starter-ominaisuudet plus: laajennetun dialogin ja muistitoiminnot, 80 tietolähdettä (vs. 30), ajanvarauskalenterin, WhatsApp-integraatiot, kaksikielisyyden (FI/EN), muokattavan käyttöliittymän ja nopeamman asiakastuen (24h vs. 72h)."
       },
       {
         question: "Kuinka monta viestiä neuvoja käsittelee kuukaudessa?",

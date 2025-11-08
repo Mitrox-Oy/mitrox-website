@@ -85,17 +85,17 @@ const TrustSection: React.FC = () => {
             Kokeile Mitrox AI Advisoria
           </h2>
           <p className="text-[0.75rem] uppercase tracking-[0.45em] text-body-caption">
-            Ã„LYKÃ„S KASVUKUMPPANISI
+            ÄLYKÄS KASVUKUMPPANISI
           </p>
           <p className="text-body-subtle max-w-2xl mx-auto mt-4">
-            Keskustele neuvojalta Mitroxista, hinnoittelusta tai siitÃ¤, miten voimme vauhdittaa yrityksesi kasvua.
+            Keskustele neuvojalta Mitroxista, hinnoittelusta tai siitä, miten voimme vauhdittaa yrityksesi kasvua.
           </p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-10 items-start">
           <div>
             <div className="relative mx-auto w-full max-w-[520px] rounded-[24px] bg-white overflow-hidden shadow-2xl">
-              <div className="h-[560px]">
+              <div className="h-[560px] lg:h-[700px]">
                 <div ref={embedRef} id="voiceflow-chatbot" className="absolute inset-0" />
                 {isLoading && (
                   <div className="absolute inset-0 grid place-items-center bg-white">
@@ -109,7 +109,7 @@ const TrustSection: React.FC = () => {
           <div className="lg:pl-10">
             <h3 className="text-white text-2xl font-medium mb-2">Testaa itse</h3>
             <p className="text-body-subtle mb-6 max-w-md">
-              Kysele neuvojalta Mitroxista, hinnoittelusta tai siitÃ¤, miten voimme vauhdittaa yrityksesi kasvua.
+              Kysele neuvojalta Mitroxista, hinnoittelusta tai siitä, miten voimme vauhdittaa yrityksesi kasvua.
             </p>
             <Link
               to="#pricing"

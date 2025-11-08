@@ -117,14 +117,14 @@ const INTEGRATION_OPTIONS = [
 const ADDITIONAL_SERVICES_OPTIONS = [
   "Mitrox Advisor – 55 €/kk alkaen",
   "Lisäkieli (Suomi ↔ Englanti) – 199 € alkaen",
-  "Laajennettu SEO-optimointi – 69 €/kk",
+  "Laajennettu hakukoneoptimointi – 69 €/kk",
   "Ei lisäpalveluita tällä hetkellä",
 ];
 
 const ADDITIONAL_SERVICES_DESCRIPTIONS: { [key: string]: string } = {
   "Mitrox Advisor – 55 €/kk alkaen": "24/7 verkkosivun asiakasavustaja, joka vastaa kävijöiden kysymyksiin ja ohjaa oikeaan suuntaan.",
   "Lisäkieli (Suomi ↔ Englanti) – 199 € alkaen": "Ammattitason käännös ja viimeistely viidelle sivulle, sisältäen SEO-optimoinnin.",
-  "Laajennettu SEO-optimointi – 69 €/kk": "Jatkuva hakukonenäkyvyyden kehitys ja säännölliset raportit.",
+  "Laajennettu hakukoneoptimointi – 69 €/kk": "Jatkuva hakukonenäkyvyyden kehitys ja säännölliset raportit.",
 };
 
 const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
@@ -261,7 +261,7 @@ const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = (
     const hasMitroxAdvisor = formData.integrations.includes("mitrox_advisor");
     
     const languageService = "Lisäkieli (Suomi ↔ Englanti) – 199 € alkaen";
-    const seoService = "Laajennettu SEO-optimointi – 69 €/kk";
+    const seoService = "Laajennettu hakukoneoptimointi – 69 €/kk";
     const advisorService = "Mitrox Advisor – 55 €/kk alkaen";
     
     const newServices = [...formData.additionalServices];

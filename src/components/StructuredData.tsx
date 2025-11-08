@@ -124,7 +124,7 @@ const StructuredData: React.FC = () => {
         "name": "Mitä Mitrox AI Advisor maksaa?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Starter Advisor maksaa alkaen 69€/kk ja Pro Advisor alkaen 103€/kk. Tarjoamme myös 14 päivän maksuttoman kokeilujakson."
+          "text": "Starter Advisor maksaa alkaen 63€/kk ja Pro Advisor alkaen 103€/kk. Tarjoamme myös 14 päivän maksuttoman kokeilujakson."
         }
       },
       {

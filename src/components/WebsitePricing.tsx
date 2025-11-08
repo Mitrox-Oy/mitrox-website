@@ -11,7 +11,7 @@ const formatEUR = (value: number, locale: string) =>
     maximumFractionDigits: 0,
   }).format(value);
 
-type BillingCycle = "monthly" | "yearly" | "2year" | "5year";
+type BillingCycle = "monthly" | "yearly" | "3year";
 
 const WebsitePricing: React.FC = () => {
   const { language } = useLanguage();
@@ -26,19 +26,15 @@ const WebsitePricing: React.FC = () => {
 
   const MONTHLY_PRICE = 39;
   const YEARLY_DISCOUNT = 0.1;
-  const TWO_YEAR_DISCOUNT = 0.15;
-  const FIVE_YEAR_DISCOUNT = 0.2;
+  const THREE_YEAR_DISCOUNT = 0.2;
   
   const YEARLY_PRICE = Math.round(MONTHLY_PRICE * 12 * (1 - YEARLY_DISCOUNT));
-  const TWO_YEAR_PRICE = Math.round(MONTHLY_PRICE * 24 * (1 - TWO_YEAR_DISCOUNT));
-  const FIVE_YEAR_PRICE = Math.round(MONTHLY_PRICE * 60 * (1 - FIVE_YEAR_DISCOUNT));
+  const THREE_YEAR_PRICE = Math.round(MONTHLY_PRICE * 36 * (1 - THREE_YEAR_DISCOUNT));
   
   const EFFECTIVE_MONTHLY = billing === "yearly" 
     ? Math.round(YEARLY_PRICE / 12)
-    : billing === "2year"
-    ? Math.round(TWO_YEAR_PRICE / 24)
-    : billing === "5year"
-    ? Math.round(FIVE_YEAR_PRICE / 60)
+    : billing === "3year"
+    ? Math.round(THREE_YEAR_PRICE / 36)
     : MONTHLY_PRICE;
 
   // Pricing calculations
@@ -46,16 +42,19 @@ const WebsitePricing: React.FC = () => {
   const SETUP_FEE_PER_PAGE = 99;
   const LANGUAGE_FEE_BASE = 199;
   const LANGUAGE_FEE_PER_PAGE = 49;
-  // Mitrox AI Advisorin hinta: 55€/kk vuosittaisella, 65€/kk kuukausittaisella
-  // 2-year: 52€/kk (15% discount), 5-year: 50€/kk (20% discount)
+  // Mitrox AI Advisorin hinta verkkosivun lisäpalveluna:
+  // Kuukausitilaus: 69€/kk, Vuosittain: 59€/kk, 3 vuotta: 55€/kk
   const AI_BOT_MONTHLY = billing === "monthly" 
-    ? 65 
+    ? 69 
     : billing === "yearly"
-    ? 55
-    : billing === "2year"
-    ? 52
-    : 50;
-  const SEO_MONTHLY = 69; // Laajennettu SEO optimointi
+    ? 59
+    : 55;
+  // Laajennettu hakukoneoptimointi: Kuukausitilaus 89€/kk, Vuosittain 84€/kk, 3 vuotta 79€/kk alkaen
+  const SEO_MONTHLY = billing === "monthly" 
+    ? 89 
+    : billing === "yearly"
+    ? 84
+    : 79;
 
   const calculateSetupFee = () => {
     const extraPages = Math.max(0, pageCount - 5);
@@ -71,6 +70,17 @@ const WebsitePricing: React.FC = () => {
   const totalSetupFee = calculateSetupFee() + calculateLanguageFee();
   const baseMonthlyFee = EFFECTIVE_MONTHLY;
   const monthlyFee = baseMonthlyFee + (includeAIBot ? AI_BOT_MONTHLY : 0) + (includeSEO ? SEO_MONTHLY : 0);
+
+  // Säästöt lisäpalveluista
+  const AI_BOT_MONTHLY_PRICE = 69; // Kuukausitilauksen hinta verkkosivun lisäpalveluna
+  const AI_BOT_STANDARD_PRICE = 79; // Normi Starter AI Advisorin hinta
+  const AI_BOT_MONTHLY_SAVINGS = billing === "monthly" && includeAIBot ? (AI_BOT_STANDARD_PRICE - AI_BOT_MONTHLY_PRICE) : 0; // Säästö verrattuna normi hintaan
+  const AI_BOT_YEARLY_SAVINGS = billing === "yearly" ? (AI_BOT_MONTHLY_PRICE - AI_BOT_MONTHLY) * 12 : 0;
+  const AI_BOT_3YEAR_SAVINGS = billing === "3year" ? (AI_BOT_MONTHLY_PRICE - AI_BOT_MONTHLY) * 36 : 0;
+  
+  const SEO_MONTHLY_PRICE = 89; // Kuukausitilauksen hinta
+  const SEO_YEARLY_SAVINGS = billing === "yearly" ? (SEO_MONTHLY_PRICE - SEO_MONTHLY) * 12 : 0;
+  const SEO_3YEAR_SAVINGS = billing === "3year" ? (SEO_MONTHLY_PRICE - SEO_MONTHLY) * 36 : 0;
 
   return (
     <section id={pricingId} className="relative py-40 md:py-48 px-4 sm:px-6 lg:px-8 bg-black font-inter">
@@ -100,8 +110,7 @@ const WebsitePricing: React.FC = () => {
                 {([
                   { key: "monthly", label: "Kuukausittain", discount: null },
                   { key: "yearly", label: "Vuosittain", discount: "-10%" },
-                  { key: "2year", label: "2 vuotta", discount: "-15%" },
-                  { key: "5year", label: "5 vuotta", discount: "-20%" },
+                  { key: "3year", label: "3 vuotta", discount: "-20%" },
                 ] as const).map((option) => {
                   const isActive = billing === option.key;
                   return (
@@ -147,21 +156,23 @@ const WebsitePricing: React.FC = () => {
                   </div>
                   <input
                     type="range"
-                    min="1"
+                    min="5"
                     max="20"
                     value={pageCount}
                     onChange={(e) => setPageCount(Number(e.target.value))}
                     className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-white"
                     style={{
-                      background: `linear-gradient(to right, white 0%, white ${((pageCount - 1) / 19) * 100}%, rgba(255,255,255,0.1) ${((pageCount - 1) / 19) * 100}%, rgba(255,255,255,0.1) 100%)`
+                      background: `linear-gradient(to right, white 0%, white ${((pageCount - 5) / 15) * 100}%, rgba(255,255,255,0.1) ${((pageCount - 5) / 15) * 100}%, rgba(255,255,255,0.1) 100%)`
                     }}
                   />
-                  <div className="flex justify-between text-xs text-gray-500 mt-2">
-                    <span>1</span>
-                    <span>5 (sisältyy aloitusmaksuun)</span>
-                    <span>10</span>
-                    <span>15</span>
-                    <span>20</span>
+                  <div className="relative mt-2 h-5">
+                    <span className="absolute left-0 text-xs text-gray-500 whitespace-nowrap">
+                      <span className="sm:hidden">5</span>
+                      <span className="hidden sm:inline">5 (sisältyy aloitusmaksuun)</span>
+                    </span>
+                    <span className="absolute left-[33%] -translate-x-1/2 text-xs text-gray-500 whitespace-nowrap">10</span>
+                    <span className="absolute left-[67%] -translate-x-1/2 text-xs text-gray-500 whitespace-nowrap">15</span>
+                    <span className="absolute right-0 text-xs text-gray-500 whitespace-nowrap">20</span>
                   </div>
                 </div>
 
@@ -219,7 +230,7 @@ const WebsitePricing: React.FC = () => {
         <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10">
           <div>
             <label className="text-sm font-medium text-white block mb-1">
-              Laajennettu SEO optimointi
+              Laajennettu hakukoneoptimointi
             </label>
             <p className="text-xs text-gray-400">
               Hakukoneoptimointi sisällölle ja rakenteelle (+{formatEUR(SEO_MONTHLY)}/kk)
@@ -289,15 +300,43 @@ const WebsitePricing: React.FC = () => {
                         <p className="text-xs text-gray-500 mt-1">
                           {formatEUR(baseMonthlyFee)} (verkkosivusto)
                           {includeAIBot && ` + ${formatEUR(AI_BOT_MONTHLY)} (Mitrox AI Advisor)`}
-                          {includeSEO && ` + ${formatEUR(SEO_MONTHLY)} (Laajennettu SEO)`}
+                          {includeSEO && ` + ${formatEUR(SEO_MONTHLY)} (Laajennettu hakukoneoptimointi)`}
                         </p>
                       )}
-                      {billing !== "monthly" && !includeAIBot && (
-                        <p className="text-xs text-gray-500 mt-1">
-                          {billing === "yearly" && `Säästät ${formatEUR(MONTHLY_PRICE * 12 - YEARLY_PRICE)} / vuosi`}
-                          {billing === "2year" && `Säästät ${formatEUR(MONTHLY_PRICE * 24 - TWO_YEAR_PRICE)} / 2 vuotta`}
-                          {billing === "5year" && `Säästät ${formatEUR(MONTHLY_PRICE * 60 - FIVE_YEAR_PRICE)} / 5 vuotta`}
+                      {billing === "monthly" && includeAIBot && AI_BOT_MONTHLY_SAVINGS > 0 && (
+                        <p className="text-xs text-green-400 mt-1">
+                          Säästät {formatEUR(AI_BOT_MONTHLY_SAVINGS)} / kk (Starter Mitrox AI Advisor verrattuna normi hintaan)
                         </p>
+                      )}
+                      {billing !== "monthly" && (
+                        <>
+                          {!includeAIBot && (
+                            <p className="text-xs text-gray-500 mt-1">
+                              {billing === "yearly" && `Säästät ${formatEUR(MONTHLY_PRICE * 12 - YEARLY_PRICE)} / vuosi`}
+                              {billing === "3year" && `Säästät ${formatEUR(MONTHLY_PRICE * 36 - THREE_YEAR_PRICE)} / 3 vuotta`}
+                            </p>
+                          )}
+                          {includeAIBot && billing === "yearly" && AI_BOT_YEARLY_SAVINGS > 0 && (
+                            <p className="text-xs text-green-400 mt-1">
+                              Säästät {formatEUR(AI_BOT_YEARLY_SAVINGS)} / vuosi (Starter Mitrox AI Advisor)
+                            </p>
+                          )}
+                          {includeAIBot && billing === "3year" && AI_BOT_3YEAR_SAVINGS > 0 && (
+                            <p className="text-xs text-green-400 mt-1">
+                              Säästät {formatEUR(AI_BOT_3YEAR_SAVINGS)} / 3 vuotta (Starter Mitrox AI Advisor)
+                            </p>
+                          )}
+                          {includeSEO && billing === "yearly" && SEO_YEARLY_SAVINGS > 0 && (
+                            <p className="text-xs text-green-400 mt-1">
+                              Säästät {formatEUR(SEO_YEARLY_SAVINGS)} / vuosi (Laajennettu hakukoneoptimointi)
+                            </p>
+                          )}
+                          {includeSEO && billing === "3year" && SEO_3YEAR_SAVINGS > 0 && (
+                            <p className="text-xs text-green-400 mt-1">
+                              Säästät {formatEUR(SEO_3YEAR_SAVINGS)} / 3 vuotta (Laajennettu hakukoneoptimointi)
+                            </p>
+                          )}
+                        </>
                       )}
                     </div>
                   </div>
@@ -307,18 +346,16 @@ const WebsitePricing: React.FC = () => {
                       <span className="text-sm font-medium text-gray-300">
                         {billing === "monthly" && "Ensimmäinen vuosi (arvio)"}
                         {billing === "yearly" && "Ensimmäinen vuosi (arvio)"}
-                        {billing === "2year" && "2 vuoden kokonaishinta (arvio)"}
-                        {billing === "5year" && "5 vuoden kokonaishinta (arvio)"}
+                        {billing === "3year" && "3 vuoden kokonaishinta (arvio)"}
                       </span>
                       <span className="text-3xl font-light text-white">
-                        {formatEUR(totalSetupFee + (monthlyFee * (billing === "monthly" || billing === "yearly" ? 12 : billing === "2year" ? 24 : 60)))}
+                        {formatEUR(totalSetupFee + (monthlyFee * (billing === "monthly" || billing === "yearly" ? 12 : 36)))}
                       </span>
                     </div>
                     <p className="text-xs text-gray-500 mt-2 text-right">
                       {billing === "monthly" && "Sisältää aloitusmaksun + 12kk kuukausimaksu"}
                       {billing === "yearly" && "Sisältää aloitusmaksun + 12kk kuukausimaksu"}
-                      {billing === "2year" && "Sisältää aloitusmaksun + 24kk kuukausimaksu"}
-                      {billing === "5year" && "Sisältää aloitusmaksun + 60kk kuukausimaksu"}
+                      {billing === "3year" && "Sisältää aloitusmaksun + 36kk kuukausimaksu"}
                       <br />
                       Hinnat verottomina. ALV 25,5 % lisätään hintaan
                     </p>
@@ -381,14 +418,9 @@ const WebsitePricing: React.FC = () => {
                   Säästät {formatEUR(MONTHLY_PRICE * 12 - YEARLY_PRICE)} / vuosi
                 </div>
               )}
-              {billing === "2year" && (
+              {billing === "3year" && (
                 <div className="text-xs text-gray-300 bg-white/5 px-3 py-1 rounded-full inline-block border border-white/10 mb-2">
-                  Säästät {formatEUR(MONTHLY_PRICE * 24 - TWO_YEAR_PRICE)} / 2 vuotta
-                </div>
-              )}
-              {billing === "5year" && (
-                <div className="text-xs text-gray-300 bg-white/5 px-3 py-1 rounded-full inline-block border border-white/10 mb-2">
-                  Säästät {formatEUR(MONTHLY_PRICE * 60 - FIVE_YEAR_PRICE)} / 5 vuotta
+                  Säästät {formatEUR(MONTHLY_PRICE * 36 - THREE_YEAR_PRICE)} / 3 vuotta
                 </div>
               )}
               <div className="text-xs text-gray-400 mt-2">
@@ -536,10 +568,11 @@ const WebsitePricing: React.FC = () => {
             {/* Extended SEO Optimization */}
             <div className="p-6 rounded-xl bg-white/[0.02] backdrop-blur-xl border border-white/10 hover:bg-white/[0.04] transition-all duration-300">
               <h4 className="text-lg font-medium text-white mb-3">
-                Laajennettu SEO-optimointi
+                Laajennettu hakukoneoptimointi
               </h4>
               <div className="text-2xl font-light text-white mb-4">
-                {formatEUR(69)} / kk
+                {formatEUR(79)}
+                <span className="text-gray-400 text-base ml-1">/ kk alkaen</span>
               </div>
               <p className="text-sm text-gray-400 leading-relaxed mb-3">
                 Parannamme sivustosi löydettävyyttä ja suorituskykyä jatkuvasti.
