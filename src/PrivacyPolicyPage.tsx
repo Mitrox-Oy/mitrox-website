@@ -102,82 +102,105 @@ export default function PrivacyPolicyPage() {
 
           <section className={sectionClass} id="rekisterin-nimi">
             <h2 className="text-lg md:text-xl font-semibold text-white/90">1. {isFinnish ? "Rekisterin nimi" : "Name of the Register"}</h2>
-            <p className={bodyText}>{isFinnish ? "Mitrox Oy:n asiakas-, yhteydenotto- ja markkinointirekisteri." : "Mitrox Oy's customer, contact, and marketing register."}</p>
+            <p className={bodyText}>{isFinnish ? "Mitrox Oy:n asiakas-, yhteydenotto- ja markkinointirekisteri." : "Customer, contact, and marketing register of Mitrox Oy."}</p>
           </section>
 
           <section className={sectionClass} id="kayttotarkoitus">
-            <h2 className="text-lg md:text-xl font-semibold text-white/90">2. {isFinnish ? "Rekisterin käyttötarkoitus" : "Purpose of Use of the Register"}</h2>
+            <h2 className="text-lg md:text-xl font-semibold text-white/90">2. {isFinnish ? "Rekisterin käyttötarkoitus" : "Purpose of Processing Personal Data"}</h2>
+            <p className={bodyText}>
+              {isFinnish ? "Henkilötietoja käsitellään seuraaviin tarkoituksiin:" : "Personal data is processed for the following purposes:"}
+            </p>
             <ul className={listClass}>
-              <li>{isFinnish ? "asiakas- ja sopimussuhteiden hoitoon" : "managing customer and contractual relationships"}</li>
-              <li>{isFinnish ? "verkkosivujen ja palveluiden toteuttamiseen ja kehittämiseen" : "implementing and developing websites and services"}</li>
-              <li>{isFinnish ? "tilausten ja palvelupyyntöjen käsittelyyn" : "processing orders and service requests"}</li>
-              <li>{isFinnish ? "asiakaspalveluun ja viestintään" : "customer service and communication"}</li>
-              <li>{isFinnish ? "markkinointiin, uutiskirjeisiin ja kampanjoihin (vain suostumuksella)" : "marketing, newsletters, and campaigns (only with consent)"}</li>
-              <li>{isFinnish ? "lakisääteisten velvoitteiden täyttämiseen." : "fulfilling legal obligations."}</li>
+              <li>{isFinnish ? "asiakas- ja sopimussuhteiden hoitoon" : "Managing and developing customer and contractual relationships"}</li>
+              <li>{isFinnish ? "verkkosivujen ja palveluiden toteuttamiseen ja kehittämiseen" : "Implementing and improving websites and services"}</li>
+              <li>{isFinnish ? "tilausten ja palvelupyyntöjen käsittelyyn" : "Processing orders and service requests"}</li>
+              <li>{isFinnish ? "asiakaspalveluun ja viestintään" : "Providing customer support and communication"}</li>
+              <li>{isFinnish ? "markkinointiin, uutiskirjeisiin ja kampanjoihin (vain suostumuksella)" : "Marketing, newsletters, and campaigns (based on consent)"}</li>
+              <li>{isFinnish ? "lakisääteisten velvoitteiden täyttämiseen." : "Fulfilling legal obligations"}</li>
             </ul>
           </section>
 
           <section className={sectionClass} id="tietosisalto">
-            <h2 className="text-lg md:text-xl font-semibold text-white/90">3. {isFinnish ? "Rekisterin tietosisältö" : "Data Content of the Register"}</h2>
+            <h2 className="text-lg md:text-xl font-semibold text-white/90">3. {isFinnish ? "Rekisterin tietosisältö" : "Data Categories"}</h2>
+            <p className={bodyText}>
+              {isFinnish ? "Rekisteri voi sisältää seuraavia tietoja:" : "The register may contain the following information:"}
+            </p>
             <ul className={listClass}>
-              <li>{isFinnish ? "nimi, yrityksen nimi ja yhteystiedot (sähköposti, puhelin, osoite)" : "name, company name, and contact information (email, phone, address)"}</li>
-              <li>{isFinnish ? "verkkosivujen yhteydenottolomakkeilla annetut tiedot" : "information provided through website contact forms"}</li>
-              <li>{isFinnish ? "asiakkuuteen ja sopimukseen liittyvät tiedot" : "information related to customer relationship and contracts"}</li>
-              <li>{isFinnish ? "laskutus- ja maksutiedot" : "billing and payment information"}</li>
-              <li>{isFinnish ? "käyttäjän suostumukset ja yhteydenottohistoria" : "user consents and contact history"}</li>
-              <li>{isFinnish ? "tekniset tiedot verkkosivukäytöstä (IP-osoite, selaintiedot, evästeet)." : "technical information about website usage (IP address, browser information, cookies)."}</li>
+              <li>{isFinnish ? "nimi, yrityksen nimi ja yhteystiedot (sähköposti, puhelin, osoite)" : "Name, company name, and contact details (email, phone, address)"}</li>
+              <li>{isFinnish ? "verkkosivujen yhteydenottolomakkeilla annetut tiedot" : "Information provided through website contact forms"}</li>
+              <li>{isFinnish ? "asiakkuuteen ja sopimukseen liittyvät tiedot" : "Information related to customer relationships and contracts"}</li>
+              <li>{isFinnish ? "laskutus- ja maksutiedot" : "Billing and payment details"}</li>
+              <li>{isFinnish ? "käyttäjän suostumukset ja yhteydenottohistoria" : "User consents and communication history"}</li>
+              <li>{isFinnish ? "tekniset tiedot verkkosivukäytöstä (IP-osoite, selaintiedot, evästeet)." : "Technical data about website use (e.g. IP address, browser information, cookies)"}</li>
             </ul>
           </section>
 
           <section className={sectionClass} id="tietolahteet">
             <h2 className="text-lg md:text-xl font-semibold text-white/90">4. {isFinnish ? "Tietolähteet" : "Data Sources"}</h2>
+            <p className={bodyText}>
+              {isFinnish ? "Henkilötietoja kerätään ensisijaisesti:" : "Personal data is primarily collected:"}
+            </p>
             <ul className={listClass}>
-              <li>{isFinnish ? "asiakkaalta itseltään (esim. yhteydenottolomakkeet, sähköposti, puhelin, sopimukset)" : "from the customer themselves (e.g., contact forms, email, phone, contracts)"}</li>
-              <li>{isFinnish ? "evästeiden ja analytiikan kautta (esim. Google Analytics, Meta Pixel)" : "through cookies and analytics (e.g., Google Analytics, Meta Pixel)"}</li>
-              <li>{isFinnish ? "julkisista lähteistä (kuten YTJ)." : "from public sources (such as the Business Information System)."}</li>
+              <li>{isFinnish ? "asiakkaalta itseltään (esim. yhteydenottolomakkeet, sähköposti, puhelin, sopimukset)" : "From the data subject (e.g. contact forms, email, phone, contracts)"}</li>
+              <li>{isFinnish ? "evästeiden ja analytiikan kautta (esim. Google Analytics, Meta Pixel)" : "Through cookies and analytics tools (e.g. Google Analytics, Meta Pixel)"}</li>
+              <li>{isFinnish ? "julkisista lähteistä (kuten YTJ)." : "From public registers (e.g. Business Information System / YTJ)"}</li>
             </ul>
           </section>
 
           <section className={sectionClass} id="luovutus-siirto">
-            <h2 className="text-lg md:text-xl font-semibold text-white/90">5. {isFinnish ? "Tietojen luovuttaminen ja siirto" : "Disclosure and Transfer of Data"}</h2>
+            <h2 className="text-lg md:text-xl font-semibold text-white/90">5. {isFinnish ? "Tietojen luovuttaminen ja siirto" : "Data Disclosure and Transfers"}</h2>
             <p className={bodyText}>
               {isFinnish
                 ? "Tietoja ei luovuteta kolmansille osapuolille ilman asiakkaan suostumusta, paitsi:"
-                : "Data is not disclosed to third parties without the customer's consent, except:"}
+                : "Personal data is not disclosed to third parties without consent, except:"}
             </p>
             <ul className={listClass}>
-              <li>{isFinnish ? "kun laki tai viranomaismääräys niin vaatii" : "when required by law or authority order"}</li>
+              <li>{isFinnish ? "kun laki tai viranomaismääräys niin vaatii" : "When required by law or an authority order"}</li>
               <li>
                 {isFinnish
                   ? "kun palvelun tekninen toteutus edellyttää tietojen käsittelyä ulkoisella palveluntarjoajalla (esim. hosting, analytiikka, maksupalvelut)."
-                  : "when the technical implementation of the service requires data processing by an external service provider (e.g., hosting, analytics, payment services)."}
+                  : "When required for the technical implementation of services (e.g. hosting, analytics, payment providers)"}
               </li>
             </ul>
             <p className={bodyText}>
               {isFinnish
                 ? "Tietoja voidaan siirtää EU- tai ETA-alueen ulkopuolelle vain, jos tietosuojan taso on riittävä ja GDPR:n mukainen."
-                : "Data may be transferred outside the EU or EEA only if the level of data protection is adequate and GDPR-compliant."}
+                : "If data is transferred outside the EU or EEA, Mitrox ensures that the receiving country offers an adequate level of data protection in accordance with the GDPR (e.g. through the EU-U.S. Data Privacy Framework or standard contractual clauses)."}
             </p>
           </section>
 
           <section className={sectionClass} id="sailytysaika">
-            <h2 className="text-lg md:text-xl font-semibold text-white/90">6. {isFinnish ? "Tietojen säilytysaika" : "Data Retention Period"}</h2>
+            <h2 className="text-lg md:text-xl font-semibold text-white/90">6. {isFinnish ? "Tietojen säilytysaika" : "Data Retention"}</h2>
+            <p className={bodyText}>
+              {isFinnish
+                ? "Henkilötietoja säilytetään vain niin kauan kuin:"
+                : "Personal data is retained only as long as:"}
+            </p>
             <ul className={listClass}>
-              <li>{isFinnish ? "asiakassuhteen hoitamiseksi" : "for managing the customer relationship"}</li>
-              <li>{isFinnish ? "lakisääteisten velvoitteiden täyttämiseksi" : "for fulfilling legal obligations"}</li>
-              <li>{isFinnish ? "tai kunnes käyttäjä peruuttaa suostumuksensa markkinointiin." : "or until the user withdraws their consent to marketing."}</li>
+              <li>{isFinnish ? "asiakassuhteen hoitamiseksi" : "Necessary for managing the customer relationship,"}</li>
+              <li>{isFinnish ? "lakisääteisten velvoitteiden täyttämiseksi" : "Required to meet legal obligations, or"}</li>
+              <li>{isFinnish ? "tai kunnes käyttäjä peruuttaa suostumuksensa markkinointiin." : "Until the data subject withdraws consent for marketing."}</li>
             </ul>
+            <p className={bodyText}>
+              {isFinnish
+                ? "Tämän jälkeen tiedot poistetaan turvallisesti tai anonymisoidaan."
+                : "After this, the data is securely deleted or anonymized."}
+            </p>
           </section>
 
           <section className={sectionClass} id="oikeudet">
             <h2 className="text-lg md:text-xl font-semibold text-white/90">7. {isFinnish ? "Rekisteröidyn oikeudet" : "Rights of the Data Subject"}</h2>
+            <p className={bodyText}>
+              {isFinnish
+                ? "Rekisteröidyllä on oikeus:"
+                : "The data subject has the right to:"}
+            </p>
             <ul className={listClass}>
-              <li>{isFinnish ? "tarkastaa omat tietonsa" : "inspect their own data"}</li>
-              <li>{isFinnish ? "vaatia virheellisten tietojen oikaisua" : "request correction of incorrect data"}</li>
-              <li>{isFinnish ? 'pyytää tietojen poistamista ("oikeus tulla unohdetuksi")' : 'request deletion of data ("right to be forgotten")'}</li>
-              <li>{isFinnish ? "rajoittaa tai vastustaa tietojensa käsittelyä" : "restrict or object to the processing of their data"}</li>
-              <li>{isFinnish ? "peruuttaa suostumuksensa milloin tahansa" : "withdraw their consent at any time"}</li>
-              <li>{isFinnish ? "tehdä valitus valvontaviranomaiselle (Tietosuojavaltuutetun toimisto)." : "file a complaint with the supervisory authority (Office of the Data Protection Ombudsman)."}</li>
+              <li>{isFinnish ? "tarkastaa omat tietonsa" : "Access their personal data"}</li>
+              <li>{isFinnish ? "vaatia virheellisten tietojen oikaisua" : "Request rectification or erasure of data"}</li>
+              <li>{isFinnish ? "rajoittaa tai vastustaa tietojensa käsittelyä" : "Restrict or object to processing"}</li>
+              <li>{isFinnish ? "peruuttaa suostumuksensa milloin tahansa" : "Withdraw consent at any time"}</li>
+              <li>{isFinnish ? "tehdä valitus valvontaviranomaiselle (Tietosuojavaltuutetun toimisto)." : "File a complaint with the Office of the Data Protection Ombudsman (www.tietosuoja.fi)"}</li>
             </ul>
             <p className={bodyText}>
               {isFinnish ? "Pyynnöt voi lähettää osoitteeseen " : "Requests can be sent to "}
