@@ -1,7 +1,9 @@
 import React from "react";
 import { Mail } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useLanguage } from "../context/LanguageContext";
+import { switchLanguagePath, getLocalizedPath } from "../utils/routing";
+import { getFullLocalizedPath } from "../utils/routeMapping";
 import logo from "../assets/logo.png";
 
 type FooterProps = {
@@ -35,17 +37,26 @@ const YouTubeIcon = ({ className = "h-5 w-5" }) => (
   </svg>
 );
 
+
 const Footer: React.FC<FooterProps> = ({ email = "info@mitrox.io" }) => {
   const year = new Date().getFullYear();
-  const { language, setLanguage } = useLanguage();
+  const { language } = useLanguage();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [menuOpen, setMenuOpen] = React.useState(false);
+
+  const handleLanguageChange = (newLang: "fi" | "en") => {
+    const newPath = switchLanguagePath(location.pathname, newLang);
+    navigate(newPath);
+    setMenuOpen(false);
+  };
 
   return (
     <footer className="bg-black border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex flex-col items-center gap-6 text-center md:flex-row md:items-center md:justify-between md:text-left">
           {/* Logo */}
-          <Link to="/" className="inline-flex items-center gap-3 shrink-0">
+          <Link to={getLocalizedPath("/", language)} className="inline-flex items-center gap-3 shrink-0">
             <img
               src={logo}
               alt="Mitrox Oy"
@@ -76,15 +87,48 @@ const Footer: React.FC<FooterProps> = ({ email = "info@mitrox.io" }) => {
             </div>
             <span className="hidden sm:inline text-gray-600">•</span>
             <Link
-              to="/privacy-policy"
+              to={getFullLocalizedPath("privacy-policy", language)}
               className="text-gray-300 hover:text-blue-400 transition-colors"
             >
               {language === "fi" ? "Tietosuojaseloste" : "Privacy Policy"}
             </Link>
           </div>
 
-          {/* Sosiaalinen media: Instagram + YouTube */}
+          {/* Sosiaalinen media: Language toggle + LinkedIn + Instagram + YouTube */}
           <div className="flex items-center gap-4 justify-center md:justify-end">
+            {/* Language Dropdown Toggle */}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setMenuOpen((prev) => !prev)}
+                className="text-xs text-white/60 hover:text-white transition-colors"
+              >
+                {language === "fi" ? "Suomi" : "English"}
+              </button>
+              {menuOpen && (
+                <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 min-w-[140px] rounded-lg border border-white/10 bg-black/95 px-3 py-2 text-xs text-white shadow-lg z-50">
+                  <button
+                    type="button"
+                    onClick={() => handleLanguageChange("fi")}
+                    className={`block w-full rounded px-2 py-1 text-left transition-colors ${
+                      language === "fi" ? "bg-white/10 text-white" : "text-white/70 hover:text-white"
+                    }`}
+                  >
+                    Suomi
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleLanguageChange("en")}
+                    className={`mt-1 block w-full rounded px-2 py-1 text-left transition-colors ${
+                      language === "en" ? "bg-white/10 text-white" : "text-white/70 hover:text-white"
+                    }`}
+                  >
+                    English
+                  </button>
+                </div>
+              )}
+            </div>
+
             <a
               href="https://www.linkedin.com/company/mitrox/"
               target="_blank"
@@ -125,45 +169,6 @@ const Footer: React.FC<FooterProps> = ({ email = "info@mitrox.io" }) => {
             >
               <YouTubeIcon className="h-5 w-5 transform transition-transform group-hover:scale-110" />
             </a>
-          </div>
-        </div>
-        <div className="mt-3 flex justify-center">
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => setMenuOpen((prev) => !prev)}
-              className="text-xs text-white/60 hover:text-white transition-colors"
-            >
-              {language === "fi" ? "Suomi" : "English"}
-            </button>
-            {menuOpen && (
-              <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 min-w-[140px] rounded-lg border border-white/10 bg-black/95 px-3 py-2 text-xs text-white shadow-lg">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setLanguage("fi");
-                    setMenuOpen(false);
-                  }}
-                  className={`block w-full rounded px-2 py-1 text-left transition-colors ${
-                    language === "fi" ? "bg-white/10 text-white" : "text-white/70 hover:text-white"
-                  }`}
-                >
-                  Suomi
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setLanguage("en");
-                    setMenuOpen(false);
-                  }}
-                  className={`mt-1 block w-full rounded px-2 py-1 text-left transition-colors ${
-                    language === "en" ? "bg-white/10 text-white" : "text-white/70 hover:text-white"
-                  }`}
-                >
-                  English
-                </button>
-              </div>
-            )}
           </div>
         </div>
       </div>

@@ -1,37 +1,26 @@
-.vfrc-chat-input__container,
-.vfrc-chat-input__footer,
-.vfrc-input {
-  background-color: #ffffff !important;
+/* Voiceflow Chat Input Styling Fix */
+/* Fixes the dark/black background issue on the input field */
+/* Forces light theme and overrides dark mode styles */
+
+/* Input container and field */
+.vfrc-input,
+.vfrc-input input,
+.vfrc-input textarea {
+  background: #ffffff !important;
+  color: #111111 !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 10px !important;
 }
 
-.vfrc-input {
-  background-color: transparent !important;
-  color: #ffffff !important;
-  border-radius: 999px !important;
-  border: 1px solid rgb(255, 255, 255) !important;
-  padding: 0.65rem 1.1rem !important;
-  box-shadow: none !important;
-}
+/* Footer background behind the input */
+.vfrc-footer { background: transparent !important; }
 
-.vfrc-input::placeholder {
-  color: rgb(255, 255, 255) !important;
-}
+/* Placeholder color */
+.vfrc-input::placeholder,
+.vfrc-input input::placeholder,
+.vfrc-input textarea::placeholder { color: #888888 !important; }
 
-.vfrc-chat-input__footer {
-  border-top: 1px solid rgb(255, 255, 255) !important;
-  box-shadow: none !important;
-  background-color: transparent !important;
-}
-
-.vfrc-send-button button {
-  background-color: #161616 !important;
-  color: #ffffff !important;
-  border-radius: 999px !important;
-  box-shadow: none !important;
-}
-
-.vfrc-send-button button:hover,
-.vfrc-send-button button:focus {
-  background-color: rgba(0, 0, 0, 0.85) !important;
-}
-
+/* If Voiceflow applies a dark token class, neutralize it */
+.vfrc--dark .vfrc-input,
+.vfrc--dark .vfrc-input input,
+.vfrc--dark .vfrc-input textarea { background:#ffffff !important; color:#111 !important; }

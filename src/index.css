@@ -13,6 +13,11 @@ body {
   color-scheme: dark;
 }
 
+/* Keep the embedded Voiceflow widget inputs in light mode */
+#voiceflow-chatbot {
+  color-scheme: light;
+}
+
 /* Body text - improved contrast for accessibility */
 .text-body-subtle {
   color: rgba(255, 255, 255, 0.85); /* Increased from 0.75 for better readability */

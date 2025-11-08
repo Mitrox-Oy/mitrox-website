@@ -7,6 +7,7 @@ import pureclean from "../assets/pureclean.png";
 import studioKa from "../assets/studio-ka.png";
 import PortfolioModal from "./PortfolioModal";
 import type { PortfolioItem } from "./PortfolioModal";
+import { useLocalizedSectionId } from "../hooks/useLocalizedSectionId";
 
 export interface PortfolioShowcaseProps {
   items?: Array<{
@@ -18,6 +19,7 @@ export interface PortfolioShowcaseProps {
 
 const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ items }) => {
   const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
+  const referencesId = useLocalizedSectionId("references");
 
   // Default portfolio items with actual images
   const defaultItems: PortfolioItem[] = items || [
@@ -56,7 +58,7 @@ const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ items }) => {
   return (
     <>
       <section
-        id="portfolio"
+        id={referencesId}
         className="relative py-20 md:py-32 px-4 sm:px-6 lg:px-8 bg-black"
       >
         <div className="max-w-7xl mx-auto">

@@ -1,6 +1,7 @@
 // src/WebsiteBusinessPage.tsx
 import React, { useState, useEffect } from "react";
 import { useLanguage } from "./context/LanguageContext";
+import { useLocalizedSectionId } from "./hooks/useLocalizedSectionId";
 import SpaceBackground from "./components/SpaceBackground";
 import Header from "./components/Header";
 import SEOHead from "./components/SEOHead";
@@ -20,7 +21,7 @@ import { buildMeta, organizationSchema, breadcrumbSchema, serviceSchema } from "
 import { SEO_CONFIG } from "../config/seo.fi";
 import ErrorBoundary from "./components/ErrorBoundary";
 
-const WebsiteHero: React.FC = () => {
+const WebsiteHero: React.FC<{ referencesId: string; processId: string }> = ({ referencesId, processId }) => {
   const [showContent, setShowContent] = useState<boolean>(false);
   const { language } = useLanguage();
   const isFinnish = language === "fi";
@@ -40,14 +41,14 @@ const WebsiteHero: React.FC = () => {
   }, []);
 
   const handleScrollToPortfolio = () => {
-    const portfolioSection = document.getElementById("portfolio");
+    const portfolioSection = document.getElementById(referencesId);
     if (portfolioSection) {
       portfolioSection.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
-
+  
   const handleScrollToProcess = () => {
-    const processSection = document.getElementById("process");
+    const processSection = document.getElementById(processId);
     if (processSection) {
       processSection.scrollIntoView({ behavior: "smooth", block: "start" });
     }
@@ -159,6 +160,8 @@ const WebsiteHero: React.FC = () => {
 export default function WebsiteBusinessPage() {
   const { language } = useLanguage();
   const isFinnish = language === "fi";
+  const referencesId = useLocalizedSectionId("references");
+  const processId = useLocalizedSectionId("process");
   // SEO_V2 enhancements (only when flag is enabled)
   const isSEO_V2 = import.meta.env.VITE_SEO_V2 === "true";
   const meta = isSEO_V2
@@ -196,7 +199,7 @@ export default function WebsiteBusinessPage() {
       {isSEO_V2 && <SEOEnhanced meta={meta} schemas={schemas} lang={isFinnish ? "fi" : "en"} />}
       <Header />
       <ErrorBoundary>
-        <WebsiteHero />
+        <WebsiteHero referencesId={referencesId} processId={processId} />
         <PortfolioShowcase />
         <ProcessSection />
         <section className="relative bg-black">

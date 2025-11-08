@@ -4,6 +4,9 @@ import { Menu, X, ArrowRight, ChevronDown, Globe2, Sparkles } from "lucide-react
 import logo from "../assets/logo.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLanguage } from "../context/LanguageContext";
+import { getLocalizedPath } from "../utils/routing";
+import { getFullLocalizedPath } from "../utils/routeMapping";
+import { useLocalizedSectionId } from "../hooks/useLocalizedSectionId";
 
 const Header: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -14,11 +17,15 @@ const Header: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { language } = useLanguage();
+  const processId = useLocalizedSectionId("process");
+  const pricingId = useLocalizedSectionId("pricing");
+  const faqId = useLocalizedSectionId("faq");
+  const contactId = useLocalizedSectionId("contact");
 
   const navItems = useMemo(
     () => [
       { label: language === "fi" ? "Etusivu" : "Home", href: "hero" },
-      { label: language === "fi" ? "Tietoa meistä" : "About Us", href: "/about" },
+      { label: language === "fi" ? "Tietoa meistä" : "About Us", href: getFullLocalizedPath("about", language) },
     ],
     [language]
   );
@@ -27,12 +34,12 @@ const Header: React.FC = () => {
     () => [
       {
         label: "Mitrox Sites",
-        href: "/websites",
+        href: getFullLocalizedPath("websites", language),
         subtitle: language === "fi" ? "Suunniteltu yrityksesi menestykseen" : "Designed for your business success",
       },
       {
         label: "Mitrox AI Advisor",
-        href: "/advisor",
+        href: getFullLocalizedPath("advisor", language),
         subtitle: language === "fi" ? "Älykäs kasvukumppanisi" : "Your intelligent growth partner",
       },
     ],
@@ -41,7 +48,11 @@ const Header: React.FC = () => {
 
   const [sitesItem, advisorItem] = productItems;
 
-  const isProductPage = location.pathname === "/websites" || location.pathname === "/advisor";
+  // Check if current page is a product page (websites or advisor) using localized paths
+  const isProductPage = location.pathname.includes("/verkkosivut") || 
+                        location.pathname.includes("/websites") ||
+                        location.pathname.includes("/ai-neuvonantaja") ||
+                        location.pathname.includes("/ai-advisor");
 
   const affiliateLabel = language === "fi" ? "Affiliate-ohjelma" : "Affiliate program";
 
@@ -78,8 +89,15 @@ const Header: React.FC = () => {
   }, [location.pathname, location.hash]);
 
   const handleScroll = (id: string) => {
+    // Update URL hash while preserving current pathname
+    const currentPath = window.location.pathname;
+    window.history.pushState(null, '', `${currentPath}#${id}`);
+    
+    // Scroll to element
     const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   // Cleanup timeout on unmount
@@ -107,11 +125,12 @@ const Header: React.FC = () => {
               <div className="flex items-center gap-8">
                 {/* Logo */}
                 <Link
-                  to="/"
+                  to={getLocalizedPath("/", language)}
                   className="flex items-center select-none"
                   aria-label={language === "fi" ? "Mitrox Solutions – etusivu" : "Mitrox Solutions – home"}
                   onClick={(e) => {
-                    if (location.pathname === "/") {
+                    const currentPath = location.pathname.replace(/^\/[^/]+/, '') || '/';
+                    if (currentPath === "/" || currentPath === `/${language}`) {
                       e.preventDefault();
                       handleScroll("hero");
                     }
@@ -178,7 +197,7 @@ const Header: React.FC = () => {
                       <div className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-black/95 backdrop-blur-sm ring-1 ring-white/15 shadow-[0_16px_40px_rgba(0,0,0,0.35)] overflow-hidden z-50">
                         <div className="py-1">
                           <Link
-                            to="/websites"
+                            to={getFullLocalizedPath("websites", language)}
                             onClick={() => setProductsOpen(false)}
                             onMouseEnter={handleProductsMouseEnter}
                             className="flex items-center gap-3 px-3.5 py-2.5 text-white/90 hover:text-white hover:bg-white/10 transition-colors rounded-xl mx-1.5"
@@ -193,7 +212,7 @@ const Header: React.FC = () => {
                             <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                           </Link>
                           <Link
-                            to="/advisor"
+                            to={getFullLocalizedPath("advisor", language)}
                             onClick={() => setProductsOpen(false)}
                             onMouseEnter={handleProductsMouseEnter}
                             className="group flex items-center gap-3 px-3.5 py-2.5 text-white/90 hover:text-white hover:bg-white/10 transition-colors rounded-xl mx-1.5"
@@ -238,7 +257,7 @@ const Header: React.FC = () => {
 
                 {/* Affiliate Button */}
                 <Link
-                  to="/affiliate"
+                  to={getFullLocalizedPath("affiliate", language)}
                   className="px-5 py-2.5 bg-black/20 hover:bg-black/30 text-white rounded-full text-base font-light transition-all backdrop-blur-sm border border-white/20 hover:border-white/30"
                 >
                   {affiliateLabel}
@@ -246,12 +265,13 @@ const Header: React.FC = () => {
 
                 {/* Contact Button */}
                 <a
-                  href="#contact"
+                  href={`#${contactId}`}
                   className="px-5 py-2.5 bg-black/20 hover:bg-black/30 text-white rounded-full text-base font-light transition-all backdrop-blur-sm border border-white/20 hover:border-white/30"
                   onClick={(e) => {
-                    if (location.pathname === "/") {
+                    const currentPath = location.pathname.replace(/^\/[^/]+/, '') || '/';
+                    if (currentPath === "/" || currentPath === `/${language}`) {
                       e.preventDefault();
-                      handleScroll("contact");
+                      handleScroll(contactId);
                     }
                     setOpen(false);
                   }}
@@ -275,11 +295,12 @@ const Header: React.FC = () => {
         <div className="flex justify-between items-end px-4 py-4 gap-3">
           {/* Mobile logo - Left corner */}
           <Link
-            to="/"
+            to={getLocalizedPath("/", language)}
             className="inline-flex items-center justify-center rounded-full bg-black/40 backdrop-blur-xl backdrop-saturate-150 shadow-2xl p-4 text-white hover:bg-white/10 transition-colors pointer-events-auto"
             aria-label={language === "fi" ? "Mitrox Solutions – etusivu" : "Mitrox Solutions – home"}
             onClick={(e) => {
-              if (location.pathname === "/") {
+              const currentPath = location.pathname.replace(/^\/[^/]+/, '') || '/';
+              if (currentPath === "/" || currentPath === `/${language}`) {
                 e.preventDefault();
                 handleScroll("hero");
               }
@@ -384,10 +405,10 @@ const Header: React.FC = () => {
               {isProductPage && (
                 <>
                   <a
-                    href="#process"
+                    href={`#${processId}`}
                     onClick={(e) => {
                       e.preventDefault();
-                      handleScroll("process");
+                      handleScroll(processId);
                       setOpen(false);
                     }}
                     className="block rounded-full px-4 py-1.5 text-white/80 hover:text-white hover:bg-white/10 transition-colors text-sm font-light"
@@ -395,10 +416,10 @@ const Header: React.FC = () => {
                     {language === "fi" ? "Prosessi" : "Process"}
                   </a>
                   <a
-                    href="#pricing"
+                    href={`#${pricingId}`}
                     onClick={(e) => {
                       e.preventDefault();
-                      handleScroll("pricing");
+                      handleScroll(pricingId);
                       setOpen(false);
                     }}
                     className="block rounded-full px-4 py-1.5 text-white/80 hover:text-white hover:bg-white/10 transition-colors text-sm font-light"
@@ -406,10 +427,10 @@ const Header: React.FC = () => {
                     {language === "fi" ? "Hinnasto" : "Pricing"}
                   </a>
                   <a
-                    href="#faq"
+                    href={`#${faqId}`}
                     onClick={(e) => {
                       e.preventDefault();
-                      handleScroll("faq");
+                      handleScroll(faqId);
                       setOpen(false);
                     }}
                     className="block rounded-full px-4 py-1.5 text-white/80 hover:text-white hover:bg-white/10 transition-colors text-sm font-light"
@@ -444,7 +465,7 @@ const Header: React.FC = () => {
 
               {/* Mobile Affiliate - fourth */}
               <Link
-                to="/affiliate"
+                to={getFullLocalizedPath("affiliate", language)}
                 onClick={() => setOpen(false)}
                 className="block rounded-full px-4 py-1.5 text-white/80 hover:text-white hover:bg-white/10 transition-colors text-sm font-light"
               >
@@ -453,11 +474,12 @@ const Header: React.FC = () => {
 
               {/* Mobile Contact - fifth */}
               <a
-                href="#contact"
+                href={`#${contactId}`}
                 onClick={(e) => {
-                  if (location.pathname === "/") {
+                  const currentPath = location.pathname.replace(/^\/[^/]+/, '') || '/';
+                  if (currentPath === "/" || currentPath === `/${language}`) {
                     e.preventDefault();
-                    handleScroll("contact");
+                    handleScroll(contactId);
                   }
                   setOpen(false);
                 }}

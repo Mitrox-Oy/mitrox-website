@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { MapPin } from "lucide-react";
 import SpaceBackground from "./SpaceBackground";
 import { useLanguage } from "../context/LanguageContext";
+import { useLocalizedSectionId } from "../hooks/useLocalizedSectionId";
 
 type Person = { name: string; email: string };
 
@@ -62,6 +63,7 @@ const ContactForm: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const { language } = useLanguage();
   const isFinnish = language === "fi";
+  const contactId = useLocalizedSectionId("contact");
 
   const [formData, setFormData] = useState({
     name: "",
@@ -149,7 +151,7 @@ const ContactForm: React.FC = () => {
 
   return (
     <section
-      id="contact"
+      id={contactId}
       ref={sectionRef}
       className={`relative py-24 px-4 sm:px-6 lg:px-8 transition-all duration-700 overflow-hidden ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"

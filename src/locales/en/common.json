@@ -1,0 +1,37 @@
+{
+  "common": {
+    "home": "Home",
+    "about": "About Us",
+    "contact": "Contact us",
+    "products": "Products",
+    "privacy": "Privacy Policy",
+    "allRightsReserved": "All rights reserved.",
+    "businessId": "Business ID: 3562179-8",
+    "affiliateProgram": "Affiliate program"
+  },
+  "hero": {
+    "title": "Technology that feels natural",
+    "subtitle": "Mitrox turns complexity into clarity and efficiency",
+    "exploreProducts": "Explore products",
+    "contactUs": "Contact us"
+  },
+  "header": {
+    "home": "Home",
+    "about": "About Us",
+    "products": "Products",
+    "mitroxSites": "Mitrox Sites",
+    "mitroxSitesSubtitle": "Designed for your business success",
+    "mitroxAdvisor": "Mitrox AI Advisor",
+    "mitroxAdvisorSubtitle": "Your intelligent growth partner",
+    "affiliateProgram": "Affiliate program"
+  },
+  "footer": {
+    "allRightsReserved": "All rights reserved.",
+    "businessId": "Business ID: 3562179-8",
+    "privacyPolicy": "Privacy Policy",
+    "finnish": "Finnish",
+    "english": "English"
+  }
+}
+
+

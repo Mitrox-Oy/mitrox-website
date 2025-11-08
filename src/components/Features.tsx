@@ -5,6 +5,7 @@ import { Zap, HeartHandshake, Workflow } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import PixelBlast from "./PixelBlast";
 import { useLanguage } from "../context/LanguageContext";
+import { useLocalizedSectionId } from "../hooks/useLocalizedSectionId";
 
 type Feature = {
   icon: LucideIcon;
@@ -15,6 +16,7 @@ type Feature = {
 const Features: React.FC = () => {
   const { language } = useLanguage();
   const isFinnish = language === "fi";
+  const featuresId = useLocalizedSectionId("features");
 
   const features: Feature[] = useMemo(
     () => [
@@ -45,7 +47,7 @@ const Features: React.FC = () => {
 
   return (
     <section
-      id="mitrox-benefits"
+      id={featuresId}
       className="relative bg-black py-24 sm:py-32 overflow-hidden"
     >
       {/* Pixel Blast Background */}

@@ -1,6 +1,7 @@
 // src/AIAgentPage.tsx
 import React, { useState, useEffect } from "react";
 import { useLanguage } from "./context/LanguageContext";
+import { useLocalizedSectionId } from "./hooks/useLocalizedSectionId";
 import SpaceBackground from "./components/SpaceBackground";
 import Header from "./components/Header";
 import BottomNavbar from "./components/BottomNavbar";
@@ -46,8 +47,10 @@ const AIAgentHero: React.FC = () => {
     }
   };
 
+  const contactId = useLocalizedSectionId("contact");
+  
   const handleScrollToContact = () => {
-    const contactSection = document.getElementById("contact");
+    const contactSection = document.getElementById(contactId);
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: "smooth", block: "start" });
     }

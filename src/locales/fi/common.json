@@ -1,0 +1,37 @@
+{
+  "common": {
+    "home": "Etusivu",
+    "about": "Tietoa meistä",
+    "contact": "Ota yhteyttä",
+    "products": "Tuotteet",
+    "privacy": "Tietosuojaseloste",
+    "allRightsReserved": "Kaikki oikeudet pidätetään.",
+    "businessId": "Y-tunnus: 3562179-8",
+    "affiliateProgram": "Affiliate-ohjelma"
+  },
+  "hero": {
+    "title": "Teknologia, joka tuntuu luonnolliselta",
+    "subtitle": "Mitrox muuttaa monimutkaisen yksinkertaiseksi ja tehokkaaksi",
+    "exploreProducts": "Tutustu tuotteisiin",
+    "contactUs": "Ota yhteyttä"
+  },
+  "header": {
+    "home": "Etusivu",
+    "about": "Tietoa meistä",
+    "products": "Tuotteet",
+    "mitroxSites": "Mitrox Sites",
+    "mitroxSitesSubtitle": "Suunniteltu yrityksesi menestykseen",
+    "mitroxAdvisor": "Mitrox AI Advisor",
+    "mitroxAdvisorSubtitle": "Älykäs kasvukumppanisi",
+    "affiliateProgram": "Affiliate-ohjelma"
+  },
+  "footer": {
+    "allRightsReserved": "Kaikki oikeudet pidätetään.",
+    "businessId": "Y-tunnus: 3562179-8",
+    "privacyPolicy": "Tietosuojaseloste",
+    "finnish": "Suomi",
+    "english": "Englanti"
+  }
+}
+
+

@@ -11,6 +11,7 @@ import {
 import WebsiteInquiryForm from "./WebsiteInquiryForm";
 import type { LucideIcon } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
+import { useLocalizedSectionId } from "../hooks/useLocalizedSectionId";
 
 type Step = {
   id: string;
@@ -146,9 +147,11 @@ const ProcessSection: React.FC<ProcessSectionProps> = ({ type = "website" }) => 
       : "Four clear steps to launch your website – we take care of the details.";
   };
 
+  const processId = useLocalizedSectionId("process");
+  
   return (
     <section
-      id="process"
+      id={processId}
       className="relative py-40 md:py-48 pb-56 md:pb-64 px-4 sm:px-6 lg:px-8 bg-black"
       style={{ fontFamily: 'Inter, sans-serif' }}
     >

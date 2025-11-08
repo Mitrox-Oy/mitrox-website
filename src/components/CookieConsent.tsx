@@ -200,7 +200,7 @@ const CookieConsent: React.FC<CookieConsentProps> = ({ onConsentChange }) => {
                   }`}>
                     {analytics && <Check className="h-[14px] w-[14px] text-white/90" />}
                   </span>
-                  <span>{uiLang === "fi" ? "Analytiikka (GA)" : "Analytics (GA)"}</span>
+                  <span>{uiLang === "fi" ? "Analytiikka" : "Analytics"}</span>
                 </span>
               </label>
 
@@ -222,7 +222,7 @@ const CookieConsent: React.FC<CookieConsentProps> = ({ onConsentChange }) => {
                   }`}>
                     {marketing && <Check className="h-[14px] w-[14px] text-white/90" />}
                   </span>
-                  <span>{uiLang === "fi" ? "Markkinointi (Meta Pixel)" : "Marketing (Meta Pixel)"}</span>
+                  <span>{uiLang === "fi" ? "Markkinointi" : "Marketing"}</span>
                 </span>
               </label>
             </div>

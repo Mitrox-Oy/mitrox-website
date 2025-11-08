@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import SEOEnhanced from './SEOEnhanced';
 import { faqSchema, FAQItem } from '../../lib/seo';
+import { useLocalizedSectionId } from '../hooks/useLocalizedSectionId';
 
 type FAQCategory = {
   title: string;
@@ -281,10 +282,12 @@ type FAQProps = {
 
 const FAQ: React.FC<FAQProps> = ({ type = "website", emitSchema = false }) => {
   const faqData = type === "advisor" ? aiAgentFAQData : websiteFAQData;
+  const faqId = useLocalizedSectionId("faq");
+  const contactId = useLocalizedSectionId("contact");
   const [openCategories, setOpenCategories] = useState<number[]>([]);
   const [openQuestions, setOpenQuestions] = useState<{ [key: string]: boolean }>({});
   const scrollToContact = () => {
-    const contactSection = document.getElementById('contact');
+    const contactSection = document.getElementById(contactId);
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -315,7 +318,7 @@ const FAQ: React.FC<FAQProps> = ({ type = "website", emitSchema = false }) => {
   return (
     <>
       {faqSchemaData && <SEOEnhanced schemas={[faqSchemaData]} />}
-      <section id="faq" className="relative py-16 px-4 sm:px-6 lg:px-8 bg-black">
+      <section id={faqId} className="relative py-16 px-4 sm:px-6 lg:px-8 bg-black">
         <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">

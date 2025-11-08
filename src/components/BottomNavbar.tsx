@@ -2,25 +2,36 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { ChevronUp, ChevronDown } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
+import { useLocalizedSectionId } from "../hooks/useLocalizedSectionId";
 
 const BottomNavbar: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(true);
   const [isFooterVisible, setIsFooterVisible] = useState(false);
   const [footerHeight, setFooterHeight] = useState(0);
   const { language } = useLanguage();
+  const processId = useLocalizedSectionId("process");
+  const pricingId = useLocalizedSectionId("pricing");
+  const faqId = useLocalizedSectionId("faq");
 
   const items = useMemo(
     () => [
-      { label: language === "fi" ? "Prosessi" : "Process", href: "process" },
-      { label: language === "fi" ? "Hinnasto" : "Pricing", href: "pricing" },
-      { label: "FAQ", href: "faq" },
+      { label: language === "fi" ? "Prosessi" : "Process", href: processId },
+      { label: language === "fi" ? "Hinnasto" : "Pricing", href: pricingId },
+      { label: "FAQ", href: faqId },
     ],
-    [language]
+    [language, processId, pricingId, faqId]
   );
 
   const handleScroll = (id: string) => {
+    // Update URL hash while preserving current pathname
+    const currentPath = window.location.pathname;
+    window.history.pushState(null, '', `${currentPath}#${id}`);
+    
+    // Scroll to element
     const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   useEffect(() => {

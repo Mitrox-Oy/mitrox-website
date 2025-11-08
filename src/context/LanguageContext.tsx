@@ -1,5 +1,8 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import TRANSLATIONS, { Language } from "../translations";
+import { useTranslation } from "react-i18next";
+import { getLanguageFromPath, DEFAULT_LANGUAGE } from "../utils/routing";
+
+export type Language = "fi" | "en";
 
 type LanguageContextValue = {
   language: Language;
@@ -8,86 +11,72 @@ type LanguageContextValue = {
   t: (key: string, fallback?: string) => string;
 };
 
-const LANGUAGE_STORAGE_KEY = "appLanguage";
-
 const LanguageContext = createContext<LanguageContextValue | undefined>(undefined);
 
 const isBrowser = typeof window !== "undefined";
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [language, setLanguageState] = useState<Language>("fi");
-
+  const { i18n, t: i18nT } = useTranslation();
+  const [pathname, setPathname] = useState<string>(
+    isBrowser ? window.location.pathname : "/"
+  );
+  
+  // Listen to pathname changes via custom event (triggered by LanguageContextRouter)
   useEffect(() => {
     if (!isBrowser) return;
-    const stored = window.localStorage.getItem(LANGUAGE_STORAGE_KEY) as Language | null;
-    if (stored === "en" || stored === "fi") {
-      setLanguageState(stored);
-      return;
-    }
-
-    let cancelled = false;
-
-    const detectLocation = async () => {
-      try {
-        const response = await fetch("https://ipapi.co/json/", { cache: "no-store" });
-        if (!response.ok) return;
-        const data = (await response.json()) as { country?: string };
-        if (cancelled) return;
-        const country = data?.country?.toUpperCase();
-        setLanguageState(country === "FI" ? "fi" : "en");
-      } catch {
-        // Fallback to Finnish default on error
-      }
+    
+    const handlePathnameChange = (event: CustomEvent<string>) => {
+      setPathname(event.detail);
     };
-
-    detectLocation();
-
+    
+    window.addEventListener("languagecontext:pathname" as any, handlePathnameChange as EventListener);
+    
     return () => {
-      cancelled = true;
+      window.removeEventListener("languagecontext:pathname" as any, handlePathnameChange as EventListener);
     };
   }, []);
+  
+  // Get language from URL path or i18n (i18n is already set by our path detector)
+  const pathLanguage = getLanguageFromPath(pathname) as Language;
+  const i18nLanguage = (i18n.language as Language) || DEFAULT_LANGUAGE;
+  const language = pathLanguage || i18nLanguage;
 
+  // Sync i18n language with URL path
   useEffect(() => {
-    if (isBrowser) {
-      window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
+    if (i18n.language !== language) {
+      i18n.changeLanguage(language);
     }
+  }, [language, i18n]);
+
+  // Update HTML lang attribute and prevent auto-translation
+  useEffect(() => {
     if (typeof document !== "undefined") {
-      document.documentElement.lang = language === "fi" ? "fi" : "en";
+      document.documentElement.lang = language;
+      // Prevent browser auto-translation
+      document.documentElement.setAttribute("translate", "no");
     }
   }, [language]);
 
   const setLanguage = useCallback((nextLanguage: Language) => {
-    setLanguageState(nextLanguage);
-  }, []);
+    // This will be handled by URL navigation in components
+    i18n.changeLanguage(nextLanguage);
+  }, [i18n]);
 
   const toggleLanguage = useCallback(() => {
-    setLanguageState((prev) => (prev === "fi" ? "en" : "fi"));
-  }, []);
+    const newLang = language === "fi" ? "en" : "fi";
+    setLanguage(newLang);
+  }, [language, setLanguage]);
 
   const translate = useCallback(
     (key: string, fallback?: string) => {
-      const resolve = (lang: Language) => {
-        const segments = key.split(".");
-        let current: any = TRANSLATIONS[lang];
-        for (const segment of segments) {
-          if (current && Object.prototype.hasOwnProperty.call(current, segment)) {
-            current = current[segment];
-          } else {
-            return undefined;
-          }
-        }
-        return typeof current === "string" ? current : undefined;
-      };
-
-      const active = resolve(language);
-      if (active) return active;
-
-      const fallbackFi = resolve("fi");
-      if (fallbackFi) return fallbackFi;
-
-      return fallback ?? key;
+      try {
+        const translated = i18nT(key);
+        return translated || fallback || key;
+      } catch {
+        return fallback || key;
+      }
     },
-    [language]
+    [i18nT]
   );
 
   const value = useMemo<LanguageContextValue>(

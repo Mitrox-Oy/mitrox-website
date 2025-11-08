@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import { Check, ArrowRight, Calculator } from "lucide-react";
 import WebsiteInquiryForm from "./WebsiteInquiryForm";
 import { useLanguage } from "../context/LanguageContext";
+import { useLocalizedSectionId } from "../hooks/useLocalizedSectionId";
 
 const formatEUR = (value: number, locale: string) =>
   new Intl.NumberFormat(locale, {
@@ -13,6 +14,8 @@ const formatEUR = (value: number, locale: string) =>
 type BillingCycle = "monthly" | "yearly" | "2year" | "5year";
 
 const WebsitePricing: React.FC = () => {
+  const { language } = useLanguage();
+  const pricingId = useLocalizedSectionId("pricing");
   const [billing, setBilling] = useState<BillingCycle>("yearly");
   const [showCalculator, setShowCalculator] = useState(false);
   const [pageCount, setPageCount] = useState(5);
@@ -70,7 +73,7 @@ const WebsitePricing: React.FC = () => {
   const monthlyFee = baseMonthlyFee + (includeAIBot ? AI_BOT_MONTHLY : 0) + (includeSEO ? SEO_MONTHLY : 0);
 
   return (
-    <section id="pricing" className="relative py-40 md:py-48 px-4 sm:px-6 lg:px-8 bg-black font-inter">
+    <section id={pricingId} className="relative py-40 md:py-48 px-4 sm:px-6 lg:px-8 bg-black font-inter">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">

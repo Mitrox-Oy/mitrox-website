@@ -1,11 +1,16 @@
 import React from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useLanguage } from "../context/LanguageContext";
 import { getStoredConsent } from "./CookieConsent";
+import { removeLanguagePrefix } from "../utils/routing";
+import { findRouteKeyFromPath, getFullLocalizedPath } from "../utils/routeMapping";
 
 const STORAGE_KEY = "languagePopupSeen";
 
 const LanguagePopup: React.FC = () => {
-  const { language, setLanguage } = useLanguage();
+  const { language } = useLanguage();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [visible, setVisible] = React.useState(false);
   const [selection, setSelection] = React.useState<"fi" | "en">(language === "en" ? "en" : "fi");
 
@@ -40,9 +45,36 @@ const LanguagePopup: React.FC = () => {
   if (!visible) return null;
 
   const confirm = () => {
-    setLanguage(selection);
-    try { window.localStorage.setItem(STORAGE_KEY, "1"); } catch {}
-    setVisible(false);
+    try {
+      // Save preference
+      window.localStorage.setItem(STORAGE_KEY, "1");
+      
+      // Set language cookie
+      document.cookie = `preferredLang=${selection}; path=/; max-age=${365 * 24 * 60 * 60}; SameSite=Strict`;
+      
+      // Get current path without language prefix
+      const currentPath = removeLanguagePrefix(location.pathname);
+      const currentLang = language;
+      
+      // Find route key from current path
+      const routeKey = findRouteKeyFromPath(currentPath, currentLang);
+      
+      // Navigate to the selected language version using route mapping
+      let newPath: string;
+      if (routeKey) {
+        newPath = getFullLocalizedPath(routeKey, selection);
+      } else {
+        // Fallback: just add language prefix
+        newPath = `/${selection}${currentPath === '/' ? '' : currentPath}`;
+      }
+      
+      navigate(newPath, { replace: true });
+      
+      setVisible(false);
+    } catch (error) {
+      console.error("Error setting language:", error);
+      setVisible(false);
+    }
   };
 
   return (

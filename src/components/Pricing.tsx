@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { Check, ArrowRight } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
+import { useLocalizedSectionId } from "../hooks/useLocalizedSectionId";
 
 const formatEUR = (value: number, locale: string) =>
   new Intl.NumberFormat(locale, {
@@ -95,6 +96,7 @@ const Pricing: React.FC = () => {
   const { language } = useLanguage();
   const isFinnish = language === "fi";
   const locale = isFinnish ? "fi-FI" : "en-GB";
+  const pricingId = useLocalizedSectionId("pricing");
   const plans = useMemo(() => createPlans(isFinnish), [isFinnish]);
 
   const getDisplayPrice = (plan: Plan) => {
@@ -127,13 +129,15 @@ const Pricing: React.FC = () => {
     return "";
   };
 
+  const contactId = useLocalizedSectionId("contact");
+  
   const handleScrollToContact = () => {
-    const el = document.getElementById("contact");
+    const el = document.getElementById(contactId);
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <section id="pricing" className="relative py-40 md:py-48 px-4 sm:px-6 lg:px-8 bg-black font-inter">
+    <section id={pricingId} className="relative py-40 md:py-48 px-4 sm:px-6 lg:px-8 bg-black font-inter">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
