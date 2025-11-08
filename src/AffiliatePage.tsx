@@ -131,7 +131,13 @@ export default function AffiliatePage() {
             {isFinnish ? "Mitroxin kumppaniohjelma - Kasvamme yhdessä" : "Mitrox Affiliate Program - Growing Together"}
           </h1>
           <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-            {isFinnish ? "Liity Mitroxin kumppaniksi ja ansaitse palkintoja suosittelemalla palveluitamme eteenpäin. Sekä sinä että uusi asiakas hyötyvät. Kumppanuus, jossa kaikki voittavat." : "Join Mitrox as a partner and earn rewards by recommending our services. Both you and the new customer benefit. A partnership where everyone wins."}
+            {isFinnish ? "Liity Mitroxin kumppaniksi ja ansaitse palkintoja suosittelemalla palveluitamme eteenpäin. Sekä sinä että uusi asiakas hyötyvät. Kumppanuus, jossa kaikki voittavat." : "Join Mitrox as a partner and earn rewards by recommending our services."}
+            {!isFinnish && (
+              <>
+                <br /><br />
+                Both you and your referred customers benefit a partnership built on shared growth.
+              </>
+            )}
           </p>
         </div>
       </section>
@@ -148,9 +154,9 @@ export default function AffiliatePage() {
                 {isFinnish ? "1. Palkitseva kumppanuus" : "1. Rewarding Partnership"}
               </h3>
               <p className="text-sm text-gray-400 leading-relaxed">
-                {isFinnish ? "Jokaisesta suosittelemastasi asiakkaasta saat yhden ilmaisen kuukauden omaan Mitrox-palveluusi." : "For each customer you refer, you get one free month for your own Mitrox service."}
+                {isFinnish ? "Jokaisesta suosittelemastasi asiakkaasta saat yhden ilmaisen kuukauden omaan Mitrox-palveluusi." : "For every customer you refer, you'll receive one free month of your own Mitrox service."}
                 <br /><br />
-                {isFinnish ? "Mitä enemmän suosittelet, sitä enemmän ilmaisia kuukausia kertyy – reilu ja läpinäkyvä tapa hyötyä yhteisestä kasvusta." : "The more you refer, the more free months accumulate – a fair and transparent way to benefit from shared growth."}
+                {isFinnish ? "Mitä enemmän suosittelet, sitä enemmän ilmaisia kuukausia kertyy – reilu ja läpinäkyvä tapa hyötyä yhteisestä kasvusta." : "The more referrals you bring, the more free months you collect — a transparent and fair way to grow together."}
               </p>
             </div>
 
@@ -159,12 +165,12 @@ export default function AffiliatePage() {
                 <Users className="w-8 h-8" />
               </div>
               <h3 className="text-xl font-medium text-white mb-3">
-                {isFinnish ? "2. Uusi asiakas palkitaan heti alusta" : "2. New Customer Rewarded from the Start"}
+                {isFinnish ? "2. Uusi asiakas palkitaan heti alusta" : "Your Customers Benefit Too"}
               </h3>
               <p className="text-sm text-gray-400 leading-relaxed">
-                {isFinnish ? "Liittyessään Mitrox-palveluun käyttäessään kumppanikoodiasi uusi asiakas saa ensimmäisen kuukauden maksutta." : "When joining Mitrox service using your partner code, the new customer gets the first month free."}
+                {isFinnish ? "Liittyessään Mitrox-palveluun käyttäessään kumppanikoodiasi uusi asiakas saa ensimmäisen kuukauden maksutta." : "When a new customer joins using your partner code, they get their first month free."}
                 <br /><br />
-                {isFinnish ? "Se on luonteva tapa aloittaa yhteistyö ja kokea Mitroxin palvelun arvo jo ensimmäisestä päivästä lähtien." : "It's a natural way to start cooperation and experience the value of Mitrox's service from the very first day."}
+                {isFinnish ? "Se on luonteva tapa aloittaa yhteistyö ja kokea Mitroxin palvelun arvo jo ensimmäisestä päivästä lähtien." : "It's a simple way to start cooperation and let them experience the value of Mitrox from day one."}
               </p>
             </div>
 
@@ -173,12 +179,12 @@ export default function AffiliatePage() {
                 <CheckCircle className="w-8 h-8" />
               </div>
               <h3 className="text-xl font-medium text-white mb-3">
-                {isFinnish ? "3. Helppo ja maksuton liittyminen" : "3. Easy and Free to Join"}
+                {isFinnish ? "3. Helppo ja maksuton liittyminen" : "Simple, Free, and Effortless"}
               </h3>
               <p className="text-sm text-gray-400 leading-relaxed">
-                {isFinnish ? "Kumppaniohjelmaan liittyminen on täysin ilmaista eikä vaadi sitoumuksia." : "Joining the affiliate program is completely free and requires no commitments."}
+                {isFinnish ? "Kumppaniohjelmaan liittyminen on täysin ilmaista eikä vaadi sitoumuksia." : "Joining the affiliate program is completely free. No contracts, no hidden conditions."}
                 <br /><br />
-                {isFinnish ? "Liity, jaa henkilökohtainen kumppanikoodisi ja ala ansaita ilmaisia kuukausia heti – me hoidamme loput." : "Join, share your personal partner code, and start earning free months right away – we'll handle the rest."}
+                {isFinnish ? "Liity, jaa henkilökohtainen kumppanikoodisi ja ala ansaita ilmaisia kuukausia heti – me hoidamme loput." : "Just share your personal partner code and start earning free months instantly. We'll take care of the rest."}
               </p>
             </div>
           </div>
@@ -190,10 +196,10 @@ export default function AffiliatePage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-medium mb-4 text-white">
-              {isFinnish ? "Miten se toimii?" : "How Does It Work?"}
+              {isFinnish ? "Miten se toimii?" : "How It Works"}
             </h2>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-              {isFinnish ? "Kolme yksinkertaista askelta kohti kannattavaa kumppanuutta." : "Three simple steps towards a profitable partnership."}
+              {isFinnish ? "Kolme yksinkertaista askelta kohti kannattavaa kumppanuutta." : "Three simple steps to start earning with Mitrox — quick, fair, and transparent."}
             </p>
           </div>
 
@@ -206,9 +212,9 @@ export default function AffiliatePage() {
                 {isFinnish ? "Liity kumppaniohjelmaan" : "Join the Affiliate Program"}
               </h3>
               <p className="text-gray-400 leading-relaxed">
-                {isFinnish ? "Täytä lyhyt lomake ja saat henkilökohtaisen kumppanilinkin heti käyttöösi." : "Fill out a short form and get your personal partner link immediately."}
+                {isFinnish ? "Täytä lyhyt lomake ja saat henkilökohtaisen kumppanilinkin heti käyttöösi." : "Fill out a short form to receive your personal partner link instantly."}
                 <br /><br />
-                {isFinnish ? "Liittyminen on maksutonta, eikä se velvoita mihinkään – pääset alkuun muutamassa minuutissa." : "Joining is free and doesn't commit you to anything – you can get started in a few minutes."}
+                {isFinnish ? "Liittyminen on maksutonta, eikä se velvoita mihinkään – pääset alkuun muutamassa minuutissa." : "Joining is completely free and comes with no obligations — you can get started in just a few minutes."}
               </p>
             </div>
 
@@ -220,9 +226,9 @@ export default function AffiliatePage() {
                 {isFinnish ? "Jaa kumppanikoodisi eteenpäin" : "Share Your Partner Code"}
               </h3>
               <p className="text-gray-400 leading-relaxed">
-                {isFinnish ? "Jaa henkilökohtainen kumppanikoodisi verkostossasi, sosiaalisessa mediassa tai asiakkaillesi." : "Share your personal partner code in your network, on social media, or with your customers."}
+                {isFinnish ? "Jaa henkilökohtainen kumppanikoodisi verkostossasi, sosiaalisessa mediassa tai asiakkaillesi." : "Share your personal partner code within your network, on social media, or directly with your clients."}
                 <br /><br />
-                {isFinnish ? "Jokainen rekisteröityminen kumppanikoodillasi seurataan automaattisesti – sinä keskityt vain suositteluun, me hoidamme loput." : "Every registration with your partner code is tracked automatically – you just focus on referrals, we handle the rest."}
+                {isFinnish ? "Jokainen rekisteröityminen kumppanikoodillasi seurataan automaattisesti – sinä keskityt vain suositteluun, me hoidamme loput." : "Each registration made through your code is tracked automatically — you focus on referrals, and we take care of the rest."}
               </p>
             </div>
 
@@ -231,12 +237,12 @@ export default function AffiliatePage() {
                 <span className="text-2xl font-semibold text-white">3</span>
               </div>
               <h3 className="text-xl font-medium text-white mb-3">
-                {isFinnish ? "Ansaitse ilmainen kuukausi" : "Earn a Free Month"}
+                {isFinnish ? "Ansaitse ilmainen kuukausi" : "Earn Free Months"}
               </h3>
               <p className="text-gray-400 leading-relaxed">
-                {isFinnish ? "Kun uusi asiakas aloittaa palvelun käyttäessään kumppanikoodiasi, saat yhden ilmaisen kuukauden omaan Mitrox-palveluusi." : "When a new customer starts the service using your partner code, you get one free month for your own Mitrox service."}
+                {isFinnish ? "Kun uusi asiakas aloittaa palvelun käyttäessään kumppanikoodiasi, saat yhden ilmaisen kuukauden omaan Mitrox-palveluusi." : "When a new customer subscribes using your partner code, you'll receive one free month of your own Mitrox service."}
                 <br /><br />
-                {isFinnish ? "Myös uusi asiakas saa ensimmäisen kuukauden veloituksetta – reilu ja palkitseva yhteistyö molemmille." : "The new customer also gets the first month free – fair and rewarding cooperation for both."}
+                {isFinnish ? "Myös uusi asiakas saa ensimmäisen kuukauden veloituksetta – reilu ja palkitseva yhteistyö molemmille." : "The referred customer also gets their first month free — a fair, win–win partnership from day one."}
               </p>
             </div>
           </div>
@@ -262,9 +268,9 @@ export default function AffiliatePage() {
                     {isFinnish ? "Ilmainen kuukausi sinulle" : "Free Month for You"}
                   </h3>
                   <p className="text-gray-400">
-                    {isFinnish ? "Jokaisesta uudesta asiakkaasta, joka liittyy palveluumme käyttäen henkilökohtaista kumppanikoodiasi, saat yhden ilmaisen kuukauden omaan Mitrox-palveluusi." : "For each new customer who joins our service using your personal partner code, you get one free month for your own Mitrox service."}
+                    {isFinnish ? "Jokaisesta uudesta asiakkaasta, joka liittyy palveluumme käyttäen henkilökohtaista kumppanikoodiasi, saat yhden ilmaisen kuukauden omaan Mitrox-palveluusi." : "For every new customer who joins using your personal partner code, you'll receive one free month of your own Mitrox service."}
                     <br /><br />
-                    {isFinnish ? "Palkitseminen tapahtuu, kun uusi asiakas on suorittanut ensimmäisen maksukuukautensa – näin ohjelma pysyy reiluna ja läpinäkyvänä kaikille." : "Rewarding happens when the new customer has completed their first paid month – this keeps the program fair and transparent for everyone."}
+                    {isFinnish ? "Palkitseminen tapahtuu, kun uusi asiakas on suorittanut ensimmäisen maksukuukautensa – näin ohjelma pysyy reiluna ja läpinäkyvänä kaikille." : "The reward is activated after the referred customer completes their first paid month — ensuring a fair and transparent program for everyone."}
                   </p>
                 </div>
               </div>
@@ -273,12 +279,12 @@ export default function AffiliatePage() {
                 <CheckCircle className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
                 <div>
                   <h3 className="text-lg font-medium text-white mb-1">
-                    {isFinnish ? "Ilmainen kuukausi myös uudelle asiakkaalle" : "Free Month for the New Customer Too"}
+                    {isFinnish ? "Ilmainen kuukausi myös uudelle asiakkaalle" : "Free Month for Your Customer Too"}
                   </h3>
                   <p className="text-gray-400">
-                    {isFinnish ? "Uusi asiakas saa liittyessään kahden kuukauden Mitrox-jakson, josta ensimmäinen on maksullinen ja toinen täysin ilmainen." : "The new customer gets a two-month Mitrox period when joining, of which the first is paid and the second is completely free."}
+                    {isFinnish ? "Uusi asiakas saa liittyessään kahden kuukauden Mitrox-jakson, josta ensimmäinen on maksullinen ja toinen täysin ilmainen." : "Each new customer starts with a two-month Mitrox period. They pay for the first month, and the second one is completely free."}
                     <br /><br />
-                    {isFinnish ? "Tämä antaa mahdollisuuden kokeilla palvelua rauhassa ja nähdä sen todellisen arvon ennen pidempää päätöstä." : "This gives the opportunity to try the service in peace and see its real value before making a longer-term decision."}
+                    {isFinnish ? "Tämä antaa mahdollisuuden kokeilla palvelua rauhassa ja nähdä sen todellisen arvon ennen pidempää päätöstä." : "This gives them time to explore the service, see real results, and make an informed decision about continuing long-term."}
                   </p>
                 </div>
               </div>
@@ -296,7 +302,13 @@ export default function AffiliatePage() {
             {isFinnish ? "Valmis aloittamaan?" : "Ready to Get Started?"}
           </h2>
           <p className="text-lg text-gray-400 mb-8 max-w-2xl mx-auto">
-            {isFinnish ? "Liity kumppaniohjelmaamme täyttämällä lomake tai ota yhteyttä suoraan." : "Join our affiliate program by filling out the form or contact us directly."}
+            {isFinnish ? "Liity kumppaniohjelmaamme täyttämällä lomake tai ota yhteyttä suoraan." : "Join the Mitrox Affiliate Program by filling out the form below — or contact us directly if you have questions."}
+            {!isFinnish && (
+              <>
+                <br /><br />
+                We'll guide you through every step.
+              </>
+            )}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -304,7 +316,7 @@ export default function AffiliatePage() {
               href="#join-form"
               className="inline-flex items-center justify-center px-8 py-3 rounded-full bg-white text-black hover:bg-gray-100 font-medium transition-all duration-300 gap-2"
             >
-              {isFinnish ? "Liity ohjelmaan" : "Join the Program"}
+              {isFinnish ? "Liity ohjelmaan" : "Become a Partner"}
               <ArrowRight className="w-4 h-4" />
             </a>
 
@@ -320,7 +332,7 @@ export default function AffiliatePage() {
               {isFinnish ? "Liity kumppaniohjelmaan" : "Join the Affiliate Program"}
             </h2>
             <p className="text-gray-400 mb-8 text-center">
-              {isFinnish ? "Täytä lomake, niin otamme sinuun yhteyttä mahdollisimman pian ja lähetämme henkilökohtaisen kumppanikoodisi." : "Fill out the form, and we'll contact you as soon as possible and send your personal partner code."}
+              {isFinnish ? "Täytä lomake, niin otamme sinuun yhteyttä mahdollisimman pian ja lähetämme henkilökohtaisen kumppanikoodisi." : "Fill out the form, and we'll contact you as soon as possible with your personal partner code and onboarding details."}
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -354,7 +366,7 @@ export default function AffiliatePage() {
                   value={formData.name}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-white/20 transition-colors"
-                  placeholder={isFinnish ? "Etunimi Sukunimi" : "First Name Last Name"}
+                  placeholder={isFinnish ? "Etunimi Sukunimi" : "First and Last Name"}
                 />
               </div>
 
@@ -370,7 +382,7 @@ export default function AffiliatePage() {
                   value={formData.email}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-white/20 transition-colors"
-                  placeholder={isFinnish ? "sahkoposti@esimerkki.fi" : "email@example.com"}
+                  placeholder={isFinnish ? "sahkoposti@esimerkki.fi" : "your@email.com"}
                 />
               </div>
 
@@ -400,7 +412,7 @@ export default function AffiliatePage() {
                   value={formData.message}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-white/20 transition-colors resize-none"
-                  placeholder={isFinnish ? "Kerro meille itsestäsi ja miten aiot jakaa kumppanikoodiasi..." : "Tell us about yourself and how you plan to share your partner code..."}
+                  placeholder={isFinnish ? "Kerro meille itsestäsi ja miten aiot jakaa kumppanikoodiasi..." : "Tell us briefly about yourself and how you plan to share your partner code…"}
                 />
               </div>
 
@@ -416,7 +428,7 @@ export default function AffiliatePage() {
                   </>
                 ) : (
                   <>
-                    {isFinnish ? "Lähetä hakemus" : "Submit Application"}
+                    {isFinnish ? "Lähetä hakemus" : "Apply Now"}
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}
