@@ -4,7 +4,7 @@ import { Menu, X, ArrowRight, ChevronDown, Globe2, Sparkles } from "lucide-react
 import logo from "../assets/logo.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLanguage } from "../context/LanguageContext";
-import { getLocalizedPath } from "../utils/routing";
+import { getLocalizedPath, addLanguagePrefix } from "../utils/routing";
 import { getFullLocalizedPath } from "../utils/routeMapping";
 import { useLocalizedSectionId } from "../hooks/useLocalizedSectionId";
 
@@ -129,8 +129,8 @@ const Header: React.FC = () => {
                   className="flex items-center select-none"
                   aria-label={language === "fi" ? "Mitrox Solutions – etusivu" : "Mitrox Solutions – home"}
                   onClick={(e) => {
-                    const currentPath = location.pathname.replace(/^\/[^/]+/, '') || '/';
-                    if (currentPath === "/" || currentPath === `/${language}`) {
+                    const homePath = addLanguagePrefix("/", language);
+                    if (location.pathname === homePath) {
                       e.preventDefault();
                       handleScroll("hero");
                     }
@@ -151,21 +151,20 @@ const Header: React.FC = () => {
                   {navItems[0] && (() => {
                     const item = navItems[0];
                     const isPage = item.href.startsWith("/");
+                    const homePath = addLanguagePrefix("/", language);
                     return (
                       <Link
                         key={item.href}
-                        to={isPage ? item.href : `/#${item.href}`}
+                        to={isPage ? item.href : homePath}
                         onClick={(e) => {
                           if (!isPage) {
                             e.preventDefault();
-                            if (location.pathname !== "/") {
-                              if (item.href === "hero") {
-                                navigate("/");
-                              } else {
-                                navigate({ pathname: "/", hash: `#${item.href}` });
-                              }
-                            } else {
+                            if (location.pathname === homePath) {
+                              // Already on home page, just scroll to hero
                               handleScroll(item.href);
+                            } else {
+                              // Navigate to home page
+                              navigate(homePath);
                             }
                           }
                           setOpen(false);
@@ -299,8 +298,8 @@ const Header: React.FC = () => {
             className="inline-flex items-center justify-center rounded-full bg-black/40 backdrop-blur-xl backdrop-saturate-150 shadow-2xl p-4 text-white hover:bg-white/10 transition-colors pointer-events-auto"
             aria-label={language === "fi" ? "Mitrox Solutions – etusivu" : "Mitrox Solutions – home"}
             onClick={(e) => {
-              const currentPath = location.pathname.replace(/^\/[^/]+/, '') || '/';
-              if (currentPath === "/" || currentPath === `/${language}`) {
+              const homePath = addLanguagePrefix("/", language);
+              if (location.pathname === homePath) {
                 e.preventDefault();
                 handleScroll("hero");
               }
@@ -340,21 +339,20 @@ const Header: React.FC = () => {
               {navItems[0] && (() => {
                 const item = navItems[0];
                 const isPage = item.href.startsWith("/");
+                const homePath = addLanguagePrefix("/", language);
                 return (
                   <Link
                     key={item.href}
-                    to={isPage ? item.href : `/#${item.href}`}
+                    to={isPage ? item.href : homePath}
                     onClick={(e) => {
                       if (!isPage) {
                         e.preventDefault();
-                        if (location.pathname !== "/") {
-                          if (item.href === "hero") {
-                            navigate("/");
-                          } else {
-                            navigate({ pathname: "/", hash: `#${item.href}` });
-                          }
-                        } else {
+                        if (location.pathname === homePath) {
+                          // Already on home page, just scroll to hero
                           handleScroll(item.href);
+                        } else {
+                          // Navigate to home page
+                          navigate(homePath);
                         }
                       }
                       setOpen(false);
