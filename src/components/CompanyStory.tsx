@@ -46,23 +46,28 @@ const CompanyStory: React.FC = () => {
           {/* Story Content */}
           <div>
             <h2 className="text-3xl sm:text-4xl font-medium text-white mb-6">
-              {isFinnish ? "Meidän tarinamme" : "Our story"}
+              {isFinnish ? "Meidän tarinamme" : "Our Story"}
             </h2>
             <div className="space-y-4 text-body-subtle leading-relaxed">
               <p>
                 {isFinnish
                   ? "Mitrox syntyi uskosta siihen, että teknologia voi tehdä yritysten arjesta helpompaa, tehokkaampaa ja vaikuttavampaa. Perustajamme – joukko intohimoisia suomalaisia osaajia – yhdistivät voimansa luodakseen ratkaisuja, jotka oikeasti toimivat ja auttavat yrityksiä kasvamaan digitaalisessa ajassa."
-                  : "Mitrox was born from the belief that technology can make business life easier, more efficient, and more impactful. Our founders – a group of passionate Finnish experts – joined forces to build solutions that truly work and help companies grow in the digital era."}
+                  : "Mitrox was founded on a simple belief: technology should make business life easier, smarter, and more impactful."}
               </p>
+              {!isFinnish && (
+                <p>
+                  What began as a shared vision between a group of Finnish experts has grown into a mission to create digital solutions that truly work and help companies thrive.
+                </p>
+              )}
               <p>
                 {isFinnish
                   ? "Aloitimme pienestä, mutta selkeällä visiolla: rakentaa palveluita, joissa yhdistyvät laatu, nopeus ja älykkyys. Jokainen projekti on meille mahdollisuus kehittää osaamistamme ja ylittää odotukset. Asiakkaidemme menestys on myös meidän menestyksemme – siksi panostamme jokaiseen yksityiskohtaan, kuin se olisi oma projektimme."
-                  : "We started small with a clear vision: build services where quality, speed, and intelligence meet. Every project is an opportunity to refine our craft and exceed expectations. Our clients’ success is our success – that’s why we care about every detail as if it were our own project."}
+                  : "We started small but with clear intent: to build services where quality, speed, and intelligence come together seamlessly. Every project is a chance to refine our craft, push boundaries, and deliver more than expected."}
               </p>
               <p>
                 {isFinnish
                   ? "Tänään Mitrox on kasvanut tiimiksi, joka yhdistää teknisen osaamisen, luovuuden ja ymmärryksen liiketoiminnan todellisista tarpeista. Haluamme olla se kumppani, johon suomalaiset yritykset turvaavat, kun tarvitaan ratkaisuja, jotka eivät ainoastaan näytä hyvältä – vaan tuottavat tuloksia."
-                  : "Today Mitrox has grown into a team that blends technical skill, creativity, and a deep understanding of real business needs. We strive to be the partner Finnish companies turn to when they need solutions that not only look good – but deliver results."}
+                  : "Today, Mitrox is a growing team that unites technical skill, creativity, and real business understanding. We aim to be the trusted partner Finnish companies choose when they want digital solutions that don't just look great. They perform."}
               </p>
             </div>
           </div>
@@ -84,11 +89,25 @@ const CompanyStory: React.FC = () => {
                 {isFinnish ? "Meidän visiomme" : "Our vision"}
               </h3>
             </div>
-            <p className="md:max-w-md text-sm sm:text-base text-body-subtle leading-relaxed md:mt-[0.35rem]">
-              {isFinnish
-                ? "Uskomme, että tulevaisuuden menestyvät yritykset rakentuvat älykkään teknologian ja inhimillisen suunnittelun varaan. Siksi tavoitteemme on tehdä digitaalisesta kehityksestä helpompaa, nopeampaa ja laadukkaampaa – tavalla, joka aidosti tukee yritysten kasvua. Emme rakenna vain sivustoja tai työkaluja, vaan pitkän aikavälin ratkaisuja, jotka kestävät muutosta ja kasvavat yhdessä asiakkaidemme kanssa."
-                : "We believe the most successful companies of the future are built on intelligent technology and human-centred design. Our goal is to make digital development easier, faster, and higher quality – in a way that genuinely supports business growth. We don’t just build websites or tools; we create long-term solutions that adapt to change and grow with our clients."}
-            </p>
+            <div className="md:max-w-md text-sm sm:text-base text-body-subtle leading-relaxed md:mt-[0.35rem] space-y-4">
+              {isFinnish ? (
+                <p>
+                  Uskomme, että tulevaisuuden menestyvät yritykset rakentuvat älykkään teknologian ja inhimillisen suunnittelun varaan. Siksi tavoitteemme on tehdä digitaalisesta kehityksestä helpompaa, nopeampaa ja laadukkaampaa – tavalla, joka aidosti tukee yritysten kasvua. Emme rakenna vain sivustoja tai työkaluja, vaan pitkän aikavälin ratkaisuja, jotka kestävät muutosta ja kasvavat yhdessä asiakkaidemme kanssa.
+                </p>
+              ) : (
+                <>
+                  <p>
+                    We believe the most successful companies of tomorrow are built on intelligent technology and human-centered design.
+                  </p>
+                  <p>
+                    Our goal is to make digital development simpler, faster, and more meaningful. Always focused on real business impact.
+                  </p>
+                  <p>
+                    We don't just create websites or tools; we build lasting solutions that evolve with change and grow alongside our clients.
+                  </p>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>

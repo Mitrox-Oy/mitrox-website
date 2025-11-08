@@ -58,7 +58,7 @@ const BottomNavbar: React.FC = () => {
 
   return (
     <nav
-      className="hidden md:block fixed inset-x-0 z-40 transition-all duration-500"
+      className="block fixed inset-x-0 z-40 transition-all duration-500 bg-transparent"
       style={{
         fontFamily: 'GeistSans, "GeistSans Fallback", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
         bottom: `${computedBottom}px`,
@@ -69,8 +69,11 @@ const BottomNavbar: React.FC = () => {
       }`}>
         <div className="flex justify-center">
           <div
-            className={`rounded-full bg-black/40 backdrop-blur-xl backdrop-saturate-150 shadow-2xl border border-white/10 overflow-hidden transition-all duration-500 ${
+            className={`rounded-full backdrop-blur-xl backdrop-saturate-150 shadow-2xl border border-white/10 overflow-hidden transition-all duration-500 ${
               isExpanded ? "px-6 py-3" : "px-2.5 py-1"
+            } ${
+              // Transparent background on mobile, semi-transparent on desktop
+              "bg-transparent md:bg-black/40"
             }`}
           >
             <div className="flex items-center gap-3">

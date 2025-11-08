@@ -20,21 +20,21 @@ const CompanyInfo: React.FC = () => {
         title: isFinnish ? "Luotettavuus" : "Reliability",
         description: isFinnish
           ? "Toimimme täsmällisesti ja pidämme sanamme. Asiakkaamme voivat luottaa siihen, että jokainen projekti etenee suunnitellusti ja laadukkaasti – alusta loppuun."
-          : "We deliver precisely and keep our promises. Every project progresses as planned and with consistent quality from start to finish.",
+          : "We deliver on our word. Every project runs smoothly, on schedule, and with consistent quality from start to finish.",
       },
       {
         icon: Zap,
         title: isFinnish ? "Helppous" : "Simplicity",
         description: isFinnish
           ? "Teemme monimutkaisesta yksinkertaista. Ratkaisumme ovat selkeitä, käyttäjäystävällisiä ja rakennettu helpottamaan arkeasi – ei kuormittamaan sitä."
-          : "We make the complex simple. Our solutions are clear, user-friendly, and designed to streamline your daily work – not add clutter.",
+          : "We turn complexity into clarity. Our solutions are intuitive, efficient, and built to make your work lighter not harder.",
       },
       {
         icon: Target,
         title: isFinnish ? "Täsmällisyys" : "Precision",
         description: isFinnish
           ? "Huolehdimme yksityiskohdista tinkimättä. Aikataulut pitävät, lopputulos on viimeistelty ja jokainen yksityiskohta tukee kokonaisuuden laatua."
-          : "We care about the details. Timelines hold, the outcome is polished, and every element supports the quality of the whole.",
+          : "We care about the details. From planning to launch, every element is refined to ensure a polished, cohesive result.",
       },
     ],
     [isFinnish]
@@ -50,18 +50,25 @@ const CompanyInfo: React.FC = () => {
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium text-white">
             {isFinnish ? "Keitä olemme" : "Who we are"}
           </h2>
-          <p className="max-w-3xl text-base leading-relaxed text-body-subtle">
-            {isFinnish
-              ? "Mitrox on suomalainen teknologiayritys, joka yhdistää tekoälyn, suunnittelun ja liiketoimintaymmärryksen yhdeksi kokonaisuudeksi. Tiimimme koostuu intohimoisista nuorista osaajista, jotka uskovat teknologian mahdollisuuksiin – ja tekevät siitä totta joka päivä."
-              : "Mitrox is a Finnish technology company that combines AI, design, and business understanding into one unified experience. Our team is made of passionate young experts who believe in what technology can do – and make it real every day."}
-          </p>
+          <div className="max-w-3xl text-base leading-relaxed text-body-subtle space-y-4">
+            <p>
+              {isFinnish
+                ? "Mitrox on suomalainen teknologiayritys, joka yhdistää tekoälyn, suunnittelun ja liiketoimintaymmärryksen yhdeksi kokonaisuudeksi. Tiimimme koostuu intohimoisista nuorista osaajista, jotka uskovat teknologian mahdollisuuksiin ja tekevät siitä totta joka päivä."
+                : "Mitrox is a Finnish technology company that unites AI, design, and business insight into one seamless experience."}
+            </p>
+            {!isFinnish && (
+              <p>
+                Our team of driven professionals believes in what technology can achieve and makes it tangible for businesses every day.
+              </p>
+            )}
+          </div>
         </div>
 
         <div className="mb-20 max-w-3xl">
           <p className="text-base leading-relaxed text-body-subtle">
             {isFinnish
               ? "Työskentelemme periaatteella, jossa laatu ja tehokkuus kulkevat käsi kädessä. Teemme asiat kerralla oikein ja pidämme huolen, ettet jää yksin – tarjoamme jatkuvaa tukea ja asiantuntemusta, kun yrityksesi kasvaa."
-              : "Quality and efficiency go hand in hand for us. We do things right the first time and make sure you’re never left alone – offering ongoing support and expertise as your company grows."}
+              : "For us, quality and efficiency belong together. We get things right from the start and stay with you as your business evolves. Offering lasting support and expertise along the way."}
           </p>
         </div>
 

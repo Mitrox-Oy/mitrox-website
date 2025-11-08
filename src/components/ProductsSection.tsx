@@ -29,8 +29,8 @@ const ProductsSection: React.FC = () => {
         subtitle: isFinnish ? "Suunniteltu yrityksesi menestykseen" : "Designed for your business success",
         description: isFinnish
           ? "Modernit ja käyttäjäystävälliset verkkosivut, jotka kertovat yrityksesi tarinan ja kasvattavat liiketoimintaasi. Yksilöllinen design joka vastaa brändisi visiota."
-          : "Modern, user-friendly websites that tell your brand story and drive growth. Tailored design that matches your vision.",
-        buttonText: isFinnish ? "Tutustu portfolioon" : "View portfolio",
+          : "Modern websites that express your brand and turn visitors into customers. Tailored design that reflects your vision.",
+        buttonText: isFinnish ? "Tutustu portfolioon" : "Explore our work",
         link: "/websites",
         action: null,
         comingSoon: false,
@@ -39,11 +39,11 @@ const ProductsSection: React.FC = () => {
         id: "advisor",
         icon: Bot,
         title: "Mitrox AI Advisor",
-        subtitle: isFinnish ? "Älykäs kasvukumppanisi" : "Your intelligent growth partner",
+        subtitle: isFinnish ? "Älykäs kasvukumppanisi" : "Your 24/7 digital team member",
         description: isFinnish
           ? "Premium-tason tekoälyneuvoja, joka ohjaa, myy ja tukee asiakkaitasi 24/7. Rakenna luottamusta, karsi manuaalista työtä ja skaalaa myyntiäsi ilman lisäresursseja."
-          : "A premium AI advisor that guides, sells, and supports your customers 24/7. Build trust, automate manual work, and scale without extra headcount.",
-        buttonText: isFinnish ? "Tutustu ratkaisuun" : "Explore the solution",
+          : "The Mitrox AI Advisor helps you serve customers, close sales, and stay connected — without adding extra workload.",
+        buttonText: isFinnish ? "Tutustu ratkaisuun" : "Explore the Advisor",
         link: "/advisor",
         action: null,
         comingSoon: false,
@@ -54,7 +54,7 @@ const ProductsSection: React.FC = () => {
         title: isFinnish ? "Seuraava innovaatio" : "The next innovation",
         description: isFinnish
           ? "Työskentelemme parhaillaan uuden innovatiivisen ratkaisun parissa. Pysy kuulolla ja saat tiedon ensimmäisten joukossa!"
-          : "We are crafting our next innovative solution. Stay tuned and be among the first to know!",
+          : "We're crafting our next intelligent solution. Stay tuned and be among the first to experience it.",
         buttonText: isFinnish ? "Tulossa pian" : "Coming soon",
         link: null,
         action: null,
@@ -75,12 +75,12 @@ const ProductsSection: React.FC = () => {
             {isFinnish ? "[ Meidän tuotteemme ]" : "[ Our products ]"}
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-[2.9rem] font-medium text-white">
-            {isFinnish ? "Älykkäästi rakennettu menestys" : "Success built intelligently"}
+            {isFinnish ? "Älykkäästi rakennettu menestys" : "Made to last. Designed to grow."}
           </h2>
           <p className="max-w-2xl text-sm sm:text-base text-body-subtle">
             {isFinnish
               ? "Uskomme, että menestys syntyy älykkäästä suunnittelusta – siksi jokainen sivusto ja ratkaisu rakennetaan strategisesti yrityksesi tavoitteiden ympärille."
-              : "We believe success comes from thoughtful planning. Every site and solution we deliver is strategically built around your business goals."}
+              : "Each Mitrox project reflects enduring design, strategic thinking, and technology that scales with your business."}
           </p>
         </div>
 

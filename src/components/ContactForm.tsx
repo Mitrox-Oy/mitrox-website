@@ -231,15 +231,15 @@ const ContactForm: React.FC = () => {
       {/* Otsikko */}
       <header className="text-center mb-14">
         <h2 className="text-4xl sm:text-5xl font-semibold text-white">
-          {isFinnish ? "Ota yhteyttä" : "Contact us"}
+          {isFinnish ? "Ota yhteyttä" : "Let's start the conversation"}
         </h2>
-        <p className="mt-3 text-gray-400">
-          {isFinnish ? "Kerro lyhyesti tarpeesi – palaamme mahdollisimman nopeasti." : "Tell us briefly what you need – we’ll get back to you as fast as possible."}
+        <p className="mt-7 sm:mt-7 text-gray-400">
+          {isFinnish ? "Kerro lyhyesti tarpeesi – palaamme mahdollisimman nopeasti." : "Share a few details about your project, and our team will reach out with ideas and next steps."}
         </p>
-        <p className="mt-2 text-gray-400 text-sm">
+        <p className="mt-2 text-gray-400">
           {isFinnish
             ? "Nuoret asiantuntijamme rakentavat räätälöidyn ratkaisun yrityksellesi."
-            : "Our team of specialists will craft a tailored solution for your business."}
+            : "Every message is answered personally by a Mitrox specialist."}
         </p>
       </header>
 
@@ -248,7 +248,7 @@ const ContactForm: React.FC = () => {
         <div className="lg:col-span-2 max-w-2xl mx-auto space-y-4">
           {/* Lomake boxi */}
           <div className="rounded-xl bg-white/5 backdrop-blur-xl backdrop-saturate-150 p-6">
-            <h3 className="text-lg font-semibold text-white mb-6">Lähetä viesti</h3>
+            <h3 className="text-lg font-semibold text-white mb-6">{isFinnish ? "Lähetä viesti" : "Get in touch"}</h3>
 
             <form onSubmit={handleSubmit} className="space-y-5" noValidate>
             <div className="sr-only" aria-hidden="true">
@@ -276,7 +276,7 @@ const ContactForm: React.FC = () => {
                   value={formData.name}
                   onChange={handleInputChange}
                   className="w-full rounded-lg border border-white/10 bg-black px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder={isFinnish ? "Nimi" : "Name"}
+                  placeholder={isFinnish ? "Nimi" : "Your name"}
                 />
               </div>
 
@@ -311,7 +311,7 @@ const ContactForm: React.FC = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   className="w-full rounded-lg border border-white/10 bg-black px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder={isFinnish ? "sahkoposti@yritys.fi" : "you@company.com"}
+                  placeholder={isFinnish ? "sahkoposti@yritys.fi" : "your@email.com"}
                 />
               </div>
 
@@ -328,7 +328,7 @@ const ContactForm: React.FC = () => {
                   value={formData.phone}
                   onChange={handleInputChange}
                   className="w-full rounded-lg border border-white/10 bg-black px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder={isFinnish ? "+358 40 123 4567" : "+44 20 1234 5678"}
+                  placeholder={isFinnish ? "+358 40 123 4567" : "+358 40 123 4567"}
                 />
               </div>
             </div>
@@ -345,7 +345,7 @@ const ContactForm: React.FC = () => {
                 value={formData.message}
                 onChange={handleInputChange}
                 className="w-full rounded-lg border border-white/10 bg-black px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                placeholder={isFinnish ? "Kuvaile lyhyesti tarpeesi…" : "Describe your needs briefly…"}
+                placeholder={isFinnish ? "Kuvaile lyhyesti tarpeesi…" : "Tell us a bit about your project or goals..."}
               />
             </div>
 
@@ -361,7 +361,7 @@ const ContactForm: React.FC = () => {
                   {isFinnish ? "Lähetetään…" : "Sending…"}
                 </>
               ) : (
-                <>{isFinnish ? "Lähetä viesti" : "Send message"}</>
+                <>{isFinnish ? "Lähetä viesti" : "Get in touch"}</>
               )}
             </button>
 

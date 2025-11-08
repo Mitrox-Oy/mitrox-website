@@ -89,7 +89,7 @@ const Hero = () => {
               }`}
               style={{ fontFamily: 'Epilogue, sans-serif', fontWeight: 600 }}
             >
-              {isFinnish ? 'Teknologia, joka tuntuu luonnolliselta' : 'Technology that feels natural'}
+              {isFinnish ? 'Teknologia, joka tuntuu luonnolliselta' : 'Technology that feels effortless'}
             </h1>
 
             {/* Subtitle */}
@@ -99,7 +99,7 @@ const Hero = () => {
               }`}
               style={{ fontFamily: 'GeistSans, "GeistSans Fallback", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"', fontWeight: 400 }}
             >
-              {isFinnish ? 'Mitrox muuttaa monimutkaisen yksinkertaiseksi ja tehokkaaksi' : 'Mitrox turns complexity into clarity and efficiency'}
+              {isFinnish ? 'Mitrox muuttaa monimutkaisen yksinkertaiseksi ja tehokkaaksi' : 'We design digital experiences that simply work. Beautifully.'}
             </p>
 
             {/* Buttons */}
@@ -113,7 +113,7 @@ const Hero = () => {
                 className="w-full sm:w-auto px-6 sm:px-8 py-3 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 text-white font-medium hover:bg-black/60 hover:border-white/20 transition-all duration-300 flex items-center justify-center gap-2"
                 style={{ fontFamily: 'GeistSans, "GeistSans Fallback", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"', fontWeight: 400 }}
               >
-                {isFinnish ? 'Tutustu tuotteisiin' : 'Explore products'}
+                {isFinnish ? 'Tutustu tuotteisiin' : 'Discover Mitrox'}
                 <ChevronDown className="w-4 h-4" />
               </button>
               <button
@@ -121,7 +121,7 @@ const Hero = () => {
                 className="w-full sm:w-auto px-6 sm:px-8 py-3 rounded-full bg-white text-black hover:bg-gray-100 font-medium transition-all duration-300 flex items-center justify-center"
                 style={{ fontFamily: 'GeistSans, "GeistSans Fallback", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"', fontWeight: 400 }}
               >
-                {isFinnish ? 'Ota yhteyttä' : 'Contact us'}
+                {isFinnish ? 'Ota yhteyttä' : "Let's build together"}
               </button>
             </div>
           </div>

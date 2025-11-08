@@ -25,21 +25,21 @@ const Features: React.FC = () => {
         title: isFinnish ? "Modernit Ratkaisut" : "Modern solutions",
         description: isFinnish
           ? "Suunnittelemme ja toteutamme ratkaisuja, jotka yhdistävät teknisen osaamisen ja viimeistellyn muotoilun. Tuloksena on verkkopalvelu, joka toimii saumattomasti ja näyttää yhtä hyvältä kuin se toimii."
-          : "We design and deliver solutions that combine technical expertise with refined design. The result is a digital experience that works flawlessly and looks as good as it performs.",
+          : "We combine technical precision with refined design to build digital experiences that work beautifully and perform flawlessly.",
       },
       {
         icon: Zap,
         title: isFinnish ? "Nopea Käyttöönotto" : "Fast implementation",
         description: isFinnish
           ? "Rakennamme tehokkaasti ja toimitamme ajallaan. Käyttöönotto sujuu ilman turhaa odottelua – yrityksesi on valmiina hyödyntämään uutta ratkaisua lähes heti."
-          : "We build efficiently and deliver on schedule. Implementation happens without unnecessary waiting – your organisation can leverage the new solution almost immediately.",
+          : "Our process is efficient and transparent. We deliver on schedule, ensuring your new solution is live and driving results sooner than expected.",
       },
       {
         icon: HeartHandshake,
         title: isFinnish ? "Aina Apunasi" : "Always by your side",
         description: isFinnish
           ? "Tarjoamme jatkuvaa tukea ja kehitystä. Olemme kumppani, johon voit nojata – aina, kun tarvitset neuvoa, päivityksiä tai uusia ideoita yrityksesi kasvuun."
-          : "We provide ongoing support and continuous improvement. We are a partner you can rely on whenever you need advice, updates, or fresh ideas to grow your business.",
+          : "Your success doesn't stop at launch. We provide continuous support, optimization, and fresh ideas to keep your business growing.",
       },
     ],
     [isFinnish]
@@ -80,11 +80,18 @@ const Features: React.FC = () => {
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium text-white">
             {isFinnish ? "Miksi valita Mitrox?" : "Why choose Mitrox?"}
           </h2>
-          <p className="max-w-3xl text-base leading-relaxed text-body-subtle">
-            {isFinnish
-              ? "Suomalainen teknologiayritys, joka yhdistää älyn, designin ja tehokkuuden. Ymmärrämme liiketoimintasi tarpeet ja rakennamme ratkaisuja, jotka vievät yritystäsi eteenpäin – luotettavasti ja tyylillä."
-              : "A Finnish technology company that blends intelligence, design, and efficiency. We understand your business needs and craft solutions that move your company forward – reliably and with style."}
-          </p>
+          <div className="max-w-3xl text-base leading-relaxed text-body-subtle space-y-4">
+            <p>
+              {isFinnish
+                ? "Suomalainen teknologiayritys, joka yhdistää älyn, designin ja tehokkuuden. Ymmärrämme liiketoimintasi tarpeet ja rakennamme ratkaisuja, jotka vievät yritystäsi eteenpäin – luotettavasti ja tyylillä."
+                : "Mitrox is a Finnish technology company where intelligence meets design."}
+            </p>
+            {!isFinnish && (
+              <p>
+                We understand your business goals and create solutions that move your brand forward seamlessly, reliably, and with purpose.
+              </p>
+            )}
+          </div>
         </div>
 
         <div className="grid gap-6 md:grid-cols-3">

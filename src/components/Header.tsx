@@ -333,7 +333,7 @@ const Header: React.FC = () => {
             open ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-2",
           ].join(" ")}
         >
-          <div className="rounded-2xl bg-black/40 backdrop-blur-xl backdrop-saturate-150 shadow-2xl p-3 w-56">
+          <div className="rounded-2xl bg-black/40 backdrop-blur-xl backdrop-saturate-150 shadow-2xl p-3.5 w-[15.4rem]">
             <div className="flex flex-col gap-0.5">
               {/* Mobile Etusivu - first */}
               {navItems[0] && (() => {
@@ -389,7 +389,7 @@ const Header: React.FC = () => {
                             setOpen(false);
                             setMobileProductsOpen(false);
                           }}
-                          className="block rounded-full px-4 py-1.5 text-body-muted hover:text-white/80 hover:bg-white/10 transition-colors text-xs font-light"
+                          className="block rounded-full px-5 py-2 text-body-muted hover:text-white/80 hover:bg-white/10 transition-colors text-sm font-light"
                         >
                           {product.label}
                         </Link>
