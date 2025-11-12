@@ -11,13 +11,21 @@ import CompanyStory from "./components/CompanyStory";
 import ContactForm from "./components/ContactForm";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
+import { useLanguage } from "./context/LanguageContext";
 
 export default function Home() {
+  const { language } = useLanguage();
+  const isFinnish = language === "fi";
+
   return (
     <div id="top" className="min-h-screen bg-black relative">
       {/* Space background for everything except hero */}
       <SpaceBackground className="top-[100vh]" />
-      <SEOHead />
+      <SEOHead 
+        title={isFinnish ? "Mitrox – Teknologia, joka tuntuu luonnolliselta" : "Mitrox – Technology That Feels Effortless"}
+        language={language}
+        url={`https://mitrox.io/${language === 'fi' ? 'fi' : 'en'}`}
+      />
       <Header />
       <Hero />
       <ProductsSection />

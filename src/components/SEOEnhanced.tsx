@@ -7,8 +7,7 @@
 
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { safeJsonLd } from '../../lib/seo';
-import { SEO_CONFIG } from '../../config/seo.fi';
+import { safeJsonLd, getSEOConfig, Language } from '../../lib/seo';
 
 interface MetaProps {
   title?: string;
@@ -32,9 +31,11 @@ const SEOEnhanced: React.FC<SEOEnhancedProps> = ({ meta, schemas = [], lang = 'f
     return null;
   }
 
-  const baseUrl = SEO_CONFIG.brand.url;
+  const language = lang as Language;
+  const seoConfig = getSEOConfig(language);
+  const baseUrl = seoConfig.brand.url;
   const fullUrl = meta?.url || baseUrl;
-  const ogImage = meta?.image || SEO_CONFIG.defaultImage;
+  const ogImage = meta?.image || seoConfig.defaultImage;
 
   return (
     <Helmet>
@@ -48,8 +49,8 @@ const SEOEnhanced: React.FC<SEOEnhancedProps> = ({ meta, schemas = [], lang = 'f
           <link rel="canonical" href={fullUrl} />
 
           {/* Open Graph enhanced */}
-          <meta property="og:locale" content={meta.locale || SEO_CONFIG.defaultLocale} />
-          {SEO_CONFIG.alternateLocales.map(locale => (
+          <meta property="og:locale" content={meta.locale || seoConfig.defaultLocale} />
+          {seoConfig.alternateLocales.map(locale => (
             <meta
               key={locale}
               property="og:locale:alternate"

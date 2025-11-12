@@ -17,8 +17,7 @@ import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import ColorBends from "./components/ColorBends";
 import { ChevronDown } from "lucide-react";
-import { buildMeta, organizationSchema, breadcrumbSchema, serviceSchema } from "../lib/seo";
-import { SEO_CONFIG } from "../config/seo.fi";
+import { buildMeta, organizationSchema, breadcrumbSchema, serviceSchema, getSEOConfig } from "../lib/seo";
 import ErrorBoundary from "./components/ErrorBoundary";
 
 const AIAgentHero: React.FC = () => {
@@ -171,22 +170,30 @@ export default function AIAgentPage() {
   const isFinnish = language === "fi";
   // SEO_V2 enhancements (only when flag is enabled)
   const isSEO_V2 = import.meta.env.VITE_SEO_V2 === "true";
+  const seoConfig = getSEOConfig(language);
+  const advisorPath = isFinnish ? "/fi/ai-neuvonantaja" : "/en/ai-advisor";
   const meta = isSEO_V2
     ? buildMeta({
-        title: SEO_CONFIG.pages.advisor.title,
-        description: SEO_CONFIG.pages.advisor.description,
-        path: "/advisor",
-        keywords: SEO_CONFIG.pages.advisor.keywords,
+        title: seoConfig.pages.advisor.title,
+        description: seoConfig.pages.advisor.description,
+        path: advisorPath,
+        keywords: seoConfig.pages.advisor.keywords,
+        language: language,
       })
     : undefined;
   const schemas = isSEO_V2
     ? [
-        organizationSchema(),
-        breadcrumbSchema(SEO_CONFIG.pages.advisor.breadcrumbs),
+        organizationSchema(language),
+        breadcrumbSchema(seoConfig.pages.advisor.breadcrumbs, language),
         serviceSchema({
           type: "advisor",
-          name: SEO_CONFIG.pages.advisor.serviceName,
+          name: seoConfig.pages.advisor.serviceName,
           areaServed: "FI",
+          language: language,
+          alternateNames: isFinnish
+            ? ["Tekoälyneuvoja", "Tekoälybotti", "Chatbotti", "AI-neuvoja", "Tekoäly asiakaspalvelija"]
+            : ["AI Advisor", "AI Agent", "Chatbot", "AI Chatbot", "Business Chatbot", "Customer Service Chatbot"],
+          keywords: seoConfig.pages.advisor.keywords,
         }),
       ]
     : [];
@@ -196,12 +203,14 @@ export default function AIAgentPage() {
       {/* Space background for everything except hero */}
       <SpaceBackground className="top-[100vh]" />
       <SEOHead
-        title={meta?.title || (isFinnish ? "Mitrox AI Advisor - Mitrox.io" : "Mitrox AI Advisor - Mitrox.io")}
+        title={meta?.title || (isFinnish ? "AI-neuvoja yrityksille 24/7 | Mitrox Advisor" : "AI Advisor for Businesses 24/7 | Mitrox Advisor")}
         description={meta?.description || (isFinnish
           ? "Älykäs Mitrox AI Advisor palvelee asiakkaasi 24/7, kasvattaa myyntiä ja vapauttaa tiimisi keskittymään kasvuun. Premium-tason tekoälyneuvoja B2B-yrityksille."
           : "Mitrox AI Advisor serves your customers 24/7, grows sales, and frees your team to focus on growth. A premium AI advisor for B2B companies.")}
-        url={meta?.url || "https://mitrox.io/advisor"}
+        url={meta?.url || `https://mitrox.io${advisorPath}`}
         keywords={meta?.keywords}
+        language={language}
+        locale={meta?.locale}
       />
       {isSEO_V2 && <SEOEnhanced meta={meta} schemas={schemas} lang={isFinnish ? "fi" : "en"} />}
       <Header />

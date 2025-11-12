@@ -17,8 +17,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import LiquidEther from "./components/LiquidEther";
 import BottomNavbar from "./components/BottomNavbar";
 import { ChevronDown } from "lucide-react";
-import { buildMeta, organizationSchema, breadcrumbSchema, serviceSchema } from "../lib/seo";
-import { SEO_CONFIG } from "../config/seo.fi";
+import { buildMeta, organizationSchema, breadcrumbSchema, serviceSchema, getSEOConfig } from "../lib/seo";
 import ErrorBoundary from "./components/ErrorBoundary";
 
 const WebsiteHero: React.FC<{ referencesId: string; processId: string }> = ({ referencesId, processId }) => {
@@ -164,22 +163,30 @@ export default function WebsiteBusinessPage() {
   const processId = useLocalizedSectionId("process");
   // SEO_V2 enhancements (only when flag is enabled)
   const isSEO_V2 = import.meta.env.VITE_SEO_V2 === "true";
+  const seoConfig = getSEOConfig(language);
+  const websitesPath = isFinnish ? "/fi/verkkosivut" : "/en/websites";
   const meta = isSEO_V2
     ? buildMeta({
-        title: SEO_CONFIG.pages.websites.title,
-        description: SEO_CONFIG.pages.websites.description,
-        path: "/websites",
-        keywords: SEO_CONFIG.pages.websites.keywords,
+        title: seoConfig.pages.websites.title,
+        description: seoConfig.pages.websites.description,
+        path: websitesPath,
+        keywords: seoConfig.pages.websites.keywords,
+        language: language,
       })
     : undefined;
   const schemas = isSEO_V2
     ? [
-        organizationSchema(),
-        breadcrumbSchema(SEO_CONFIG.pages.websites.breadcrumbs),
+        organizationSchema(language),
+        breadcrumbSchema(seoConfig.pages.websites.breadcrumbs, language),
         serviceSchema({
           type: "websites",
-          name: SEO_CONFIG.pages.websites.serviceName,
+          name: seoConfig.pages.websites.serviceName,
           areaServed: "FI",
+          language: language,
+          alternateNames: isFinnish 
+            ? ["Kotisivut", "Yrityksen verkkosivut", "Verkkosivut", "Yrityssivut"]
+            : ["Company Websites", "Business Websites", "Corporate Websites", "Websites"],
+          keywords: seoConfig.pages.websites.keywords,
         }),
       ]
     : [];
@@ -189,12 +196,14 @@ export default function WebsiteBusinessPage() {
       {/* Space background for everything except hero */}
       <SpaceBackground className="top-[100vh]" />
       <SEOHead
-        title={meta?.title || (isFinnish ? "Mitrox Sites - Mitrox.io" : "Mitrox Sites - Mitrox.io")}
+        title={meta?.title || (isFinnish ? "Verkkosivut yrityksille 14 päivässä | Mitrox" : "Business Websites in 14 Days | Mitrox")}
         description={meta?.description || (isFinnish
           ? "Luomme modernit ja käyttäjäystävälliset verkkosivut, jotka kertovat yrityksesi tarinan ja kasvattavat liiketoimintaasi."
           : "We create modern, user-friendly websites that tell your company story and grow your business.")}
-        url={meta?.url || "https://mitrox.io/websites"}
+        url={meta?.url || `https://mitrox.io${websitesPath}`}
         keywords={meta?.keywords}
+        language={language}
+        locale={meta?.locale}
       />
       {isSEO_V2 && <SEOEnhanced meta={meta} schemas={schemas} lang={isFinnish ? "fi" : "en"} />}
       <Header />

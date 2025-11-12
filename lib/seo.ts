@@ -5,7 +5,17 @@
  * Used when VITE_SEO_V2 is enabled.
  */
 
-import { SEO_CONFIG } from '../config/seo.fi';
+import { SEO_CONFIG as SEO_CONFIG_FI } from '../config/seo.fi';
+import { SEO_CONFIG as SEO_CONFIG_EN } from '../config/seo.en';
+
+export type Language = 'fi' | 'en';
+
+/**
+ * Get SEO config based on language
+ */
+export function getSEOConfig(lang: Language = 'fi') {
+  return lang === 'fi' ? SEO_CONFIG_FI : SEO_CONFIG_EN;
+}
 
 export interface MetaProps {
   title: string;
@@ -15,6 +25,7 @@ export interface MetaProps {
   locale?: string;
   keywords?: string[];
   noIndex?: boolean;
+  language?: Language;
 }
 
 export interface BreadcrumbSegment {
@@ -26,6 +37,8 @@ export interface ServiceSchemaProps {
   type: 'websites' | 'advisor';
   name: string;
   areaServed?: string;
+  alternateNames?: string[];
+  keywords?: string[];
 }
 
 export interface FAQItem {
@@ -41,13 +54,16 @@ export function buildMeta({
   description,
   path,
   image,
-  locale = SEO_CONFIG.defaultLocale,
+  locale,
   keywords,
-  noIndex = false
+  noIndex = false,
+  language = 'fi'
 }: MetaProps) {
-  const baseUrl = SEO_CONFIG.brand.url;
+  const seoConfig = getSEOConfig(language);
+  const baseUrl = seoConfig.brand.url;
   const fullUrl = `${baseUrl}${path}`;
-  const ogImage = image || SEO_CONFIG.defaultImage;
+  const ogImage = image || seoConfig.defaultImage;
+  const defaultLocale = locale || seoConfig.defaultLocale;
 
   // Ensure title and description are within limits
   const trimmedTitle = title.length > 60 ? title.substring(0, 57) + '...' : title;
@@ -60,6 +76,7 @@ export function buildMeta({
     url: fullUrl,
     image: ogImage,
     type: 'website',
+    locale: defaultLocale,
     noIndex
   };
 }
@@ -67,33 +84,57 @@ export function buildMeta({
 /**
  * Generates canonical URL
  */
-export function canonical(path: string): string {
-  return `${SEO_CONFIG.brand.url}${path}`;
+export function canonical(path: string, language: Language = 'fi'): string {
+  const seoConfig = getSEOConfig(language);
+  return `${seoConfig.brand.url}${path}`;
 }
 
 /**
- * Generates alternate language URLs
+ * Generates alternate language URLs with proper language paths
  */
-export function alternates(path: string): Array<{ hreflang: string; href: string }> {
-  const baseUrl = SEO_CONFIG.brand.url;
-  return SEO_CONFIG.alternateLocales.map(locale => ({
-    hreflang: locale,
-    href: `${baseUrl}${path}`
-  }));
+export function alternates(path: string, currentLanguage: Language = 'fi'): Array<{ hreflang: string; href: string }> {
+  const baseUrl = SEO_CONFIG_FI.brand.url; // Same for both languages
+  const currentConfig = getSEOConfig(currentLanguage);
+  
+  // Get the path without language prefix
+  const pathWithoutLang = path.replace(/^\/(fi|en)/, '') || '/';
+  
+  // Generate alternates for all supported languages
+  const alternatesList: Array<{ hreflang: string; href: string }> = [];
+  
+  // Add current language
+  const currentLangPath = currentLanguage === 'fi' ? `/fi${pathWithoutLang === '/' ? '' : pathWithoutLang}` : `/en${pathWithoutLang === '/' ? '' : pathWithoutLang}`;
+  alternatesList.push({
+    hreflang: currentConfig.defaultLocale,
+    href: `${baseUrl}${currentLangPath}`
+  });
+  
+  // Add alternate languages
+  currentConfig.alternateLocales.forEach(locale => {
+    const altLang: Language = locale.startsWith('fi') ? 'fi' : 'en';
+    const altLangPath = altLang === 'fi' ? `/fi${pathWithoutLang === '/' ? '' : pathWithoutLang}` : `/en${pathWithoutLang === '/' ? '' : pathWithoutLang}`;
+    alternatesList.push({
+      hreflang: locale,
+      href: `${baseUrl}${altLangPath}`
+    });
+  });
+  
+  return alternatesList;
 }
 
 /**
  * Organization schema (JSON-LD)
  */
-export function organizationSchema() {
+export function organizationSchema(language: Language = 'fi') {
+  const seoConfig = getSEOConfig(language);
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": SEO_CONFIG.brand.name,
-    "url": SEO_CONFIG.brand.url,
-    "logo": SEO_CONFIG.brand.logo,
-    "description": SEO_CONFIG.brand.description,
-    "foundingDate": SEO_CONFIG.brand.foundingDate,
+    "name": seoConfig.brand.name,
+    "url": seoConfig.brand.url,
+    "logo": seoConfig.brand.logo,
+    "description": seoConfig.brand.description,
+    "foundingDate": seoConfig.brand.foundingDate,
     "founders": [
       {
         "@type": "Person",
@@ -110,18 +151,18 @@ export function organizationSchema() {
     ],
     "address": {
       "@type": "PostalAddress",
-      "addressCountry": SEO_CONFIG.brand.address.country
+      "addressCountry": seoConfig.brand.address.country
     },
     "contactPoint": {
       "@type": "ContactPoint",
-      "telephone": SEO_CONFIG.brand.phone,
+      "telephone": seoConfig.brand.phone,
       "contactType": "customer service",
-      "email": SEO_CONFIG.brand.email,
+      "email": seoConfig.brand.email,
       "availableLanguage": ["Finnish", "English"]
     },
     "sameAs": [
-      SEO_CONFIG.brand.social.instagram,
-      SEO_CONFIG.brand.social.youtube
+      seoConfig.brand.social.instagram,
+      seoConfig.brand.social.youtube
     ]
   };
 }
@@ -129,19 +170,20 @@ export function organizationSchema() {
 /**
  * Website schema (JSON-LD)
  */
-export function websiteSchema() {
+export function websiteSchema(language: Language = 'fi') {
+  const seoConfig = getSEOConfig(language);
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": SEO_CONFIG.brand.name,
-    "url": SEO_CONFIG.brand.url,
-    "description": SEO_CONFIG.brand.description,
-    "inLanguage": "fi",
+    "name": seoConfig.brand.name,
+    "url": seoConfig.brand.url,
+    "description": seoConfig.brand.description,
+    "inLanguage": language,
     "potentialAction": {
       "@type": "SearchAction",
       "target": {
         "@type": "EntryPoint",
-        "urlTemplate": `${SEO_CONFIG.brand.url}/?q={search_term_string}`
+        "urlTemplate": `${seoConfig.brand.url}/?q={search_term_string}`
       },
       "query-input": "required name=search_term_string"
     }
@@ -151,7 +193,8 @@ export function websiteSchema() {
 /**
  * Breadcrumb schema (JSON-LD)
  */
-export function breadcrumbSchema(segments: BreadcrumbSegment[]) {
+export function breadcrumbSchema(segments: BreadcrumbSegment[], language: Language = 'fi') {
+  const seoConfig = getSEOConfig(language);
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -159,7 +202,7 @@ export function breadcrumbSchema(segments: BreadcrumbSegment[]) {
       "@type": "ListItem",
       "position": index + 1,
       "name": segment.name,
-      "item": `${SEO_CONFIG.brand.url}${segment.href}`
+      "item": `${seoConfig.brand.url}${segment.href}`
     }))
   };
 }
@@ -167,21 +210,32 @@ export function breadcrumbSchema(segments: BreadcrumbSegment[]) {
 /**
  * Service schema (JSON-LD)
  */
-export function serviceSchema({ type, name, areaServed = 'FI' }: ServiceSchemaProps) {
-  const baseSchema = {
+export function serviceSchema({ type, name, areaServed = 'FI', language = 'fi', alternateNames, keywords }: ServiceSchemaProps & { language?: Language }) {
+  const seoConfig = getSEOConfig(language);
+  const baseSchema: any = {
     "@context": "https://schema.org",
     "@type": type === 'websites' ? "ProfessionalService" : "Service",
     "name": name,
     "provider": {
       "@type": "Organization",
-      "name": SEO_CONFIG.brand.name,
-      "url": SEO_CONFIG.brand.url
+      "name": seoConfig.brand.name,
+      "url": seoConfig.brand.url
     },
     "areaServed": {
       "@type": "Country",
       "name": areaServed === 'FI' ? "Finland" : areaServed
     }
   };
+
+  // Add alternate names if provided
+  if (alternateNames && alternateNames.length > 0) {
+    baseSchema.alternateName = alternateNames;
+  }
+
+  // Add keywords if provided
+  if (keywords && keywords.length > 0) {
+    baseSchema.keywords = keywords.join(', ');
+  }
 
   return baseSchema;
 }
@@ -202,6 +256,87 @@ export function faqSchema(items: FAQItem[]) {
       }
     }))
   };
+}
+
+export interface ProductSchemaProps {
+  name: string;
+  description: string;
+  category?: string;
+  brand?: string;
+  offers?: {
+    price?: string;
+    priceCurrency?: string;
+    availability?: string;
+  };
+  language?: Language;
+}
+
+/**
+ * Product schema (JSON-LD)
+ */
+export function productSchema({ name, description, category, brand, offers, language = 'fi' }: ProductSchemaProps) {
+  const seoConfig = getSEOConfig(language);
+  const baseSchema: any = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": name,
+    "description": description,
+    "brand": {
+      "@type": "Brand",
+      "name": brand || seoConfig.brand.name
+    }
+  };
+
+  if (category) {
+    baseSchema.category = category;
+  }
+
+  if (offers) {
+    baseSchema.offers = {
+      "@type": "Offer",
+      "price": offers.price || "0",
+      "priceCurrency": offers.priceCurrency || "EUR",
+      "availability": offers.availability || "https://schema.org/InStock"
+    };
+  }
+
+  return baseSchema;
+}
+
+export interface ReviewSchemaProps {
+  author: string;
+  ratingValue: number;
+  reviewBody?: string;
+  datePublished?: string;
+  language?: Language;
+}
+
+/**
+ * Review/Rating schema (JSON-LD)
+ */
+export function reviewSchema({ author, ratingValue, reviewBody, datePublished, language = 'fi' }: ReviewSchemaProps) {
+  const review: any = {
+    "@type": "Review",
+    "author": {
+      "@type": "Person",
+      "name": author
+    },
+    "reviewRating": {
+      "@type": "Rating",
+      "ratingValue": ratingValue,
+      "bestRating": 5
+    }
+  };
+
+  if (reviewBody) {
+    review.reviewBody = reviewBody;
+  }
+
+  if (datePublished) {
+    review.datePublished = datePublished;
+  }
+
+  return review;
 }
 
 /**

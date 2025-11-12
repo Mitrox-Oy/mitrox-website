@@ -3,32 +3,35 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import SEOHead from "./components/SEOHead";
 import SEOEnhanced from "./components/SEOEnhanced";
-import { buildMeta, breadcrumbSchema, organizationSchema } from "../lib/seo";
+import { buildMeta, breadcrumbSchema, organizationSchema, getSEOConfig } from "../lib/seo";
 import { useLanguage } from "./context/LanguageContext";
 
 export default function PrivacyPolicyPage() {
   const { language } = useLanguage();
   const isFinnish = language === "fi";
   const isSEO_V2 = import.meta.env.VITE_SEO_V2 === "true";
+  const seoConfig = getSEOConfig(language);
+  const privacyPath = isFinnish ? "/fi/tietosuojaseloste" : "/en/privacy-policy";
   const meta = isSEO_V2
     ? buildMeta({
-        title: isFinnish ? "Tietosuojaseloste – Mitrox Oy" : "Privacy Policy – Mitrox Oy",
+        title: isFinnish ? "Tietosuojaseloste | Mitrox" : "Privacy Policy | Mitrox",
         description: isFinnish
           ? "Lue Mitrox Oy:n tietosuojaseloste: rekisterinpitäjä, käsittelyn tarkoitus, oikeudet, evästeet ja tietoturva."
           : "Read Mitrox Oy's privacy policy: data controller, processing purposes, rights, cookies, and data security.",
-        path: "/privacy-policy",
+        path: privacyPath,
         keywords: isFinnish
           ? ["tietosuojaseloste", "GDPR", "evästeet", "Mitrox Oy", "yksityisyydensuoja"]
           : ["privacy policy", "GDPR", "cookies", "Mitrox Oy", "data protection"],
+        language: language,
       })
     : undefined;
   const schemas = isSEO_V2
     ? [
-        organizationSchema(),
+        organizationSchema(language),
         breadcrumbSchema([
           { name: isFinnish ? "Etusivu" : "Home", href: "/" },
           { name: isFinnish ? "Tietosuojaseloste" : "Privacy Policy", href: "/privacy-policy" },
-        ]),
+        ], language),
       ]
     : [];
 
@@ -52,17 +55,19 @@ export default function PrivacyPolicyPage() {
       style={{ fontFamily: '"Onest", sans-serif', backgroundColor: "#000000" }}
     >
       <SEOHead
-        title={meta?.title || (isFinnish ? "Tietosuojaseloste – Mitrox Oy" : "Privacy Policy – Mitrox Oy")}
+        title={meta?.title || (isFinnish ? "Tietosuojaseloste | Mitrox" : "Privacy Policy | Mitrox")}
         description={
           meta?.description ||
           (isFinnish
             ? "Mitrox Oy:n tietosuojaseloste. Rekisterinpitäjä, käyttötarkoitus, tietosisältö, oikeudet, evästeet ja tietoturva."
             : "Mitrox Oy's privacy policy. Data controller, purpose of use, data content, rights, cookies, and data security.")
         }
-        url={meta?.url || "https://mitrox.io/privacy-policy"}
+        url={meta?.url || `https://mitrox.io${privacyPath}`}
         keywords={
-          meta?.keywords?.join(", ") || (isFinnish ? "tietosuojaseloste, GDPR, evästeet, Mitrox Oy" : "privacy policy, GDPR, cookies, Mitrox Oy")
+          meta?.keywords || (isFinnish ? "tietosuojaseloste, GDPR, evästeet, Mitrox Oy" : "privacy policy, GDPR, cookies, Mitrox Oy")
         }
+        language={language}
+        locale={meta?.locale}
       />
       {isSEO_V2 && <SEOEnhanced meta={meta} schemas={schemas} lang={language} />}
 

@@ -7,8 +7,7 @@ import SEOHead from "./components/SEOHead";
 import SEOEnhanced from "./components/SEOEnhanced";
 import { Mail, Linkedin } from "lucide-react";
 import ContactForm from "./components/ContactForm";
-import { buildMeta, organizationSchema, breadcrumbSchema } from "../lib/seo";
-import { SEO_CONFIG } from "../config/seo.fi";
+import { buildMeta, organizationSchema, breadcrumbSchema, getSEOConfig } from "../lib/seo";
 
 import onniImg from "./profile/felix.png";
 import tobiasImg from "./profile/tobias.png";
@@ -152,18 +151,21 @@ export default function AboutPage() {
 
   // SEO_V2 enhancements (only when flag is enabled)
   const isSEO_V2 = import.meta.env.VITE_SEO_V2 === "true";
+  const seoConfig = getSEOConfig(language);
+  const aboutPath = isFinnish ? "/fi/tiimi" : "/en/about";
   const meta = isSEO_V2
     ? buildMeta({
-        title: SEO_CONFIG.pages.about.title,
-        description: SEO_CONFIG.pages.about.description,
-        path: "/about",
-        keywords: SEO_CONFIG.pages.about.keywords,
+        title: seoConfig.pages.about.title,
+        description: seoConfig.pages.about.description,
+        path: aboutPath,
+        keywords: seoConfig.pages.about.keywords,
+        language: language,
       })
     : undefined;
   const schemas = isSEO_V2
     ? [
-        organizationSchema(),
-        breadcrumbSchema(SEO_CONFIG.pages.about.breadcrumbs),
+        organizationSchema(language),
+        breadcrumbSchema(seoConfig.pages.about.breadcrumbs, language),
       ]
     : [];
 
@@ -176,10 +178,12 @@ export default function AboutPage() {
       }}
     >
       <SEOHead
-        title={meta?.title || (isFinnish ? "Tietoa meistä - Mitrox.io | Mitrox Tiimi" : "About us - Mitrox.io | Mitrox Team")}
+        title={meta?.title || (isFinnish ? "Tietoa meistä – Mitrox Tiimi" : "About Us – Mitrox Team")}
         description={meta?.description || (isFinnish ? "Tutustut Mitrox.io-tiimiin. Nuoret suomalaiset asiantuntijat, jotka rakentavat Mitrox AI Advisoria yrityksille. Luotettavuus, helppous ja täsmällisyys ohjaavat toimintaamme." : "Meet the Mitrox.io team. Young Finnish specialists building Mitrox AI Advisor for businesses. Reliability, simplicity and precision guide our work.")}
-        url={meta?.url || "https://mitrox.io/about"}
+        url={meta?.url || `https://mitrox.io${aboutPath}`}
         keywords={meta?.keywords || (isFinnish ? "mitrox tiimi, suomalainen tekoäly, Mitrox AI Advisor asiantuntijat, AI-ratkaisut Suomi" : "mitrox team, finnish ai, Mitrox AI Advisor experts, ai solutions")}
+        language={language}
+        locale={meta?.locale}
       />
       {isSEO_V2 && <SEOEnhanced meta={meta} schemas={schemas} lang={isFinnish ? "fi" : "en"} />}
       <Header />

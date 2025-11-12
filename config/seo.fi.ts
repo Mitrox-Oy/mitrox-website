@@ -28,16 +28,22 @@ export const SEO_CONFIG = {
   // Page-specific meta and keywords
   pages: {
     websites: {
-      title: "Verkkosivut yrityksille – Mitrox",
-      description: "Räätälöidyt ja nopeat verkkosivut suomalaisille PK-yrityksille. Toimitus 7 päivässä, hakukoneoptimointi ja ylläpito.",
+      title: "Verkkosivut yrityksille 14 päivässä | Kotisivut | Mitrox",
+      description: "Räätälöidyt verkkosivut yrityksille 14 päivässä. Hakukoneoptimointi, moderni design ja ylläpito. Aloita tänään!",
       keywords: [
+        "verkkosivut",
         "verkkosivut yrityksille",
         "kotisivut",
         "verkkosivut suomessa",
+        "verkkosivut suomeksi",
+        "verkkosivut yrityksille suomessa",
         "yrityksen verkkosivut",
+        "yrityksen kotisivut",
         "hakukoneoptimointi",
         "SEO",
-        "verkkosivujen ylläpito"
+        "verkkosivujen ylläpito",
+        "verkkosivut pk-yrityksille",
+        "yrityssivut"
       ],
       breadcrumbs: [
         { name: "Etusivu", href: "/" },
@@ -47,27 +53,39 @@ export const SEO_CONFIG = {
       serviceName: "Verkkosivut yrityksille"
     },
     advisor: {
-      title: "Tekoälybotti yrityksille – Mitrox Advisor",
-      description: "Automatisoi asiakaspalvelu ja liidien keruu. Suomenkielinen AI-agentti 24/7. Demo saatavilla.",
+      title: "Tekoälyneuvoja yrityksille 24/7 | Tekoälybotti | Chatbotti | Mitrox",
+      description: "AI-neuvoja ja tekoälybotti yrityksille 24/7. Automatisoi asiakaspalvelu, kasvata myyntiä ja vapauta tiimisi. Suomenkielinen chatbotti ja tekoälyneuvoja.",
       keywords: [
+        "tekoälyneuvoja",
+        "tekoälyneuvoja yrityksille",
+        "tekoälybotti",
         "tekoälybotti yrityksille",
+        "chatbotti",
+        "chatbotti yrityksille",
         "chatbot yrityksille",
+        "chatbotti suomeksi",
+        "tekoälybotti suomeksi",
+        "AI-neuvoja",
         "AI asiakaspalvelija",
+        "tekoäly asiakaspalvelija",
         "tekoäly neuvoja",
         "automaattinen asiakaspalvelu",
         "AI-agentti",
-        "liidien keruu"
+        "AI agent",
+        "liidien keruu",
+        "tekoäly chatbot",
+        "suomenkielinen chatbot"
       ],
       breadcrumbs: [
         { name: "Etusivu", href: "/" },
-        { name: "Tekoälybotti", href: "/advisor" }
+        { name: "Tekoälyneuvoja", href: "/advisor" }
       ],
       serviceType: "SoftwareApplication",
       serviceName: "Tekoälybotti yrityksille"
     },
     about: {
-      title: "Tietoa meistä – Mitrox | Mitrox Tiimi",
-      description: "Suomalainen tiimi, joka yhdistää premium-designin ja tekoälyn. Missiomme: 7 päivän sivustot ja käytännön AI-ratkaisut.",
+      title: "Tietoa meistä – Mitrox Tiimi",
+      description: "Suomalainen tiimi, joka yhdistää premium-designin ja tekoälyn. Missiomme: 14 päivän sivustot ja käytännön AI-ratkaisut.",
       keywords: [
         "mitrox",
         "suomalainen teknologiayritys",
@@ -81,7 +99,7 @@ export const SEO_CONFIG = {
       ]
     },
     affiliate: {
-      title: "Kumppaniohjelma – Mitrox",
+      title: "Kumppaniohjelma – Ansaitse suosittelemalla | Mitrox",
       description: "Ansaitse suosittelemalla Mitroxin verkkosivuja ja tekoälyratkaisuja. Selkeä palkkiomalli ja tuki.",
       keywords: [
         "kumppaniohjelma",

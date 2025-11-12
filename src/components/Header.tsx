@@ -33,12 +33,12 @@ const Header: React.FC = () => {
   const productItems = useMemo(
     () => [
       {
-        label: "Mitrox Sites",
+        label: language === "fi" ? "Verkkosivut" : "Websites",
         href: getFullLocalizedPath("websites", language),
         subtitle: language === "fi" ? "Suunniteltu yrityksesi menestykseen" : "Designed for your business success",
       },
       {
-        label: "Mitrox AI Advisor",
+        label: language === "fi" ? "Tekoälyneuvoja" : "AI Advisor",
         href: getFullLocalizedPath("advisor", language),
         subtitle: language === "fi" ? "Älykäs kasvukumppanisi" : "Your 24/7 digital team member",
       },
@@ -205,7 +205,7 @@ const Header: React.FC = () => {
                               <Globe2 className="w-4 h-4" />
                             </span>
                               <span className="flex-1 min-w-0">
-                              <span className="block text-sm">Mitrox Sites</span>
+                              <span className="block text-sm">{language === "fi" ? "Mitrox Sites" : "Mitrox Sites"}</span>
                             <span className="block text-[0.6rem] uppercase tracking-[0.35em] text-body-caption mt-0.5">{sitesItem?.subtitle}</span>
                             </span>
                             <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -220,7 +220,7 @@ const Header: React.FC = () => {
                               <Sparkles className="w-4 h-4" />
                             </span>
                               <span className="flex-1 min-w-0">
-                              <span className="block text-sm">Mitrox AI Advisor</span>
+                              <span className="block text-sm">{language === "fi" ? "Mitrox AI Advisor" : "Mitrox AI Advisor"}</span>
                             <span className="block text-[0.6rem] uppercase tracking-[0.35em] text-body-caption mt-0.5">{advisorItem?.subtitle}</span>
                             </span>
                             <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />

@@ -1,34 +1,48 @@
 /**
  * Image Alt Text Helper
  * 
- * Provides Finnish alt text for images when missing.
+ * Provides language-aware alt text for images when missing.
  * Used when VITE_SEO_V2 is enabled.
  */
 
-import { SEO_CONFIG } from '../config/seo.fi';
+import { getSEOConfig, Language } from './seo';
 
 /**
- * Gets Finnish alt text for common images
- * Returns the provided alt if it exists, otherwise returns a default Finnish alt
+ * Gets language-aware alt text for common images
+ * Returns the provided alt if it exists, otherwise returns a default alt text in the specified language
  */
 export function getImageAlt(
   existingAlt: string | undefined,
-  imageType?: 'logo' | 'hero' | 'portfolio' | 'team' | 'default'
+  imageType?: 'logo' | 'hero' | 'portfolio' | 'team' | 'default',
+  language: Language = 'fi'
 ): string {
   // If alt already exists, use it
   if (existingAlt && existingAlt.trim()) {
     return existingAlt;
   }
 
-  // Return Finnish defaults based on image type
-  const defaults: Record<string, string> = {
-    logo: `${SEO_CONFIG.brand.nameShort} logo`,
-    hero: `${SEO_CONFIG.brand.name} - ${SEO_CONFIG.brand.description}`,
-    portfolio: 'Esimerkki Mitroxin toteuttamasta verkkosivustosta',
-    team: 'Mitroxin tiimin jäsen',
-    default: `${SEO_CONFIG.brand.name} - ${SEO_CONFIG.brand.description}`
-  };
+  const seoConfig = getSEOConfig(language);
 
-  return defaults[imageType || 'default'];
+  // Return language-specific defaults based on image type
+  if (language === 'fi') {
+    const defaults: Record<string, string> = {
+      logo: `${seoConfig.brand.nameShort} logo`,
+      hero: `${seoConfig.brand.name} - ${seoConfig.brand.description}`,
+      portfolio: 'Esimerkki Mitroxin toteuttamasta verkkosivustosta',
+      team: 'Mitroxin tiimin jäsen',
+      default: `${seoConfig.brand.name} - ${seoConfig.brand.description}`
+    };
+    return defaults[imageType || 'default'];
+  } else {
+    // English defaults
+    const defaults: Record<string, string> = {
+      logo: `${seoConfig.brand.nameShort} logo`,
+      hero: `${seoConfig.brand.name} - ${seoConfig.brand.description}`,
+      portfolio: 'Example website created by Mitrox',
+      team: 'Mitrox team member',
+      default: `${seoConfig.brand.name} - ${seoConfig.brand.description}`
+    };
+    return defaults[imageType || 'default'];
+  }
 }
 

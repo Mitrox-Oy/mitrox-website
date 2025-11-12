@@ -4,15 +4,22 @@ import Footer from "./components/Footer";
 import SEOHead from "./components/SEOHead";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "./context/LanguageContext";
 
 export default function LiveDemoPage() {
+  const { language } = useLanguage();
+  const isFinnish = language === "fi";
+
   return (
     <div className="min-h-screen bg-black text-white">
       <SEOHead
-        title="Live Demo - Tulossa Pian | Mitrox.io"
-        description="Mitrox.io live-demo on tulossa pian. Pysykää kuulolla ja saatte ensimmäisenä tiedon kun demo on valmis!"
-        url="https://mitrox.io/live-demo"
+        title={isFinnish ? "Live Demo – Tulossa Pian | Mitrox" : "Live Demo – Coming Soon | Mitrox"}
+        description={isFinnish 
+          ? "Mitrox.io live-demo on tulossa pian. Pysykää kuulolla ja saatte ensimmäisenä tiedon kun demo on valmis!"
+          : "Mitrox.io live demo is coming soon. Stay tuned and be the first to know when the demo is ready!"}
+        url={`https://mitrox.io/${language}/live-demo`}
         noIndex={true}
+        language={language}
       />
       <Header />
 

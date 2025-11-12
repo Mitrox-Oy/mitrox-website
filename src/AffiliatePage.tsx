@@ -7,8 +7,7 @@ import SEOHead from "./components/SEOHead";
 import SEOEnhanced from "./components/SEOEnhanced";
 import ScrollToTop from "./components/ScrollToTop";
 import { ArrowRight, Award, CheckCircle, Users, X } from "lucide-react";
-import { buildMeta, organizationSchema, breadcrumbSchema } from "../lib/seo";
-import { SEO_CONFIG } from "../config/seo.fi";
+import { buildMeta, organizationSchema, breadcrumbSchema, getSEOConfig } from "../lib/seo";
 import { useLanguage } from "./context/LanguageContext";
 
 export default function AffiliatePage() {
@@ -97,18 +96,21 @@ export default function AffiliatePage() {
 
   // SEO_V2 enhancements (only when flag is enabled)
   const isSEO_V2 = import.meta.env.VITE_SEO_V2 === "true";
+  const seoConfig = getSEOConfig(language);
+  const affiliatePath = isFinnish ? "/fi/kumppaniohjelma" : "/en/affiliate";
   const meta = isSEO_V2
     ? buildMeta({
-        title: SEO_CONFIG.pages.affiliate.title,
-        description: SEO_CONFIG.pages.affiliate.description,
-        path: "/affiliate",
-        keywords: SEO_CONFIG.pages.affiliate.keywords,
+        title: seoConfig.pages.affiliate.title,
+        description: seoConfig.pages.affiliate.description,
+        path: affiliatePath,
+        keywords: seoConfig.pages.affiliate.keywords,
+        language: language,
       })
     : undefined;
   const schemas = isSEO_V2
     ? [
-        organizationSchema(),
-        breadcrumbSchema(SEO_CONFIG.pages.affiliate.breadcrumbs),
+        organizationSchema(language),
+        breadcrumbSchema(seoConfig.pages.affiliate.breadcrumbs, language),
       ]
     : [];
 
@@ -116,12 +118,16 @@ export default function AffiliatePage() {
     <div className="min-h-screen bg-black text-white">
       <SpaceBackground className="top-0" />
       <SEOHead
-        title={meta?.title || "Affiliate-ohjelma - Mitrox Oy | Hanki ilmaisia kuukausia"}
-        description={meta?.description || "Liity Mitroxin affiliate-ohjelmaan ja saa ilmaisia kuukausia palveluistamme jokaisesta tuomastasi asiakkaasta. Myös uusi asiakas hyötyy ilmaisista kuukausista."}
-        url={meta?.url || "https://mitrox.io/affiliate"}
+        title={meta?.title || (isFinnish ? "Kumppaniohjelma – Ansaitse suosittelemalla | Mitrox" : "Affiliate Program – Earn by Referring | Mitrox")}
+        description={meta?.description || (isFinnish 
+          ? "Liity Mitroxin affiliate-ohjelmaan ja saa ilmaisia kuukausia palveluistamme jokaisesta tuomastasi asiakkaasta. Myös uusi asiakas hyötyy ilmaisista kuukausista."
+          : "Join Mitrox's affiliate program and get free months of our services for every customer you refer. The new customer also benefits from free months.")}
+        url={meta?.url || `https://mitrox.io${affiliatePath}`}
         keywords={meta?.keywords}
+        language={language}
+        locale={meta?.locale}
       />
-      {isSEO_V2 && <SEOEnhanced meta={meta} schemas={schemas} lang="fi" />}
+      {isSEO_V2 && <SEOEnhanced meta={meta} schemas={schemas} lang={isFinnish ? "fi" : "en"} />}
       <Header />
 
       {/* Hero Section */}
