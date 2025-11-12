@@ -119,8 +119,12 @@ const SpaceBackground: React.FC<SpaceBackgroundProps> = ({
   return (
     <canvas
       ref={canvasRef}
-      className={`fixed inset-0 pointer-events-none ${className}`}
-      style={{ zIndex: -1 }}
+      className={`fixed top-0 left-0 right-0 pointer-events-none ${className}`}
+      style={{ 
+        zIndex: -1,
+        // Do not touch the very bottom edge so iOS Safari toolbar can become translucent
+        bottom: 'calc(env(safe-area-inset-bottom, 0px) + 1px)'
+      }}
     />
   );
 };

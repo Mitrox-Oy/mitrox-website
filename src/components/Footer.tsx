@@ -52,7 +52,7 @@ const Footer: React.FC<FooterProps> = ({ email = "info@mitrox.io" }) => {
   };
 
   return (
-    <footer className="bg-black border-t border-white/10">
+    <footer className="bg-transparent border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex flex-col items-center gap-6 text-center md:flex-row md:items-center md:justify-between md:text-left">
           {/* Logo */}

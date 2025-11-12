@@ -49,7 +49,16 @@ const Hero = () => {
   return (
     <section
       id="hero"
-      className="relative w-full h-screen overflow-hidden"
+      className={
+        [
+          "relative w-full min-h-[100svh] overflow-hidden",
+          // Avoid header overlap on desktop while keeping safe areas on mobile,
+          // and ensure anchors land below the fixed header
+          "scroll-mt-24 md:scroll-mt-[96px]",
+          "pt-[env(safe-area-inset-top,0px)] md:pt-0",
+          "pb-[calc(96px+env(safe-area-inset-bottom,0px))] md:pb-0",
+        ].join(" ")
+      }
     >
       {/* Color Bends Background */}
       <div className="absolute inset-0 w-full h-full bg-black">
@@ -79,9 +88,9 @@ const Hero = () => {
       />
 
       {/* Content */}
-      <div className="relative z-10 w-full h-full flex items-center justify-center text-center px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 w-full h-full flex items-center justify-center text-center px-4 sm:px-6 lg:px-8 md:translate-y-[48px]">
         <div className="w-full max-w-7xl">
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center mt-24 sm:mt-28 md:mt-40 lg:mt-56 xl:mt-64">
             {/* Title */}
             <h1
               className={`text-4xl sm:text-5xl lg:text-7xl leading-tight mb-4 sm:mb-6 flex flex-col items-center justify-center text-white px-2 transition-all duration-1000 ease-out ${

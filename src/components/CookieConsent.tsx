@@ -53,18 +53,8 @@ const CookieConsent: React.FC<CookieConsentProps> = ({ onConsentChange }) => {
     setUiLang(language === "en" ? "en" : "fi");
   }, [language]);
 
-  React.useEffect(() => {
-    if (!visible) return;
-    const previousBodyOverflow = document.body.style.overflow;
-    const previousHtmlOverflow = document.documentElement.style.overflow;
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
-
-    return () => {
-      document.body.style.overflow = previousBodyOverflow;
-      document.documentElement.style.overflow = previousHtmlOverflow;
-    };
-  }, [visible]);
+  // Do not lock body scroll; iOS Safari requires the document to remain scrollable
+  // to allow the bottom toolbar to become translucent.
 
   React.useEffect(() => {
     if (!languageMenuOpen) return;
@@ -107,7 +97,11 @@ const CookieConsent: React.FC<CookieConsentProps> = ({ onConsentChange }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-[110] flex items-end justify-center p-0 sm:p-6" id="cookie-consent-overlay">
+    <div
+      className="fixed top-0 left-0 right-0 z-[110] flex items-end justify-center p-0 sm:p-6"
+      id="cookie-consent-overlay"
+      style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 1px)' }}
+    >
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" aria-hidden="true" />
       <div
         role="dialog"

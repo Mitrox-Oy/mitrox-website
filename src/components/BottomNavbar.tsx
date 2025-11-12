@@ -54,14 +54,23 @@ const BottomNavbar: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
-  const computedBottom = isFooterVisible ? Math.min(footerHeight, 80) + 48 : isExpanded ? 0 : 16;
+  // When footer is visible, lift the navbar only slightly to avoid overlap,
+  // instead of jumping far up the screen.
+  const computedBottom = isFooterVisible
+    ? Math.min(footerHeight, 52) + 20
+    : isExpanded
+    ? 0
+    : 16;
+
+  const safeAreaInsetBottom = "var(--safe-area-inset-bottom, 0px)";
 
   return (
     <nav
-      className="block fixed inset-x-0 z-40 transition-all duration-500 bg-transparent"
+      className="hidden md:block fixed inset-x-0 z-40 transition-all duration-500 bg-transparent"
       style={{
         fontFamily: 'GeistSans, "GeistSans Fallback", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
-        bottom: `${computedBottom}px`,
+        bottom: `calc(${computedBottom}px + ${safeAreaInsetBottom})`,
+        paddingBottom: safeAreaInsetBottom,
       }}
     >
       <div className={`mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 transition-all duration-500 ${

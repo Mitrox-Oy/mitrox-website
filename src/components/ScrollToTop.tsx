@@ -3,6 +3,8 @@ import { ArrowUp } from 'lucide-react';
 
 const ScrollToTop: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [isFooterVisible, setIsFooterVisible] = useState(false);
+  const [footerHeight, setFooterHeight] = useState(0);
 
   useEffect(() => {
     const toggleVisibility = () => {
@@ -21,6 +23,23 @@ const ScrollToTop: React.FC = () => {
     };
   }, []);
 
+  // Observe footer to lift the button when footer is visible
+  useEffect(() => {
+    const footer = document.querySelector('footer');
+    if (!footer) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsFooterVisible(entry.isIntersecting);
+        setFooterHeight(entry.target.getBoundingClientRect().height);
+      },
+      { root: null, threshold: 0 }
+    );
+
+    observer.observe(footer);
+    return () => observer.disconnect();
+  }, []);
+
   const scrollToTop = () => {
     const heroElement = document.getElementById('hero');
     if (heroElement) {
@@ -37,6 +56,9 @@ const ScrollToTop: React.FC = () => {
     }
   };
 
+  const computedBottom = isFooterVisible ? Math.min(footerHeight, 52) + 20 : 32; // 32px = bottom-8
+  const safeAreaInsetBottom = 'var(--safe-area-inset-bottom, 0px)';
+
   return (
     <button
       onClick={scrollToTop}
@@ -47,6 +69,7 @@ const ScrollToTop: React.FC = () => {
       } grid place-items-center`}
       aria-label="Scroll to top"
       style={{
+        bottom: `calc(${computedBottom}px + ${safeAreaInsetBottom})`,
         backdropFilter: 'blur(10px)',
         WebkitBackdropFilter: 'blur(10px)',
       }}

@@ -288,10 +288,13 @@ const Header: React.FC = () => {
         role="banner"
         className="md:hidden fixed bottom-0 inset-x-0 z-50 transition-all duration-500 pointer-events-none"
         style={{
-          fontFamily: 'GeistSans, "GeistSans Fallback", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"'
+          fontFamily: 'GeistSans, "GeistSans Fallback", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+          // Lift container off the very bottom so it doesn't mask Safari toolbar transparency
+          bottom: 'calc(var(--safe-area-inset-bottom, 0px) + 6px)',
+          paddingBottom: 0,
         }}
       >
-        <div className="flex justify-between items-end px-4 py-4 gap-3">
+        <div className="flex justify-between items-end px-4 py-2 gap-3">
           {/* Mobile logo - Left corner */}
           <Link
             to={getLocalizedPath("/", language)}
