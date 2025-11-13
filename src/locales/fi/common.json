@@ -4,6 +4,7 @@
     "about": "Tietoa meistä",
     "contact": "Ota yhteyttä",
     "products": "Tuotteet",
+    "blog": "Blogi",
     "privacy": "Tietosuojaseloste",
     "allRightsReserved": "Kaikki oikeudet pidätetään.",
     "businessId": "Y-tunnus: 3562179-8",
@@ -23,7 +24,8 @@
     "mitroxSitesSubtitle": "Suunniteltu yrityksesi menestykseen",
     "mitroxAdvisor": "Mitrox AI Advisor",
     "mitroxAdvisorSubtitle": "Älykäs kasvukumppanisi",
-    "affiliateProgram": "Affiliate-ohjelma"
+    "affiliateProgram": "Affiliate-ohjelma",
+    "blog": "Blogi"
   },
   "footer": {
     "allRightsReserved": "Kaikki oikeudet pidätetään.",

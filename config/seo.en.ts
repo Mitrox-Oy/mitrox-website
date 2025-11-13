@@ -110,6 +110,23 @@ export const SEO_CONFIG = {
         { name: "Home", href: "/" },
         { name: "Affiliate Program", href: "/affiliate" }
       ]
+    },
+    blog: {
+      title: "Mitrox Blog – Technology, AI & Growth Insights",
+      description: "Expert insights from Mitrox on technology, AI, websites, and sustainable business growth.",
+      keywords: [
+        "mitrox blog",
+        "ai blog",
+        "technology insights",
+        "business growth",
+        "ai for business",
+        "digital growth",
+        "mitrox insights"
+      ],
+      breadcrumbs: [
+        { name: "Home", href: "/" },
+        { name: "Blog", href: "/blog" }
+      ]
     }
   },
 
@@ -128,7 +145,8 @@ export const SEO_CONFIG = {
     websites: "Websites",
     advisor: "AI Advisor",
     about: "About Us",
-    affiliate: "Affiliate Program"
+    affiliate: "Affiliate Program",
+    blog: "Blog"
   }
 } as const;
 

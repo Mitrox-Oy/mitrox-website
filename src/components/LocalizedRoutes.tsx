@@ -11,6 +11,9 @@ import WebsiteBusinessPage from '../WebsiteBusinessPage';
 import AIAgentPage from '../AIAgentPage';
 import AffiliatePage from '../AffiliatePage';
 import PrivacyPolicyPage from '../PrivacyPolicyPage';
+import BlogPage from '../BlogPage';
+import BlogArticlePage from '../BlogArticlePage';
+import AdminDashboardPage from '../AdminDashboardPage';
 import { SUPPORTED_LANGUAGES } from '../utils/routing';
 import { LegacyRouteRedirect } from './LegacyRouteRedirect';
 
@@ -31,6 +34,10 @@ export const LocalizedRoutes: React.FC = () => {
       {/* Root redirect to default language */}
       <Route path="/" element={<Navigate to="/fi" replace />} />
       
+      {/* Admin Dashboard - must be before /:lang to avoid matching /admin as a language */}
+      <Route path="/admin" element={<AdminDashboardPage />} />
+      <Route path="/admin/*" element={<AdminDashboardPage />} />
+      
       {/* Home routes */}
       <Route path="/:lang" element={<LocalizedRoute><Home /></LocalizedRoute>} />
       
@@ -49,6 +56,12 @@ export const LocalizedRoutes: React.FC = () => {
       {/* Affiliate routes - /fi/kumppaniohjelma and /en/affiliate */}
       <Route path="/fi/kumppaniohjelma" element={<LocalizedRoute><AffiliatePage /></LocalizedRoute>} />
       <Route path="/en/affiliate" element={<LocalizedRoute><AffiliatePage /></LocalizedRoute>} />
+      
+      {/* Blog routes */}
+      <Route path="/fi/blogi" element={<LocalizedRoute><BlogPage /></LocalizedRoute>} />
+      <Route path="/en/blog" element={<LocalizedRoute><BlogPage /></LocalizedRoute>} />
+      <Route path="/fi/blogi/:slug" element={<LocalizedRoute><BlogArticlePage /></LocalizedRoute>} />
+      <Route path="/en/blog/:slug" element={<LocalizedRoute><BlogArticlePage /></LocalizedRoute>} />
       
       {/* Privacy Policy routes */}
       <Route path="/fi/tietosuojaseloste" element={<LocalizedRoute><PrivacyPolicyPage /></LocalizedRoute>} />

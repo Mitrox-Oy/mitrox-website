@@ -61,7 +61,7 @@ export function getLocalizedPath(path: string, lang: SupportedLanguage): string 
     const routeKey = findRouteKeyFromPath(pathWithoutLang, lang) || pathWithoutLang.slice(1);
     
     // If it's a known route, use the mapping
-    if (routeKey && ['about', 'websites', 'advisor', 'affiliate', 'privacy-policy'].includes(routeKey)) {
+    if (routeKey && ['about', 'websites', 'advisor', 'affiliate', 'privacy-policy', 'blog'].includes(routeKey)) {
       return getFullLocalizedPathFromMapping(routeKey, lang);
     }
     

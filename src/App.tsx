@@ -2,6 +2,7 @@
 import { BrowserRouter as Router, useLocation } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import Analytics from "./components/Analytics";
+import { TrafficAnalytics } from "./components/TrafficAnalytics";
 import CookieConsent, { getStoredConsent, type ConsentState } from "./components/CookieConsent";
 import StructuredData from "./components/StructuredData";
 import { LanguageProvider } from "./context/LanguageContext";
@@ -55,6 +56,7 @@ export default function App() {
       <LanguageProvider>
         <Router>
           {allowAnalytics && <Analytics />}
+          {allowAnalytics && <TrafficAnalytics />}
           <LanguageContextRouter />
           <LanguageAlternates />
           <LanguageRedirect />

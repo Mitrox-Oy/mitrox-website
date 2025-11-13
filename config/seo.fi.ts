@@ -112,6 +112,23 @@ export const SEO_CONFIG = {
         { name: "Etusivu", href: "/" },
         { name: "Kumppaniohjelma", href: "/affiliate" }
       ]
+    },
+    blog: {
+      title: "Mitrox Blogi – Teknologia, tekoäly ja kasvu",
+      description: "Mitroxin asiantuntijoiden näkemykset teknologiasta, tekoälystä, verkkosivuista ja liiketoiminnan kasvusta.",
+      keywords: [
+        "mitrox blogi",
+        "tekoäly blogi",
+        "verkkosivut blogi",
+        "liiketoiminnan kasvu",
+        "tekoäly yrityksille",
+        "digitaalinen kasvu",
+        "mitrox insights"
+      ],
+      breadcrumbs: [
+        { name: "Etusivu", href: "/" },
+        { name: "Blogi", href: "/blog" }
+      ]
     }
   },
 
@@ -130,7 +147,8 @@ export const SEO_CONFIG = {
     websites: "Verkkosivut",
     advisor: "Tekoälybotti",
     about: "Tietoa meistä",
-    affiliate: "Kumppaniohjelma"
+    affiliate: "Kumppaniohjelma",
+    blog: "Blogi"
   }
 } as const;
 

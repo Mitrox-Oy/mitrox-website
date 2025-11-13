@@ -4,6 +4,7 @@
     "about": "About Us",
     "contact": "Contact us",
     "products": "Products",
+    "blog": "Blog",
     "privacy": "Privacy Policy",
     "allRightsReserved": "All rights reserved.",
     "businessId": "Business ID: 3562179-8",
@@ -23,7 +24,8 @@
     "mitroxSitesSubtitle": "Designed for your business success",
     "mitroxAdvisor": "Mitrox AI Advisor",
     "mitroxAdvisorSubtitle": "Your intelligent growth partner",
-    "affiliateProgram": "Affiliate program"
+    "affiliateProgram": "Affiliate program",
+    "blog": "Blog"
   },
   "footer": {
     "allRightsReserved": "All rights reserved.",

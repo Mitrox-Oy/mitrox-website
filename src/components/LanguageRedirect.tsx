@@ -17,6 +17,11 @@ export const LanguageRedirect: React.FC = () => {
     const segments = pathname.split('/').filter(Boolean);
     const firstSegment = segments[0];
 
+    // Skip language redirect for admin routes
+    if (firstSegment === 'admin') {
+      return;
+    }
+
     // If path already has a language prefix, ensure i18n is synced
     if (firstSegment === 'fi' || firstSegment === 'en') {
       const lang = firstSegment as 'fi' | 'en';
