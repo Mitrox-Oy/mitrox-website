@@ -25,7 +25,7 @@ const Header: React.FC = () => {
   const navItems = useMemo(
     () => [
       { label: language === "fi" ? "Etusivu" : "Home", href: "hero" },
-      { label: language === "fi" ? "Blogi" : "Blog", href: getFullLocalizedPath("blog", language) },
+      { label: language === "fi" ? "Uutiset" : "News", href: getFullLocalizedPath("blog", language) },
       { label: language === "fi" ? "Tietoa meistä" : "About Us", href: getFullLocalizedPath("about", language) },
     ],
     [language]

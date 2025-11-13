@@ -57,7 +57,7 @@ export default function BlogPage() {
         href: "/",
       },
       {
-        name: language === "fi" ? "Blogi" : "Blog",
+        name: language === "fi" ? "Uutiset" : "News",
         href: pagePath,
       },
     ],
@@ -107,10 +107,7 @@ export default function BlogPage() {
   }, [language, refreshToken]);
 
   const meta = buildMeta({
-    title:
-      language === "fi"
-        ? "Blogi – Mitrox"
-        : "Blog – Mitrox",
+    title: "News – Mitrox",
     description:
       language === "fi"
         ? "Lue Mitroxin näkemyksiä teknologiasta, verkkosivuista ja tekoälyratkaisuista."
@@ -119,14 +116,14 @@ export default function BlogPage() {
     language,
   });
 
-  const introTitle = language === "fi" ? "Mitrox Blogi" : "Mitrox Blog";
+  const introTitle = "Mitrox News";
   const introDescription =
     language === "fi"
       ? "Oppaat, vinkit ja ajatukset teknologiasta, tekoälystä ja kasvusta. Kirjoitettu Mitroxin asiantuntijoiden toimesta."
       : "Guides, insights, and opinions on technology, AI, and growth from the Mitrox team.";
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white flex flex-col">
       <SEOHead
         title={meta.title}
         description={meta.description}
@@ -165,7 +162,7 @@ export default function BlogPage() {
       />
       <Header />
 
-      <main className="pt-28 md:pt-36 pb-16 px-4 sm:px-6 lg:px-8">
+      <main className="pt-28 md:pt-36 pb-24 px-4 sm:px-6 lg:px-8 flex-1">
         <section className="max-w-5xl mx-auto text-center">
           <p className="text-sm uppercase tracking-[0.35em] text-white/50 mb-3">
             {language === "fi" ? "Mitrox Insights" : "Mitrox Insights"}
