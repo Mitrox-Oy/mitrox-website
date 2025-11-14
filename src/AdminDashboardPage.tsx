@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import type { Session, User } from "@supabase/supabase-js";
-import { LogOut, Plus, Save, ShieldCheck, ShieldOff, Loader2, Trash2, Edit, LayoutDashboard, FileText, BarChart3, Globe, TrendingUp, Users, User as UserIcon, Upload, Lock, Image as ImageIcon, X } from "lucide-react";
+import { LogOut, Plus, Save, ShieldCheck, ShieldOff, Loader2, Trash2, Edit, LayoutDashboard, FileText, BarChart3, Globe, TrendingUp, Users, User as UserIcon, Upload, Lock, Image as ImageIcon, X, Eye } from "lucide-react";
 import SEOHead from "./components/SEOHead";
 import SEOEnhanced from "./components/SEOEnhanced";
 import { buildMeta } from "../lib/seo";
@@ -49,6 +49,25 @@ const defaultDraft: DraftState = {
   status: "draft",
   authorName: "",
   publishedAt: null,
+};
+
+// Format date for preview (same as BlogPage)
+const formatDate = (date: string | null, language: "fi" | "en") => {
+  if (!date) {
+    return "";
+  }
+  try {
+    const d = new Date(date);
+    const months = language === "fi" 
+      ? ["TAMMIKUU", "HELMIKUU", "MAALISKUU", "HUHTIKUU", "TOUKOKUU", "KESÄKUU", "HEINÄKUU", "ELOKUU", "SYYSKUU", "LOKAKUU", "MARRASKUU", "JOULUKUU"]
+      : ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
+    const month = months[d.getMonth()];
+    const day = d.getDate();
+    const year = d.getFullYear();
+    return `${month} ${day}, ${year}`.toUpperCase();
+  } catch {
+    return date;
+  }
 };
 
 const slugify = (value: string) =>
@@ -104,6 +123,7 @@ export default function AdminDashboardPage() {
   const [changingPassword, setChangingPassword] = useState(false);
   const [profileError, setProfileError] = useState<string | null>(null);
   const [profileSuccess, setProfileSuccess] = useState<string | null>(null);
+  const [showPreview, setShowPreview] = useState(false);
 
   useEffect(() => {
     if (!supabase) {
@@ -1416,17 +1436,27 @@ export default function AdminDashboardPage() {
           <div>
             <h2 className="text-2xl font-light text-white">Compose post</h2>
             <p className="text-sm text-white/60">
-              All fields are validated before submission. Publishing automatically stores the post in Supabase.
+              All fields are validated before submission. Publishing automatically stores the post in Supabase. Supports Markdown formatting.
             </p>
           </div>
-          <button
-            type="button"
-            onClick={resetDraft}
-            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-2 text-sm text-white hover:border-white/30 hover:bg-white/20 transition"
-          >
-            <Plus className="h-4 w-4" />
-            New draft
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setShowPreview(!showPreview)}
+              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-2 text-sm text-white hover:border-white/30 hover:bg-white/20 transition"
+            >
+              <Eye className="h-4 w-4" />
+              {showPreview ? "Hide Preview" : "Show Preview"}
+            </button>
+            <button
+              type="button"
+              onClick={resetDraft}
+              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-2 text-sm text-white hover:border-white/30 hover:bg-white/20 transition"
+            >
+              <Plus className="h-4 w-4" />
+              New draft
+            </button>
+          </div>
         </div>
 
         <form onSubmit={handleSubmitPost} className="mt-6 grid gap-6 lg:grid-cols-2">
@@ -1555,14 +1585,20 @@ export default function AdminDashboardPage() {
               </div>
             </div>
             <div>
-              <label className="text-xs uppercase tracking-[0.3em] text-white/50">Content</label>
+              <label className="text-xs uppercase tracking-[0.3em] text-white/50">
+                Content <span className="text-white/30">(Markdown supported)</span>
+              </label>
               <textarea
                 value={draft.content}
                 onChange={(event) => setDraft((prev) => ({ ...prev, content: event.target.value }))}
                 rows={12}
                 required
+                placeholder="Write your content in Markdown format..."
                 className="mt-2 w-full rounded-lg border border-white/20 bg-black/60 px-4 py-2 text-white focus:border-white/40 focus:outline-none font-mono text-sm"
               />
+              <p className="mt-1 text-xs text-white/40">
+                Supports Markdown: **bold**, *italic*, links, lists, code blocks, etc.
+              </p>
             </div>
           </div>
 
@@ -1602,6 +1638,60 @@ export default function AdminDashboardPage() {
           </div>
         </form>
       </section>
+
+      {/* Preview Section */}
+      {showPreview && draft.title && (
+        <section className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-light text-white">Card Preview</h2>
+            <p className="text-sm text-white/60">How your post will appear on the news page</p>
+          </div>
+          <div className="max-w-md">
+            <div className="group flex flex-col bg-black">
+              {/* Image Container */}
+              <div className="relative aspect-[4/3] overflow-hidden">
+                {draft.coverImageUrl ? (
+                  <img
+                    src={draft.coverImageUrl}
+                    alt={draft.title}
+                    className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
+                  />
+                ) : (
+                  <div className="h-full w-full bg-gradient-to-br from-white/10 via-white/5 to-white/10" />
+                )}
+              </div>
+
+              {/* Content Section */}
+              <div className="flex flex-col flex-1 space-y-4 pt-4">
+                {/* Main Heading */}
+                <h2 className="text-xl font-light text-white leading-tight group-hover:text-white/80 transition">
+                  {draft.title || "Post Title"}
+                </h2>
+
+                {/* Description */}
+                {draft.excerpt && (
+                  <p className="text-sm text-white/70 leading-relaxed line-clamp-3 flex-1">
+                    {draft.excerpt}
+                  </p>
+                )}
+
+                {/* Date and Read Button */}
+                <div className="flex items-center justify-between pt-2">
+                  <p className="text-xs uppercase tracking-wider text-white/50">
+                    {formatDate(
+                      draft.publishedAt || (draft.status === "published" ? new Date().toISOString() : null),
+                      draft.language
+                    ) || "DATE"}
+                  </p>
+                  <div className="border border-white bg-black px-4 py-2 text-white text-xs font-medium uppercase tracking-wider transition group-hover:bg-white/10 rounded-full">
+                    {draft.language === "fi" ? "LUE" : "READ"}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur">
         <div className="flex items-center justify-between gap-4 flex-wrap">

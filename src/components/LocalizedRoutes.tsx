@@ -14,6 +14,7 @@ import PrivacyPolicyPage from '../PrivacyPolicyPage';
 import BlogPage from '../BlogPage';
 import BlogArticlePage from '../BlogArticlePage';
 import AdminDashboardPage from '../AdminDashboardPage';
+import DocsPage from '../DocsPage';
 import { SUPPORTED_LANGUAGES } from '../utils/routing';
 import { LegacyRouteRedirect } from './LegacyRouteRedirect';
 
@@ -66,6 +67,10 @@ export const LocalizedRoutes: React.FC = () => {
       {/* Privacy Policy routes */}
       <Route path="/fi/tietosuojaseloste" element={<LocalizedRoute><PrivacyPolicyPage /></LocalizedRoute>} />
       <Route path="/en/privacy-policy" element={<LocalizedRoute><PrivacyPolicyPage /></LocalizedRoute>} />
+      
+      {/* Documentation routes */}
+      <Route path="/fi/dokumentaatio" element={<LocalizedRoute><DocsPage /></LocalizedRoute>} />
+      <Route path="/en/docs" element={<LocalizedRoute><DocsPage /></LocalizedRoute>} />
       
       {/* Live Demo routes */}
       <Route path="/:lang/live-demo" element={<LocalizedRoute><LiveDemoPage /></LocalizedRoute>} />
