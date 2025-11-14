@@ -1638,7 +1638,7 @@ export default function AdminDashboardPage() {
                   <div>
                     <p className="text-xs uppercase tracking-[0.3em] text-white/40">{post.language === "fi" ? "Finnish" : "English"}</p>
                     <h3 className="mt-2 text-xl font-light text-white">{post.title}</h3>
-                    <p className="mt-1 text-xs text-white/50">/{post.language === "fi" ? `fi/blogi/${post.slug}` : `en/blog/${post.slug}`}</p>
+                        <p className="mt-1 text-xs text-white/50">/{post.language === "fi" ? `fi/uutiset/${post.slug}` : `en/news/${post.slug}`}</p>
                   </div>
                   <span
                     className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs ${

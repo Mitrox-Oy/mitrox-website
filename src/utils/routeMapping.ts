@@ -32,8 +32,8 @@ export const ROUTE_MAPPINGS: Record<string, RouteMapping> = {
     en: 'affiliate',
   },
   blog: {
-    fi: 'blogi',
-    en: 'blog',
+    fi: 'uutiset',
+    en: 'news',
   },
   'privacy-policy': {
     fi: 'tietosuojaseloste',

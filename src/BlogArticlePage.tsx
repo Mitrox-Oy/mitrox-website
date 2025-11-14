@@ -58,9 +58,9 @@ export default function BlogArticlePage() {
 
   const pagePath = useMemo(() => {
     if (!slug) {
-      return language === "fi" ? "/fi/blogi" : "/en/blog";
+      return language === "fi" ? "/fi/uutiset" : "/en/news";
     }
-    return language === "fi" ? `/fi/blogi/${slug}` : `/en/blog/${slug}`;
+    return language === "fi" ? `/fi/uutiset/${slug}` : `/en/news/${slug}`;
   }, [language, slug]);
 
   useEffect(() => {
@@ -150,10 +150,8 @@ export default function BlogArticlePage() {
 
   const meta = buildMeta({
     title: post?.title
-      ? `${post.title} | ${language === "fi" ? "Mitrox Blogi" : "Mitrox Blog"}`
-      : language === "fi"
-        ? "Blogi – Mitrox"
-        : "Blog – Mitrox",
+      ? `${post.title} | Mitrox News`
+      : "News – Mitrox",
     description:
       post?.excerpt ??
       (language === "fi"
@@ -170,8 +168,8 @@ export default function BlogArticlePage() {
       href: "/",
     },
     {
-      name: language === "fi" ? "Blogi" : "Blog",
-      href: language === "fi" ? "/fi/blogi" : "/en/blog",
+      name: language === "fi" ? "Uutiset" : "News",
+      href: language === "fi" ? "/fi/uutiset" : "/en/news",
     },
     ...(post
       ? [
@@ -241,11 +239,11 @@ export default function BlogArticlePage() {
         <div className="max-w-5xl mx-auto">
           <div className="mb-6">
             <Link
-              to={language === "fi" ? "/fi/blogi" : "/en/blog"}
+              to={language === "fi" ? "/fi/uutiset" : "/en/news"}
               className="inline-flex items-center gap-2 text-sm text-white/60 hover:text-white/90 transition"
             >
               <span aria-hidden>←</span>
-              {language === "fi" ? "Takaisin blogiin" : "Back to blog"}
+              {language === "fi" ? "Takaisin uutisiin" : "Back to news"}
             </Link>
           </div>
 
@@ -270,10 +268,10 @@ export default function BlogArticlePage() {
               <p className="mt-4 text-white/70">{error}</p>
               <div className="mt-6">
                 <Link
-                  to={language === "fi" ? "/fi/blogi" : "/en/blog"}
+                  to={language === "fi" ? "/fi/uutiset" : "/en/news"}
                   className="inline-flex items-center gap-2 rounded-full bg-white/10 px-5 py-2 text-sm text-white hover:bg-white/20 transition"
                 >
-                  {language === "fi" ? "Palaa blogiin" : "Return to blog"}
+                  {language === "fi" ? "Palaa uutisiin" : "Return to news"}
                 </Link>
               </div>
             </div>
@@ -283,7 +281,7 @@ export default function BlogArticlePage() {
             <article className="space-y-10">
               <header>
                 <p className="text-xs uppercase tracking-[0.25em] text-white/40">
-                  {language === "fi" ? "Mitrox Blogi" : "Mitrox Blog"}
+                  Mitrox News
                 </p>
                 <h1 className="mt-4 text-4xl md:text-5xl font-light leading-tight">{post.title}</h1>
                 <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-white/60">
@@ -371,7 +369,7 @@ export default function BlogArticlePage() {
                 return (
                   <Link
                     key={related.id}
-                    to={language === "fi" ? `/fi/blogi/${related.slug}` : `/en/blog/${related.slug}`}
+                    to={language === "fi" ? `/fi/uutiset/${related.slug}` : `/en/news/${related.slug}`}
                     className="group rounded-2xl border border-white/10 bg-white/5 p-5 transition hover:-translate-y-1 hover:border-white/30 hover:bg-white/10"
                   >
                     <p className="text-xs uppercase tracking-[0.25em] text-white/40">

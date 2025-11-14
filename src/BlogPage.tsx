@@ -226,8 +226,8 @@ export default function BlogPage() {
                 const publishedDate = formatDate(post.published_at ?? post.created_at, language);
                 const postPath =
                   language === "fi"
-                    ? `/fi/blogi/${post.slug}`
-                    : `/en/blog/${post.slug}`;
+                    ? `/fi/uutiset/${post.slug}`
+                    : `/en/news/${post.slug}`;
 
                 return (
                   <Link

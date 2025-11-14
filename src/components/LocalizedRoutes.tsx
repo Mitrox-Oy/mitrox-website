@@ -57,11 +57,11 @@ export const LocalizedRoutes: React.FC = () => {
       <Route path="/fi/kumppaniohjelma" element={<LocalizedRoute><AffiliatePage /></LocalizedRoute>} />
       <Route path="/en/affiliate" element={<LocalizedRoute><AffiliatePage /></LocalizedRoute>} />
       
-      {/* Blog routes */}
-      <Route path="/fi/blogi" element={<LocalizedRoute><BlogPage /></LocalizedRoute>} />
-      <Route path="/en/blog" element={<LocalizedRoute><BlogPage /></LocalizedRoute>} />
-      <Route path="/fi/blogi/:slug" element={<LocalizedRoute><BlogArticlePage /></LocalizedRoute>} />
-      <Route path="/en/blog/:slug" element={<LocalizedRoute><BlogArticlePage /></LocalizedRoute>} />
+      {/* News routes */}
+      <Route path="/fi/uutiset" element={<LocalizedRoute><BlogPage /></LocalizedRoute>} />
+      <Route path="/en/news" element={<LocalizedRoute><BlogPage /></LocalizedRoute>} />
+      <Route path="/fi/uutiset/:slug" element={<LocalizedRoute><BlogArticlePage /></LocalizedRoute>} />
+      <Route path="/en/news/:slug" element={<LocalizedRoute><BlogArticlePage /></LocalizedRoute>} />
       
       {/* Privacy Policy routes */}
       <Route path="/fi/tietosuojaseloste" element={<LocalizedRoute><PrivacyPolicyPage /></LocalizedRoute>} />
