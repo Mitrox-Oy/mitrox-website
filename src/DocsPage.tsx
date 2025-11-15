@@ -165,25 +165,148 @@ const DocsPage: React.FC = () => {
             {/* Header */}
             <div className="text-center mb-12">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-white mb-4">
-                {isFinnish ? "Dokumentaatio" : "Documentation"}
+                {isFinnish ? "Mitrox AI Advisor – Dokumentaatio" : "Mitrox AI Advisor – Documentation"}
               </h1>
               <p className="text-body-subtle text-lg max-w-2xl mx-auto mb-6">
                 {isFinnish
-                  ? "Asennus- ja upotusohjeet Mitrox AI Advisorille verkkosivuillesi"
-                  : "Installation and embedding guide for Mitrox AI Advisor on your website"}
+                  ? "Pääopas Mitrox AI Advisorin asentamiseen. Löydä oikeat asennusohjeet alustallesi."
+                  : "Your main guide page for installing the Mitrox AI Advisor. Find the correct installation guide for your platform."}
               </p>
-              <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl p-6 max-w-3xl mx-auto">
-                <p className="text-body-subtle mb-4">
+            </div>
+
+            {/* What This Documentation Helps You Do */}
+            <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl p-6 sm:p-8 mb-8 max-w-4xl mx-auto">
+              <h2 className="text-2xl font-semibold text-white mb-4">
+                {isFinnish ? "Mikä tämän sivun tarkoitus on?" : "What This Documentation Helps You Do"}
+              </h2>
+              <p className="text-body-subtle mb-4">
+                {isFinnish
+                  ? "Tämä sivu auttaa sinua:"
+                  : "This page helps you:"}
+              </p>
+              <ul className="space-y-2 text-body-subtle">
+                <li className="flex items-start gap-2">
+                  <span className="text-white/50 mt-1">•</span>
+                  <span>
+                    {isFinnish
+                      ? "Ymmärtämään miten Mitrox AI Advisor lisätään sivustollesi"
+                      : "Understand what the Mitrox AI Advisor is and how it's added to your website."}
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-white/50 mt-1">•</span>
+                  <span>
+                    {isFinnish
+                      ? "Löytämään oikean ohjeen omalle alustallesi"
+                      : "Quickly find the correct installation guide for your platform."}
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-white/50 mt-1">•</span>
+                  <span>
+                    {isFinnish
+                      ? "Saamaan apua nopeasti, jos jokin ei toimi"
+                      : "Know where to get help if something doesn't work."}
+                  </span>
+                </li>
+              </ul>
+              <p className="text-body-subtle mt-4 text-sm">
+                {isFinnish
+                  ? "Jokaiselle alustalle on oma selkeä ohje."
+                  : "Every platform has its own step-by-step guide written clearly for non-technical users."}
+              </p>
+            </div>
+
+            {/* Before You Start */}
+            <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl p-6 sm:p-8 mb-8 max-w-4xl mx-auto">
+              <h2 className="text-2xl font-semibold text-white mb-4">
+                {isFinnish ? "Ennen kuin aloitat" : "Before You Start"}
+              </h2>
+              <p className="text-body-subtle mb-4">
+                {isFinnish
+                  ? "Tarvitset vain:"
+                  : "You only need:"}
+              </p>
+              <ul className="space-y-2 text-body-subtle mb-4">
+                <li className="flex items-start gap-2">
+                  <span className="text-white/50 mt-1">•</span>
+                  <span>
+                    {isFinnish
+                      ? "Mitroxin antaman skriptin"
+                      : "Your Mitrox AI Advisor script (provided by the Mitrox team)"}
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-white/50 mt-1">•</span>
+                  <span>
+                    {isFinnish
+                      ? "Pääsyn sivustosi asetus- tai muokkauspaneeliin"
+                      : "Access to your website builder or hosting panel"}
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-white/50 mt-1">•</span>
+                  <span>
+                    {isFinnish
+                      ? "Mahdollisuuden liittää pieni koodinpätkä sivustollesi"
+                      : "The ability to paste the script into your site settings"}
+                  </span>
+                </li>
+              </ul>
+              <div className="mt-4">
+                <p className="text-body-subtle mb-2">
                   {isFinnish
-                    ? "Valitse verkkosivustosi alusta alta. Jokainen opas sisältää yksinkertaiset asennusohjeet AI Advisor -skriptin lisäämiseen ja yleisten ongelmien ratkaisemiseen. Teknistä kokemusta ei vaadita."
-                    : "Choose your website platform below. Each guide contains simple steps for adding the AI Advisor script and fixing common issues. No technical experience required."}
+                    ? "Skripti näyttää tältä:"
+                    : "The script always looks like this:"}
                 </p>
-                <p className="text-body-subtle text-sm">
+                <pre className="bg-[#1a1a1a] border border-white/10 rounded-xl p-4 overflow-x-auto text-sm text-white/90 font-mono">
+                  <code>{`<script type="text/javascript">
+  window.voiceflow = window.voiceflow || {};
+  window.voiceflow.chat = { ... };
+</script>
+<script src="https://cdn.voiceflow.com/widget/bundle.mjs"></script>`}</code>
+                </pre>
+                <p className="text-body-subtle mt-2 text-sm">
                   {isFinnish
-                    ? "Kaikki alustat käyttävät samaa skriptiä. Aseta se sivun loppuun tai footer-osiin, ei koskaan header-osiin."
-                    : "All platforms use the same script. Place it at the end of the body or in the site footer, never in the header."}
+                    ? "Skriptiä ei tarvitse muokata."
+                    : "You never need to edit the script."}
                 </p>
               </div>
+            </div>
+
+            {/* Where the Script Must Go */}
+            <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl p-6 sm:p-8 mb-8 max-w-4xl mx-auto">
+              <h2 className="text-2xl font-semibold text-white mb-4">
+                {isFinnish ? "Mihin skripti tulee laittaa?" : "Where the Script Must Go"}
+              </h2>
+              <p className="text-body-subtle mb-4">
+                {isFinnish
+                  ? "Aina joko:"
+                  : "On every platform, the script must be placed:"}
+              </p>
+              <ul className="space-y-2 text-body-subtle mb-4">
+                <li className="flex items-start gap-2">
+                  <span className="text-white/50 mt-1">•</span>
+                  <span>
+                    {isFinnish
+                      ? "Sivun alaosaan ennen `</body>`-tagia"
+                      : "At the bottom of the page, right before `</body>`"}
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-white/50 mt-1">•</span>
+                  <span>
+                    {isFinnish
+                      ? "TAI sivuston Footer-koodikenttään"
+                      : "OR in the site footer section of your platform settings"}
+                  </span>
+                </li>
+              </ul>
+              <p className="text-body-subtle text-sm">
+                {isFinnish
+                  ? "Ei koskaan `<head>`-osioon. Näin chat-widget toimii oikein."
+                  : "Never place it inside the `<head>` area. This ensures the widget loads correctly."}
+              </p>
             </div>
 
             {/* Platform Grid */}
@@ -215,42 +338,55 @@ const DocsPage: React.FC = () => {
               })}
             </div>
 
-            {/* Additional Notes */}
-            <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl p-6 sm:p-8 max-w-4xl mx-auto">
-              <div className="flex items-start gap-4 mb-4">
-                <BookOpen className="w-6 h-6 text-white flex-shrink-0 mt-1" />
-                <div>
-                  <h2 className="text-2xl font-semibold text-white mb-4">
-                    {isFinnish ? "Lisätietoja" : "Additional Notes"}
-                  </h2>
-                  <ul className="space-y-3 text-body-subtle">
-                    <li className="flex items-start gap-2">
-                      <span className="text-white/50 mt-1">•</span>
-                      <span>
-                        {isFinnish
-                          ? "Kaikki oppaat jakavat yhtenäisen rakenteen helpon lukemisen vuoksi."
-                          : "All guides share a unified structure for easy reading."}
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-white/50 mt-1">•</span>
-                      <span>
-                        {isFinnish
-                          ? "Mitrox-tiimi voi asentaa Advisorin asiakkaiden pyynnöstä."
-                          : "The Mitrox team can install the Advisor for customers upon request."}
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-white/50 mt-1">•</span>
-                      <span>
-                        {isFinnish
-                          ? "Monimutkaisissa asennuksissa (esim. SPA-frameworkit, middleware, CSP-rajoitukset) ota yhteyttä Mitrox-tukeen."
-                          : "For complex setups (e.g., SPA frameworks, middleware, CSP restrictions), contact Mitrox Support."}
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+            {/* What to Expect After Installation */}
+            <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl p-6 sm:p-8 mb-8 max-w-4xl mx-auto">
+              <h2 className="text-2xl font-semibold text-white mb-4">
+                {isFinnish ? "Mitä tapahtuu asennuksen jälkeen?" : "What to Expect After Installation"}
+              </h2>
+              <p className="text-body-subtle mb-4">
+                {isFinnish
+                  ? "Kun skripti on oikeassa kohdassa ja sivusto julkaistu:"
+                  : "Once the script is in the right place and your site is published:"}
+              </p>
+              <ul className="space-y-2 text-body-subtle">
+                <li className="flex items-start gap-2">
+                  <span className="text-white/50 mt-1">•</span>
+                  <span>
+                    {isFinnish
+                      ? "Chat-kupla ilmestyy automaattisesti sivuston kulmaan"
+                      : "The chat bubble appears automatically in the corner of your website."}
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-white/50 mt-1">•</span>
+                  <span>
+                    {isFinnish
+                      ? "Se latautuu 1–2 sekunnissa"
+                      : "It loads within 1–2 seconds on most devices."}
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-white/50 mt-1">•</span>
+                  <span>
+                    {isFinnish
+                      ? "Chat avautuu klikkaamalla ja voit heti lähettää testiviestin"
+                      : "You can click it and send a test message immediately."}
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-white/50 mt-1">•</span>
+                  <span>
+                    {isFinnish
+                      ? "Avustaja vastaa reaaliaikaisesti"
+                      : "The assistant responds in real-time."}
+                  </span>
+                </li>
+              </ul>
+              <p className="text-body-subtle mt-4 text-sm">
+                {isFinnish
+                  ? "Jos jokin ei näy oikein, kyseessä on yleensä pieni asetusasia."
+                  : "If something doesn't look right, there is always a simple fix."}
+              </p>
             </div>
 
             {/* Support Section */}
@@ -259,10 +395,41 @@ const DocsPage: React.FC = () => {
                 <h3 className="text-xl font-semibold text-white mb-3">
                   {isFinnish ? "Tarvitsetko apua?" : "Need Help?"}
                 </h3>
-                <p className="text-body-subtle">
+                <p className="text-body-subtle mb-4">
                   {isFinnish
-                    ? "Jos tarvitset apua, asennusvahvistusta tai vianetsintäapua, ota yhteyttä Mitrox-tukeen ja hoidamme kaiken puolestasi."
-                    : "If you need help, installation confirmation, or debugging assistance, contact Mitrox support and we'll take care of everything."}
+                    ? "Jos tarvitset tukea tai haluat, että asennamme Advisorin puolestasi:"
+                    : "If anything feels unclear, or the widget doesn't appear:"}
+                </p>
+                <ul className="space-y-2 text-body-subtle text-left max-w-md mx-auto mb-4">
+                  <li className="flex items-start gap-2">
+                    <span className="text-white/50 mt-1">•</span>
+                    <span>
+                      {isFinnish
+                        ? "Ole yhteydessä Mitroxin tukeen"
+                        : "Contact Mitrox support anytime"}
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-white/50 mt-1">•</span>
+                    <span>
+                      {isFinnish
+                        ? "Voimme tehdä asennuksen puolestasi muutamassa minuutissa"
+                        : "Send a screenshot of what you see"}
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-white/50 mt-1">•</span>
+                    <span>
+                      {isFinnish
+                        ? "Autamme mielellämme"
+                        : "We can install the AI Advisor for you if you prefer"}
+                    </span>
+                  </li>
+                </ul>
+                <p className="text-body-subtle text-sm">
+                  {isFinnish
+                    ? "Autamme mielellämme."
+                    : "We are always happy to help."}
                 </p>
               </div>
             </div>

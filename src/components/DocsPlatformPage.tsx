@@ -12,7 +12,7 @@ import ScrollToTop from "./ScrollToTop";
 import Breadcrumbs from "./Breadcrumbs";
 import { buildMeta, organizationSchema, breadcrumbSchema, getSEOConfig } from "../../lib/seo";
 import ErrorBoundary from "./ErrorBoundary";
-import { Copy, Check, ArrowLeft, Settings, AlertCircle } from "lucide-react";
+import { Copy, Check, ArrowLeft, Settings, AlertCircle, PlayCircle, HelpCircle } from "lucide-react";
 
 interface DocsPlatformPageProps {
   platformName: string;
@@ -20,30 +20,44 @@ interface DocsPlatformPageProps {
   platformNameEn: string;
   content: {
     fi: {
+      overview?: string;
       whatYouNeed: string[];
       installationSteps: Array<{
         title: string;
         steps: string[];
         code?: string;
+        note?: string;
+      }>;
+      howToTest?: Array<{
+        title?: string;
+        steps: string[];
       }>;
       troubleshooting?: Array<{
         title: string;
         items: string[];
         code?: string;
       }>;
+      needHelp?: string;
     };
     en: {
+      overview?: string;
       whatYouNeed: string[];
       installationSteps: Array<{
         title: string;
         steps: string[];
         code?: string;
+        note?: string;
+      }>;
+      howToTest?: Array<{
+        title?: string;
+        steps: string[];
       }>;
       troubleshooting?: Array<{
         title: string;
         items: string[];
         code?: string;
       }>;
+      needHelp?: string;
     };
   };
 }
@@ -174,6 +188,18 @@ const DocsPlatformPage: React.FC<DocsPlatformPageProps> = ({
               </p>
             </div>
 
+            {/* Overview */}
+            {currentContent.overview && (
+              <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl p-6 sm:p-8 mb-8">
+                <h2 className="text-2xl font-semibold text-white mb-4">
+                  {isFinnish ? "Yleiskatsaus" : "Overview"}
+                </h2>
+                <p className="text-body-subtle whitespace-pre-line">
+                  {currentContent.overview}
+                </p>
+              </div>
+            )}
+
             {/* What You Need */}
             <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl p-6 sm:p-8 mb-8">
               <h2 className="text-2xl font-semibold text-white mb-4 flex items-center gap-3">
@@ -211,17 +237,51 @@ const DocsPlatformPage: React.FC<DocsPlatformPageProps> = ({
                         <CodeBlock code={section.code} id={`code-${sectionIndex}`} />
                       </div>
                     )}
+                    {section.note && (
+                      <div className="mt-4 p-4 bg-white/5 rounded-lg border border-white/10">
+                        <p className="text-body-subtle text-sm">{section.note}</p>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
             </div>
+
+            {/* How to Test */}
+            {currentContent.howToTest && currentContent.howToTest.length > 0 && (
+              <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl p-6 sm:p-8 mb-8">
+                <h2 className="text-2xl font-semibold text-white mb-6 flex items-center gap-3">
+                  <PlayCircle className="w-6 h-6" />
+                  {isFinnish ? "Testaus" : "How to Test"}
+                </h2>
+                <div className="space-y-6">
+                  {currentContent.howToTest.map((testSection, index) => (
+                    <div key={index}>
+                      {testSection.title && (
+                        <h3 className="text-xl font-semibold text-white mb-4">
+                          {testSection.title}
+                        </h3>
+                      )}
+                      <ol className="space-y-2 text-body-subtle">
+                        {testSection.steps.map((step, stepIndex) => (
+                          <li key={stepIndex} className="flex items-start gap-2">
+                            <span className="text-white/50 mt-1">{stepIndex + 1}.</span>
+                            <span>{step}</span>
+                          </li>
+                        ))}
+                      </ol>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Troubleshooting */}
             {currentContent.troubleshooting && currentContent.troubleshooting.length > 0 && (
               <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl p-6 sm:p-8 mb-8">
                 <h2 className="text-2xl font-semibold text-white mb-6 flex items-center gap-3">
                   <AlertCircle className="w-6 h-6" />
-                  {isFinnish ? "Vianetsintä" : "Troubleshooting"}
+                  {isFinnish ? "Vianmääritys" : "Troubleshooting"}
                 </h2>
                 <div className="space-y-6">
                   {currentContent.troubleshooting.map((item, index) => (
@@ -229,7 +289,7 @@ const DocsPlatformPage: React.FC<DocsPlatformPageProps> = ({
                       <h3 className="text-xl font-semibold text-white mb-3">
                         {item.title}
                       </h3>
-                      {item.items && (
+                      {item.items && item.items.length > 0 && (
                         <ul className="space-y-2 text-body-subtle mb-4">
                           {item.items.map((listItem, itemIndex) => (
                             <li key={itemIndex} className="flex items-start gap-2">
@@ -248,14 +308,18 @@ const DocsPlatformPage: React.FC<DocsPlatformPageProps> = ({
               </div>
             )}
 
-            {/* Completion Message */}
-            <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl p-6 text-center">
-              <p className="text-body-subtle">
-                {isFinnish 
-                  ? `Sinun ${platformNameFi} -asennuksesi on nyt valmis.`
-                  : `Your ${platformNameEn} installation is now complete.`}
-              </p>
-            </div>
+            {/* Need Help */}
+            {currentContent.needHelp && (
+              <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl p-6 sm:p-8 mb-8">
+                <h2 className="text-2xl font-semibold text-white mb-4 flex items-center gap-3">
+                  <HelpCircle className="w-6 h-6" />
+                  {isFinnish ? "Tarvitsetko apua?" : "Need Help?"}
+                </h2>
+                <p className="text-body-subtle whitespace-pre-line">
+                  {currentContent.needHelp}
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </ErrorBoundary>
