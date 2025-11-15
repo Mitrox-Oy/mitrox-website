@@ -1,6 +1,6 @@
 // src/components/Header.tsx
 import React, { useEffect, useMemo, useState } from "react";
-import { Menu, X, ArrowRight, ChevronDown, Globe2, Sparkles } from "lucide-react";
+import { Menu, X, ArrowRight, ChevronDown, Globe2, Sparkles, BookOpen, FileCode } from "lucide-react";
 import logo from "../assets/logo.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLanguage } from "../context/LanguageContext";
@@ -11,8 +11,11 @@ import { useLocalizedSectionId } from "../hooks/useLocalizedSectionId";
 const Header: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
+  const [resourcesOpen, setResourcesOpen] = useState(false);
   const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
+  const [mobileResourcesOpen, setMobileResourcesOpen] = useState(false);
   const productsTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+  const resourcesTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -25,7 +28,6 @@ const Header: React.FC = () => {
   const navItems = useMemo(
     () => [
       { label: language === "fi" ? "Etusivu" : "Home", href: "hero" },
-      { label: language === "fi" ? "Uutiset" : "News", href: getFullLocalizedPath("blog", language) },
       { label: language === "fi" ? "Tietoa meistä" : "About Us", href: getFullLocalizedPath("about", language) },
     ],
     [language]
@@ -42,6 +44,22 @@ const Header: React.FC = () => {
         label: language === "fi" ? "Tekoälyneuvoja" : "AI Advisor",
         href: getFullLocalizedPath("advisor", language),
         subtitle: language === "fi" ? "Älykäs kasvukumppanisi" : "Your 24/7 digital team member",
+      },
+    ],
+    [language]
+  );
+
+  const resourcesItems = useMemo(
+    () => [
+      {
+        label: language === "fi" ? "Uutiset" : "News",
+        href: getFullLocalizedPath("blog", language),
+        subtitle: language === "fi" ? "Uusimmat uutiset ja päivitykset" : "Latest news and updates",
+      },
+      {
+        label: language === "fi" ? "Dokumentaatio" : "Documentation",
+        href: getFullLocalizedPath("docs", language),
+        subtitle: language === "fi" ? "Asennus- ja upotusohjeet" : "Installation and embedding guides",
       },
     ],
     [language]
@@ -69,6 +87,21 @@ const Header: React.FC = () => {
   const handleProductsMouseLeave = () => {
     productsTimeoutRef.current = setTimeout(() => {
       setProductsOpen(false);
+    }, 150); // Small delay to allow moving to dropdown
+  };
+
+  // Handle resources dropdown with delay
+  const handleResourcesMouseEnter = () => {
+    if (resourcesTimeoutRef.current) {
+      clearTimeout(resourcesTimeoutRef.current);
+      resourcesTimeoutRef.current = null;
+    }
+    setResourcesOpen(true);
+  };
+
+  const handleResourcesMouseLeave = () => {
+    resourcesTimeoutRef.current = setTimeout(() => {
+      setResourcesOpen(false);
     }, 150); // Small delay to allow moving to dropdown
   };
 
@@ -106,6 +139,9 @@ const Header: React.FC = () => {
     return () => {
       if (productsTimeoutRef.current) {
         clearTimeout(productsTimeoutRef.current);
+      }
+      if (resourcesTimeoutRef.current) {
+        clearTimeout(resourcesTimeoutRef.current);
       }
     };
   }, []);
@@ -223,6 +259,60 @@ const Header: React.FC = () => {
                               <span className="flex-1 min-w-0">
                               <span className="block text-sm">{language === "fi" ? "Mitrox AI Advisor" : "Mitrox AI Advisor"}</span>
                             <span className="block text-[0.6rem] uppercase tracking-[0.35em] text-body-caption mt-0.5">{advisorItem?.subtitle}</span>
+                            </span>
+                            <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </Link>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Resources Dropdown - third */}
+                  <div
+                    className="relative"
+                    onMouseEnter={handleResourcesMouseEnter}
+                    onMouseLeave={handleResourcesMouseLeave}
+                  >
+                    <button
+                      className="text-white/80 hover:text-white transition-colors text-base font-light px-5 py-2.5 rounded-full hover:bg-white/10 flex items-center gap-1"
+                      aria-expanded={resourcesOpen}
+                      aria-haspopup="true"
+                    >
+                      {language === "fi" ? "Resurssit" : "Resources"}
+                      <ChevronDown className={`w-4 h-4 transition-transform ${resourcesOpen ? 'rotate-180' : ''}`} />
+                    </button>
+
+                    {/* Dropdown Menu */}
+                    {resourcesOpen && (
+                      <div className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-black/95 backdrop-blur-sm ring-1 ring-white/15 shadow-[0_16px_40px_rgba(0,0,0,0.35)] overflow-hidden z-50">
+                        <div className="py-1">
+                          <Link
+                            to={getFullLocalizedPath("blog", language)}
+                            onClick={() => setResourcesOpen(false)}
+                            onMouseEnter={handleResourcesMouseEnter}
+                            className="flex items-center gap-3 px-3.5 py-2.5 text-white/90 hover:text-white hover:bg-white/10 transition-colors rounded-xl mx-1.5"
+                          >
+                            <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-white/10 text-white/80">
+                              <BookOpen className="w-4 h-4" />
+                            </span>
+                            <span className="flex-1 min-w-0">
+                              <span className="block text-sm">{language === "fi" ? "Uutiset" : "News"}</span>
+                              <span className="block text-[0.6rem] uppercase tracking-[0.35em] text-body-caption mt-0.5">{resourcesItems[0]?.subtitle}</span>
+                            </span>
+                            <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </Link>
+                          <Link
+                            to={getFullLocalizedPath("docs", language)}
+                            onClick={() => setResourcesOpen(false)}
+                            onMouseEnter={handleResourcesMouseEnter}
+                            className="group flex items-center gap-3 px-3.5 py-2.5 text-white/90 hover:text-white hover:bg-white/10 transition-colors rounded-xl mx-1.5"
+                          >
+                            <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-white/10 text-white/80">
+                              <FileCode className="w-4 h-4" />
+                            </span>
+                            <span className="flex-1 min-w-0">
+                              <span className="block text-sm">{language === "fi" ? "Dokumentaatio" : "Documentation"}</span>
+                              <span className="block text-[0.6rem] uppercase tracking-[0.35em] text-body-caption mt-0.5">{resourcesItems[1]?.subtitle}</span>
                             </span>
                             <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                           </Link>
@@ -396,6 +486,41 @@ const Header: React.FC = () => {
                           className="block rounded-full px-5 py-2 text-body-muted hover:text-white/80 hover:bg-white/10 transition-colors text-sm font-light"
                         >
                           {product.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* Mobile Resources Dropdown - third */}
+              <div>
+                <button
+                  onClick={() => setMobileResourcesOpen(!mobileResourcesOpen)}
+                  className="w-full flex items-center justify-between rounded-full px-4 py-1.5 text-white/80 hover:text-white hover:bg-white/10 transition-colors text-sm font-light"
+                >
+                  {language === "fi" ? "Resurssit" : "Resources"}
+                  <ChevronDown className={`w-4 h-4 transition-transform ${mobileResourcesOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {mobileResourcesOpen && (
+                  <div className="ml-4 mt-1 flex flex-col gap-0.5">
+                    {resourcesItems.map((resource) => {
+                      const isPage = resource.href.startsWith("/");
+                      return (
+                        <Link
+                          key={resource.href}
+                          to={resource.href}
+                          onClick={(e) => {
+                            if (!isPage && location.pathname === "/") {
+                              e.preventDefault();
+                              handleScroll(resource.href.replace("/#", ""));
+                            }
+                            setOpen(false);
+                            setMobileResourcesOpen(false);
+                          }}
+                          className="block rounded-full px-5 py-2 text-body-muted hover:text-white/80 hover:bg-white/10 transition-colors text-sm font-light"
+                        >
+                          {resource.label}
                         </Link>
                       );
                     })}

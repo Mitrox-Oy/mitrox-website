@@ -1,5 +1,6 @@
 // src/DocsPage.tsx
-import React, { useState } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
 import { useLanguage } from "./context/LanguageContext";
 import SpaceBackground from "./components/SpaceBackground";
 import Header from "./components/Header";
@@ -11,7 +12,16 @@ import ScrollToTop from "./components/ScrollToTop";
 import Breadcrumbs from "./components/Breadcrumbs";
 import { buildMeta, organizationSchema, breadcrumbSchema, getSEOConfig } from "../lib/seo";
 import ErrorBoundary from "./components/ErrorBoundary";
-import { Copy, Check, Code, Settings, BookOpen } from "lucide-react";
+import { 
+  BookOpen, 
+  Globe, 
+  Code, 
+  ShoppingCart, 
+  Layout, 
+  Box, 
+  FileCode,
+  ExternalLink
+} from "lucide-react";
 
 const DocsPage: React.FC = () => {
   const { language } = useLanguage();
@@ -47,409 +57,80 @@ const DocsPage: React.FC = () => {
       ]
     : [];
 
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
-
-  const copyToClipboard = (text: string, id: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedCode(id);
-    setTimeout(() => setCopiedCode(null), 2000);
-  };
-
-  const CodeBlock: React.FC<{ code: string; language?: string; id: string }> = ({
-    code,
-    language = "html",
-    id,
-  }) => (
-    <div className="relative group">
-      <button
-        onClick={() => copyToClipboard(code, id)}
-        className="absolute top-3 right-3 z-10 p-2 rounded-lg bg-black/50 hover:bg-black/70 text-white/70 hover:text-white transition-colors"
-        aria-label={isFinnish ? "Kopioi koodi" : "Copy code"}
-      >
-        {copiedCode === id ? (
-          <Check className="w-4 h-4" />
-        ) : (
-          <Copy className="w-4 h-4" />
-        )}
-      </button>
-      <pre className="bg-[#1a1a1a] border border-white/10 rounded-xl p-4 overflow-x-auto">
-        <code className={`text-sm text-white/90 font-mono`}>{code}</code>
-      </pre>
-    </div>
-  );
-
-  const sections = [
+  const platforms = [
     {
-      id: "installation",
-      title: isFinnish ? "Asennus" : "Installation",
-      icon: Settings,
-      content: (
-        <div className="space-y-6">
-          <div>
-            <h3 className="text-xl font-semibold text-white mb-3">
-              {isFinnish ? "1. Lisää Voiceflow Script" : "1. Add Voiceflow Script"}
-            </h3>
-            <p className="text-body-subtle mb-4">
-              {isFinnish
-                ? "Lisää seuraava script-tag HTML-sivusi <head>-osiin tai ennen </body>-tagia:"
-                : "Add the following script tag to your HTML page's <head> section or before the </body> tag:"}
-            </p>
-            <CodeBlock
-              id="script-install"
-              code={`<script type="text/javascript">
-  (function(d, t) {
-    var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
-    v.onload = function() {
-      window.voiceflow.chat.load({
-        verify: { projectID: 'YOUR_PROJECT_ID' },
-        url: 'https://general-runtime.voiceflow.com',
-        versionID: 'production'
-      });
-    };
-    v.src = 'https://cdn.voiceflow.com/widget/bundle.mjs';
-    v.type = 'text/javascript';
-    s.parentNode.insertBefore(v, s);
-  })(document, 'script');
-</script>`}
-            />
-          </div>
-
-          <div>
-            <h3 className="text-xl font-semibold text-white mb-3">
-              {isFinnish ? "2. React-komponentti" : "2. React Component"}
-            </h3>
-            <p className="text-body-subtle mb-4">
-              {isFinnish
-                ? "Jos käytät Reactia, voit luoda oman komponentin:"
-                : "If you're using React, you can create your own component:"}
-            </p>
-            <CodeBlock
-              id="react-component"
-              code={`import { useEffect, useRef } from 'react';
-
-const VoiceflowChat: React.FC = () => {
-  const embedRef = useRef<HTMLDivElement>(null);
-  const initializedRef = useRef(false);
-
-  useEffect(() => {
-    if (initializedRef.current) return;
-    initializedRef.current = true;
-
-    const VF_SCRIPT = 'https://cdn.voiceflow.com/widget/bundle.mjs';
-
-    const mountChat = () => {
-      if (window.voiceflow?.chat && embedRef.current) {
-        window.voiceflow.chat.load({
-          verify: { projectID: 'YOUR_PROJECT_ID' },
-          url: 'https://general-runtime.voiceflow.com',
-          versionID: 'production'
-        });
-      }
-    };
-
-    const existingScript = document.querySelector(
-      \`script[src="\${VF_SCRIPT}"]\`
-    );
-
-    if (existingScript) {
-      if (window.voiceflow?.chat) {
-        mountChat();
-      } else {
-        existingScript.addEventListener('load', mountChat);
-      }
-    } else {
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = VF_SCRIPT;
-      script.async = true;
-      script.addEventListener('load', mountChat);
-      document.body.appendChild(script);
-    }
-  }, []);
-
-  return <div ref={embedRef} id="voiceflow-chatbot" />;
-};
-
-export default VoiceflowChat;`}
-            />
-          </div>
-        </div>
-      ),
+      id: "wordpress",
+      name: "WordPress",
+      icon: Layout,
+      description: isFinnish 
+        ? "Sisältää ohjeet Insert Headers and Footers / WPCode -laajennuksilla ja CSS-korjaukset teemakonflikteihin."
+        : "Includes steps using Insert Headers and Footers / WPCode, and CSS fixes for theme conflicts.",
+      href: isFinnish ? "/fi/dokumentaatio/wordpress" : "/en/docs/wordpress",
     },
     {
-      id: "embedding",
-      title: isFinnish ? "Upotus" : "Embedding",
+      id: "wix",
+      name: "Wix",
+      icon: Globe,
+      description: isFinnish
+        ? "Sisältää Custom Code -injektio-ohjeet ja preview-tilan huomautukset."
+        : "Includes Custom Code injection instructions and preview-mode notes.",
+      href: isFinnish ? "/fi/dokumentaatio/wix" : "/en/docs/wix",
+    },
+    {
+      id: "webflow",
+      name: "Webflow",
+      icon: Box,
+      description: isFinnish
+        ? "Selittää, miten koodi lisätään Footer Code -kenttään ja julkaistaan oikein."
+        : "Explains how to add code via Footer Code and publish correctly.",
+      href: isFinnish ? "/fi/dokumentaatio/webflow" : "/en/docs/webflow",
+    },
+    {
+      id: "shopify",
+      name: "Shopify",
+      icon: ShoppingCart,
+      description: isFinnish
+        ? "Kattaa theme.liquid -tiedoston muokkaamisen ja päällekkäisten elementtien korjauksen."
+        : "Covers editing theme.liquid and fixing overlapping elements.",
+      href: isFinnish ? "/fi/dokumentaatio/shopify" : "/en/docs/shopify",
+    },
+    {
+      id: "squarespace",
+      name: "Squarespace",
+      icon: Layout,
+      description: isFinnish
+        ? "Näyttää Code Injection -menetelmän ja suunnitelman vaatimukset."
+        : "Shows the Code Injection method and plan requirements.",
+      href: isFinnish ? "/fi/dokumentaatio/squarespace" : "/en/docs/squarespace",
+    },
+    {
+      id: "netlify",
+      name: "Netlify",
+      icon: Globe,
+      description: isFinnish
+        ? "Selittää suoran HTML-injektion tai framework-kohtaisten menetelmien käytön."
+        : "Explains direct HTML injection or using framework-specific methods.",
+      href: isFinnish ? "/fi/dokumentaatio/netlify" : "/en/docs/netlify",
+    },
+    {
+      id: "react",
+      name: "React / Next.js",
       icon: Code,
-      content: (
-        <div className="space-y-6">
-          <div>
-            <h3 className="text-xl font-semibold text-white mb-3">
-              {isFinnish ? "Perus upotus" : "Basic Embedding"}
-            </h3>
-            <p className="text-body-subtle mb-4">
-              {isFinnish
-                ? "Lisää div-elementti, johon chatbotti renderöidään:"
-                : "Add a div element where the chatbot will be rendered:"}
-            </p>
-            <CodeBlock
-              id="basic-embed"
-              code={`<div id="voiceflow-chatbot"></div>`}
-            />
-          </div>
-
-          <div>
-            <h3 className="text-xl font-semibold text-white mb-3">
-              {isFinnish ? "Mukautettu tyylitys" : "Custom Styling"}
-            </h3>
-            <p className="text-body-subtle mb-4">
-              {isFinnish
-                ? "Voit tyylittää chatbottia CSS:llä:"
-                : "You can style the chatbot with CSS:"}
-            </p>
-            <CodeBlock
-              id="custom-styling"
-              code={`#voiceflow-chatbot {
-  width: 100%;
-  height: 600px;
-  border-radius: 24px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-/* Mukauta korkeus responsiivisesti */
-@media (max-width: 768px) {
-  #voiceflow-chatbot {
-    height: 500px;
-  }
-}`}
-            />
-          </div>
-
-          <div>
-            <h3 className="text-xl font-semibold text-white mb-3">
-              {isFinnish ? "React-esimerkki täydellä toteutuksella" : "Full React Implementation Example"}
-            </h3>
-            <p className="text-body-subtle mb-4">
-              {isFinnish
-                ? "Täydellinen React-komponentti, joka sisältää latausindikaattorin:"
-                : "Complete React component with loading indicator:"}
-            </p>
-            <CodeBlock
-              id="full-react"
-              code={`import { useEffect, useRef, useState } from 'react';
-
-interface VoiceflowChatProps {
-  projectID: string;
-  className?: string;
-}
-
-const VoiceflowChat: React.FC<VoiceflowChatProps> = ({ 
-  projectID, 
-  className = '' 
-}) => {
-  const embedRef = useRef<HTMLDivElement>(null);
-  const initializedRef = useRef(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    if (initializedRef.current) return;
-    initializedRef.current = true;
-
-    const VF_SCRIPT = 'https://cdn.voiceflow.com/widget/bundle.mjs';
-
-    const mountChat = () => {
-      if (window.voiceflow?.chat && embedRef.current) {
-        window.voiceflow.chat.load({
-          verify: { projectID },
-          url: 'https://general-runtime.voiceflow.com',
-          versionID: 'production'
-        });
-        setIsLoading(false);
-      }
-    };
-
-    const existingScript = document.querySelector(
-      \`script[src="\${VF_SCRIPT}"]\`
-    );
-
-    if (existingScript) {
-      if (window.voiceflow?.chat) {
-        mountChat();
-      } else {
-        existingScript.addEventListener('load', mountChat);
-      }
-    } else {
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = VF_SCRIPT;
-      script.async = true;
-      script.addEventListener('load', mountChat);
-      document.body.appendChild(script);
-    }
-  }, [projectID]);
-
-  return (
-    <div className={\`relative \${className}\`}>
-      <div ref={embedRef} id="voiceflow-chatbot" className="absolute inset-0" />
-      {isLoading && (
-        <div className="absolute inset-0 grid place-items-center bg-white">
-          <div className="h-10 w-10 rounded-full border-2 border-black/20 border-t-black animate-spin" />
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default VoiceflowChat;`}
-            />
-          </div>
-        </div>
-      ),
+      description: isFinnish
+        ? "Tarjoaa esimerkit public/index.html, layout.js ja _document.js -tiedostoille."
+        : "Provides public/index.html, layout.js, and _document.js examples.",
+      href: isFinnish ? "/fi/dokumentaatio/react" : "/en/docs/react",
     },
     {
-      id: "configuration",
-      title: isFinnish ? "Konfiguraatio" : "Configuration",
-      icon: Settings,
-      content: (
-        <div className="space-y-6">
-          <div>
-            <h3 className="text-xl font-semibold text-white mb-3">
-              {isFinnish ? "Project ID" : "Project ID"}
-            </h3>
-            <p className="text-body-subtle mb-4">
-              {isFinnish
-                ? "Korvaa 'YOUR_PROJECT_ID' omalla Voiceflow Project ID:lläsi. Löydät sen Voiceflow Dashboardista."
-                : "Replace 'YOUR_PROJECT_ID' with your own Voiceflow Project ID. You can find it in your Voiceflow Dashboard."}
-            </p>
-          </div>
-
-          <div>
-            <h3 className="text-xl font-semibold text-white mb-3">
-              {isFinnish ? "Version ID" : "Version ID"}
-            </h3>
-            <p className="text-body-subtle mb-4">
-              {isFinnish
-                ? "Käytä 'production' tuotantoversiolle tai tiettyä version ID:tä testausta varten."
-                : "Use 'production' for the production version or a specific version ID for testing."}
-            </p>
-            <CodeBlock
-              id="version-config"
-              code={`// Tuotantoversio
-versionID: 'production'
-
-// Tietty versio (testaus)
-versionID: 'YOUR_VERSION_ID'`}
-            />
-          </div>
-
-          <div>
-            <h3 className="text-xl font-semibold text-white mb-3">
-              {isFinnish ? "Mukautetut asetukset" : "Custom Options"}
-            </h3>
-            <p className="text-body-subtle mb-4">
-              {isFinnish
-                ? "Voit mukauttaa chatbottia lisäämällä lisäasetuksia:"
-                : "You can customize the chatbot by adding additional options:"}
-            </p>
-            <CodeBlock
-              id="custom-options"
-              code={`window.voiceflow.chat.load({
-  verify: { projectID: 'YOUR_PROJECT_ID' },
-  url: 'https://general-runtime.voiceflow.com',
-  versionID: 'production',
-  // Lisäasetukset
-  launch: { event: 'start' }, // Automaattinen käynnistys
-  // ... muut asetukset
-});`}
-            />
-          </div>
-        </div>
-      ),
-    },
-    {
-      id: "troubleshooting",
-      title: isFinnish ? "Vianetsintä" : "Troubleshooting",
-      icon: BookOpen,
-      content: (
-        <div className="space-y-6">
-          <div>
-            <h3 className="text-xl font-semibold text-white mb-3">
-              {isFinnish ? "Chatbotti ei näy" : "Chatbot not showing"}
-            </h3>
-            <ul className="list-disc list-inside space-y-2 text-body-subtle ml-4">
-              <li>
-                {isFinnish
-                  ? "Varmista, että script on ladattu ennen kuin yrität mountata chatbottia"
-                  : "Make sure the script is loaded before trying to mount the chatbot"}
-              </li>
-              <li>
-                {isFinnish
-                  ? "Tarkista, että Project ID on oikein"
-                  : "Verify that the Project ID is correct"}
-              </li>
-              <li>
-                {isFinnish
-                  ? "Tarkista selaimen konsoli virheilmoituksia varten"
-                  : "Check the browser console for error messages"}
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-xl font-semibold text-white mb-3">
-              {isFinnish ? "Script ladataan useita kertoja" : "Script loading multiple times"}
-            </h3>
-            <p className="text-body-subtle mb-4">
-              {isFinnish
-                ? "Käytä initializedRef:tä tai tarkista, onko script jo olemassa ennen uuden lisäämistä:"
-                : "Use initializedRef or check if the script already exists before adding a new one:"}
-            </p>
-            <CodeBlock
-              id="prevent-duplicate"
-              code={`const existingScript = document.querySelector(
-  \`script[src="\${VF_SCRIPT}"]\`
-);
-
-if (!existingScript) {
-  // Lisää script vain jos sitä ei ole jo
-  const script = document.createElement('script');
-  // ...
-}`}
-            />
-          </div>
-
-          <div>
-            <h3 className="text-xl font-semibold text-white mb-3">
-              {isFinnish ? "TypeScript-tyypit" : "TypeScript Types"}
-            </h3>
-            <p className="text-body-subtle mb-4">
-              {isFinnish
-                ? "Jos käytät TypeScriptia, lisää globaali tyyppi:"
-                : "If you're using TypeScript, add a global type:"}
-            </p>
-            <CodeBlock
-              id="typescript-types"
-              code={`declare global {
-  interface Window {
-    voiceflow?: {
-      chat: {
-        load: (config: {
-          verify: { projectID: string };
-          url: string;
-          versionID: string;
-        }) => void;
-      };
-    };
-  }
-}`}
-            />
-          </div>
-        </div>
-      ),
+      id: "html",
+      name: "HTML (Custom Websites)",
+      icon: FileCode,
+      description: isFinnish
+        ? "Sopii räätälöityihin verkkosivuihin, landing-sivuihin ja staattiseen hostaukseen."
+        : "Good for custom-built sites, landing pages, and static hosting.",
+      href: isFinnish ? "/fi/dokumentaatio/html" : "/en/docs/html",
     },
   ];
-
-  const [activeSection, setActiveSection] = useState(sections[0].id);
 
   return (
     <div id="top" className="min-h-screen bg-black relative">
@@ -486,60 +167,104 @@ if (!existingScript) {
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-white mb-4">
                 {isFinnish ? "Dokumentaatio" : "Documentation"}
               </h1>
-              <p className="text-body-subtle text-lg max-w-2xl mx-auto">
+              <p className="text-body-subtle text-lg max-w-2xl mx-auto mb-6">
                 {isFinnish
                   ? "Asennus- ja upotusohjeet Mitrox AI Advisorille verkkosivuillesi"
                   : "Installation and embedding guide for Mitrox AI Advisor on your website"}
               </p>
+              <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl p-6 max-w-3xl mx-auto">
+                <p className="text-body-subtle mb-4">
+                  {isFinnish
+                    ? "Valitse verkkosivustosi alusta alta. Jokainen opas sisältää yksinkertaiset asennusohjeet AI Advisor -skriptin lisäämiseen ja yleisten ongelmien ratkaisemiseen. Teknistä kokemusta ei vaadita."
+                    : "Choose your website platform below. Each guide contains simple steps for adding the AI Advisor script and fixing common issues. No technical experience required."}
+                </p>
+                <p className="text-body-subtle text-sm">
+                  {isFinnish
+                    ? "Kaikki alustat käyttävät samaa skriptiä. Aseta se sivun loppuun tai footer-osiin, ei koskaan header-osiin."
+                    : "All platforms use the same script. Place it at the end of the body or in the site footer, never in the header."}
+                </p>
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-              {/* Sidebar Navigation */}
-              <aside className="lg:col-span-1">
-                <nav className="sticky top-24 space-y-2">
-                  {sections.map((section) => {
-                    const Icon = section.icon;
-                    return (
-                      <button
-                        key={section.id}
-                        onClick={() => {
-                          setActiveSection(section.id);
-                          document.getElementById(section.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }}
-                        className={`w-full text-left px-4 py-3 rounded-lg transition-colors flex items-center gap-3 ${
-                          activeSection === section.id
-                            ? "bg-white/10 text-white"
-                            : "text-body-muted hover:text-white hover:bg-white/5"
-                        }`}
-                      >
-                        <Icon className="w-5 h-5" />
-                        <span className="font-medium">{section.title}</span>
-                      </button>
-                    );
-                  })}
-                </nav>
-              </aside>
-
-              {/* Main Content */}
-              <main className="lg:col-span-3">
-                <div className="space-y-12">
-                  {sections.map((section) => (
-                    <section
-                      key={section.id}
-                      id={section.id}
-                      className="scroll-mt-24"
-                    >
-                      <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl p-6 sm:p-8">
-                        <h2 className="text-2xl sm:text-3xl font-semibold text-white mb-6 flex items-center gap-3">
-                          <section.icon className="w-6 h-6" />
-                          {section.title}
-                        </h2>
-                        {section.content}
+            {/* Platform Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              {platforms.map((platform) => {
+                const Icon = platform.icon;
+                return (
+                  <Link
+                    key={platform.id}
+                    to={platform.href}
+                    className="group bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-black/60 hover:border-white/20 transition-all duration-300"
+                  >
+                    <div className="flex items-start gap-4 mb-4">
+                      <div className="p-3 bg-white/5 rounded-lg group-hover:bg-white/10 transition-colors">
+                        <Icon className="w-6 h-6 text-white" />
                       </div>
-                    </section>
-                  ))}
+                      <div className="flex-1">
+                        <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-white/90 transition-colors">
+                          {platform.name}
+                        </h3>
+                        <p className="text-body-subtle text-sm leading-relaxed">
+                          {platform.description}
+                        </p>
+                      </div>
+                      <ExternalLink className="w-5 h-5 text-body-muted group-hover:text-white transition-colors flex-shrink-0 mt-1" />
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+
+            {/* Additional Notes */}
+            <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl p-6 sm:p-8 max-w-4xl mx-auto">
+              <div className="flex items-start gap-4 mb-4">
+                <BookOpen className="w-6 h-6 text-white flex-shrink-0 mt-1" />
+                <div>
+                  <h2 className="text-2xl font-semibold text-white mb-4">
+                    {isFinnish ? "Lisätietoja" : "Additional Notes"}
+                  </h2>
+                  <ul className="space-y-3 text-body-subtle">
+                    <li className="flex items-start gap-2">
+                      <span className="text-white/50 mt-1">•</span>
+                      <span>
+                        {isFinnish
+                          ? "Kaikki oppaat jakavat yhtenäisen rakenteen helpon lukemisen vuoksi."
+                          : "All guides share a unified structure for easy reading."}
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-white/50 mt-1">•</span>
+                      <span>
+                        {isFinnish
+                          ? "Mitrox-tiimi voi asentaa Advisorin asiakkaiden pyynnöstä."
+                          : "The Mitrox team can install the Advisor for customers upon request."}
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-white/50 mt-1">•</span>
+                      <span>
+                        {isFinnish
+                          ? "Monimutkaisissa asennuksissa (esim. SPA-frameworkit, middleware, CSP-rajoitukset) ota yhteyttä Mitrox-tukeen."
+                          : "For complex setups (e.g., SPA frameworks, middleware, CSP restrictions), contact Mitrox Support."}
+                      </span>
+                    </li>
+                  </ul>
                 </div>
-              </main>
+              </div>
+            </div>
+
+            {/* Support Section */}
+            <div className="mt-12 text-center">
+              <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl p-6 max-w-2xl mx-auto">
+                <h3 className="text-xl font-semibold text-white mb-3">
+                  {isFinnish ? "Tarvitsetko apua?" : "Need Help?"}
+                </h3>
+                <p className="text-body-subtle">
+                  {isFinnish
+                    ? "Jos tarvitset apua, asennusvahvistusta tai vianetsintäapua, ota yhteyttä Mitrox-tukeen ja hoidamme kaiken puolestasi."
+                    : "If you need help, installation confirmation, or debugging assistance, contact Mitrox support and we'll take care of everything."}
+                </p>
+              </div>
             </div>
           </div>
         </div>

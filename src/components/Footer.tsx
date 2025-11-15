@@ -87,13 +87,6 @@ const Footer: React.FC<FooterProps> = ({ email = "info@mitrox.io" }) => {
             </div>
             <span className="hidden sm:inline text-gray-600">•</span>
             <Link
-              to={getFullLocalizedPath("docs", language)}
-              className="text-gray-300 hover:text-blue-400 transition-colors"
-            >
-              {language === "fi" ? "Dokumentaatio" : "Documentation"}
-            </Link>
-            <span className="hidden sm:inline text-gray-600">•</span>
-            <Link
               to={getFullLocalizedPath("privacy-policy", language)}
               className="text-gray-300 hover:text-blue-400 transition-colors"
             >

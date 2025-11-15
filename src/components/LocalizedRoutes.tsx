@@ -15,6 +15,14 @@ import BlogPage from '../BlogPage';
 import BlogArticlePage from '../BlogArticlePage';
 import AdminDashboardPage from '../AdminDashboardPage';
 import DocsPage from '../DocsPage';
+import DocsWordPressPage from '../DocsWordPressPage';
+import DocsWixPage from '../DocsWixPage';
+import DocsWebflowPage from '../DocsWebflowPage';
+import DocsShopifyPage from '../DocsShopifyPage';
+import DocsSquarespacePage from '../DocsSquarespacePage';
+import DocsNetlifyPage from '../DocsNetlifyPage';
+import DocsReactPage from '../DocsReactPage';
+import DocsHTMLPage from '../DocsHTMLPage';
 import { SUPPORTED_LANGUAGES } from '../utils/routing';
 import { LegacyRouteRedirect } from './LegacyRouteRedirect';
 
@@ -71,6 +79,24 @@ export const LocalizedRoutes: React.FC = () => {
       {/* Documentation routes */}
       <Route path="/fi/dokumentaatio" element={<LocalizedRoute><DocsPage /></LocalizedRoute>} />
       <Route path="/en/docs" element={<LocalizedRoute><DocsPage /></LocalizedRoute>} />
+      
+      {/* Documentation platform routes */}
+      <Route path="/fi/dokumentaatio/wordpress" element={<LocalizedRoute><DocsWordPressPage /></LocalizedRoute>} />
+      <Route path="/en/docs/wordpress" element={<LocalizedRoute><DocsWordPressPage /></LocalizedRoute>} />
+      <Route path="/fi/dokumentaatio/wix" element={<LocalizedRoute><DocsWixPage /></LocalizedRoute>} />
+      <Route path="/en/docs/wix" element={<LocalizedRoute><DocsWixPage /></LocalizedRoute>} />
+      <Route path="/fi/dokumentaatio/webflow" element={<LocalizedRoute><DocsWebflowPage /></LocalizedRoute>} />
+      <Route path="/en/docs/webflow" element={<LocalizedRoute><DocsWebflowPage /></LocalizedRoute>} />
+      <Route path="/fi/dokumentaatio/shopify" element={<LocalizedRoute><DocsShopifyPage /></LocalizedRoute>} />
+      <Route path="/en/docs/shopify" element={<LocalizedRoute><DocsShopifyPage /></LocalizedRoute>} />
+      <Route path="/fi/dokumentaatio/squarespace" element={<LocalizedRoute><DocsSquarespacePage /></LocalizedRoute>} />
+      <Route path="/en/docs/squarespace" element={<LocalizedRoute><DocsSquarespacePage /></LocalizedRoute>} />
+      <Route path="/fi/dokumentaatio/netlify" element={<LocalizedRoute><DocsNetlifyPage /></LocalizedRoute>} />
+      <Route path="/en/docs/netlify" element={<LocalizedRoute><DocsNetlifyPage /></LocalizedRoute>} />
+      <Route path="/fi/dokumentaatio/react" element={<LocalizedRoute><DocsReactPage /></LocalizedRoute>} />
+      <Route path="/en/docs/react" element={<LocalizedRoute><DocsReactPage /></LocalizedRoute>} />
+      <Route path="/fi/dokumentaatio/html" element={<LocalizedRoute><DocsHTMLPage /></LocalizedRoute>} />
+      <Route path="/en/docs/html" element={<LocalizedRoute><DocsHTMLPage /></LocalizedRoute>} />
       
       {/* Live Demo routes */}
       <Route path="/:lang/live-demo" element={<LocalizedRoute><LiveDemoPage /></LocalizedRoute>} />
