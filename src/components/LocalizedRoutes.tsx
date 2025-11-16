@@ -14,7 +14,8 @@ import PrivacyPolicyPage from '../PrivacyPolicyPage';
 import BlogPage from '../BlogPage';
 import BlogArticlePage from '../BlogArticlePage';
 import AdminDashboardPage from '../AdminDashboardPage';
-import DocsPage from '../DocsPage';
+import DocumentationPage from '../DocumentationPage';
+import DocsAIPage from '../DocsAIPage';
 import DocsWordPressPage from '../DocsWordPressPage';
 import DocsWixPage from '../DocsWixPage';
 import DocsWebflowPage from '../DocsWebflowPage';
@@ -77,26 +78,30 @@ export const LocalizedRoutes: React.FC = () => {
       <Route path="/en/privacy-policy" element={<LocalizedRoute><PrivacyPolicyPage /></LocalizedRoute>} />
       
       {/* Documentation routes */}
-      <Route path="/fi/dokumentaatio" element={<LocalizedRoute><DocsPage /></LocalizedRoute>} />
-      <Route path="/en/docs" element={<LocalizedRoute><DocsPage /></LocalizedRoute>} />
+      <Route path="/fi/dokumentaatio" element={<LocalizedRoute><DocumentationPage /></LocalizedRoute>} />
+      <Route path="/en/docs" element={<LocalizedRoute><DocumentationPage /></LocalizedRoute>} />
       
-      {/* Documentation platform routes */}
-      <Route path="/fi/dokumentaatio/wordpress" element={<LocalizedRoute><DocsWordPressPage /></LocalizedRoute>} />
-      <Route path="/en/docs/wordpress" element={<LocalizedRoute><DocsWordPressPage /></LocalizedRoute>} />
-      <Route path="/fi/dokumentaatio/wix" element={<LocalizedRoute><DocsWixPage /></LocalizedRoute>} />
-      <Route path="/en/docs/wix" element={<LocalizedRoute><DocsWixPage /></LocalizedRoute>} />
-      <Route path="/fi/dokumentaatio/webflow" element={<LocalizedRoute><DocsWebflowPage /></LocalizedRoute>} />
-      <Route path="/en/docs/webflow" element={<LocalizedRoute><DocsWebflowPage /></LocalizedRoute>} />
-      <Route path="/fi/dokumentaatio/shopify" element={<LocalizedRoute><DocsShopifyPage /></LocalizedRoute>} />
-      <Route path="/en/docs/shopify" element={<LocalizedRoute><DocsShopifyPage /></LocalizedRoute>} />
-      <Route path="/fi/dokumentaatio/squarespace" element={<LocalizedRoute><DocsSquarespacePage /></LocalizedRoute>} />
-      <Route path="/en/docs/squarespace" element={<LocalizedRoute><DocsSquarespacePage /></LocalizedRoute>} />
-      <Route path="/fi/dokumentaatio/netlify" element={<LocalizedRoute><DocsNetlifyPage /></LocalizedRoute>} />
-      <Route path="/en/docs/netlify" element={<LocalizedRoute><DocsNetlifyPage /></LocalizedRoute>} />
-      <Route path="/fi/dokumentaatio/react" element={<LocalizedRoute><DocsReactPage /></LocalizedRoute>} />
-      <Route path="/en/docs/react" element={<LocalizedRoute><DocsReactPage /></LocalizedRoute>} />
-      <Route path="/fi/dokumentaatio/html" element={<LocalizedRoute><DocsHTMLPage /></LocalizedRoute>} />
-      <Route path="/en/docs/html" element={<LocalizedRoute><DocsHTMLPage /></LocalizedRoute>} />
+      {/* AI Advisor Documentation routes */}
+      <Route path="/fi/dokumentaatio/ai-advisor" element={<LocalizedRoute><DocsAIPage /></LocalizedRoute>} />
+      <Route path="/en/docs/ai-advisor" element={<LocalizedRoute><DocsAIPage /></LocalizedRoute>} />
+      
+      {/* Documentation platform routes (under ai-advisor) */}
+      <Route path="/fi/dokumentaatio/ai-advisor/wordpress" element={<LocalizedRoute><DocsWordPressPage /></LocalizedRoute>} />
+      <Route path="/en/docs/ai-advisor/wordpress" element={<LocalizedRoute><DocsWordPressPage /></LocalizedRoute>} />
+      <Route path="/fi/dokumentaatio/ai-advisor/wix" element={<LocalizedRoute><DocsWixPage /></LocalizedRoute>} />
+      <Route path="/en/docs/ai-advisor/wix" element={<LocalizedRoute><DocsWixPage /></LocalizedRoute>} />
+      <Route path="/fi/dokumentaatio/ai-advisor/webflow" element={<LocalizedRoute><DocsWebflowPage /></LocalizedRoute>} />
+      <Route path="/en/docs/ai-advisor/webflow" element={<LocalizedRoute><DocsWebflowPage /></LocalizedRoute>} />
+      <Route path="/fi/dokumentaatio/ai-advisor/shopify" element={<LocalizedRoute><DocsShopifyPage /></LocalizedRoute>} />
+      <Route path="/en/docs/ai-advisor/shopify" element={<LocalizedRoute><DocsShopifyPage /></LocalizedRoute>} />
+      <Route path="/fi/dokumentaatio/ai-advisor/squarespace" element={<LocalizedRoute><DocsSquarespacePage /></LocalizedRoute>} />
+      <Route path="/en/docs/ai-advisor/squarespace" element={<LocalizedRoute><DocsSquarespacePage /></LocalizedRoute>} />
+      <Route path="/fi/dokumentaatio/ai-advisor/netlify" element={<LocalizedRoute><DocsNetlifyPage /></LocalizedRoute>} />
+      <Route path="/en/docs/ai-advisor/netlify" element={<LocalizedRoute><DocsNetlifyPage /></LocalizedRoute>} />
+      <Route path="/fi/dokumentaatio/ai-advisor/react" element={<LocalizedRoute><DocsReactPage /></LocalizedRoute>} />
+      <Route path="/en/docs/ai-advisor/react" element={<LocalizedRoute><DocsReactPage /></LocalizedRoute>} />
+      <Route path="/fi/dokumentaatio/ai-advisor/html" element={<LocalizedRoute><DocsHTMLPage /></LocalizedRoute>} />
+      <Route path="/en/docs/ai-advisor/html" element={<LocalizedRoute><DocsHTMLPage /></LocalizedRoute>} />
       
       {/* Live Demo routes */}
       <Route path="/:lang/live-demo" element={<LocalizedRoute><LiveDemoPage /></LocalizedRoute>} />
@@ -105,6 +110,24 @@ export const LocalizedRoutes: React.FC = () => {
       <Route path="/:lang/about" element={<LegacyRouteRedirect routeKey="about" />} />
       <Route path="/:lang/websites" element={<LegacyRouteRedirect routeKey="websites" />} />
       <Route path="/:lang/advisor" element={<LegacyRouteRedirect routeKey="advisor" />} />
+      
+      {/* Legacy documentation platform route redirects */}
+      <Route path="/fi/dokumentaatio/wordpress" element={<Navigate to="/fi/dokumentaatio/ai-advisor/wordpress" replace />} />
+      <Route path="/en/docs/wordpress" element={<Navigate to="/en/docs/ai-advisor/wordpress" replace />} />
+      <Route path="/fi/dokumentaatio/wix" element={<Navigate to="/fi/dokumentaatio/ai-advisor/wix" replace />} />
+      <Route path="/en/docs/wix" element={<Navigate to="/en/docs/ai-advisor/wix" replace />} />
+      <Route path="/fi/dokumentaatio/webflow" element={<Navigate to="/fi/dokumentaatio/ai-advisor/webflow" replace />} />
+      <Route path="/en/docs/webflow" element={<Navigate to="/en/docs/ai-advisor/webflow" replace />} />
+      <Route path="/fi/dokumentaatio/shopify" element={<Navigate to="/fi/dokumentaatio/ai-advisor/shopify" replace />} />
+      <Route path="/en/docs/shopify" element={<Navigate to="/en/docs/ai-advisor/shopify" replace />} />
+      <Route path="/fi/dokumentaatio/squarespace" element={<Navigate to="/fi/dokumentaatio/ai-advisor/squarespace" replace />} />
+      <Route path="/en/docs/squarespace" element={<Navigate to="/en/docs/ai-advisor/squarespace" replace />} />
+      <Route path="/fi/dokumentaatio/netlify" element={<Navigate to="/fi/dokumentaatio/ai-advisor/netlify" replace />} />
+      <Route path="/en/docs/netlify" element={<Navigate to="/en/docs/ai-advisor/netlify" replace />} />
+      <Route path="/fi/dokumentaatio/react" element={<Navigate to="/fi/dokumentaatio/ai-advisor/react" replace />} />
+      <Route path="/en/docs/react" element={<Navigate to="/en/docs/ai-advisor/react" replace />} />
+      <Route path="/fi/dokumentaatio/html" element={<Navigate to="/fi/dokumentaatio/ai-advisor/html" replace />} />
+      <Route path="/en/docs/html" element={<Navigate to="/en/docs/ai-advisor/html" replace />} />
       
       {/* Fallback - redirect to default language */}
       <Route path="*" element={<Navigate to="/fi" replace />} />

@@ -73,7 +73,8 @@ const DocsPlatformPage: React.FC<DocsPlatformPageProps> = ({
   const isSEO_V2 = import.meta.env.VITE_SEO_V2 === "true";
   const seoConfig = getSEOConfig(language);
   const docsPath = isFinnish ? "/fi/dokumentaatio" : "/en/docs";
-  const platformPath = `${docsPath}/${platformName}`;
+  const aiAdvisorDocsPath = isFinnish ? "/fi/dokumentaatio/ai-advisor" : "/en/docs/ai-advisor";
+  const platformPath = `${aiAdvisorDocsPath}/${platformName}`;
   const platformDisplayName = isFinnish ? platformNameFi : platformNameEn;
   
   const currentContent = isFinnish ? content.fi : content.en;
@@ -101,6 +102,7 @@ const DocsPlatformPage: React.FC<DocsPlatformPageProps> = ({
           [
             { name: isFinnish ? "Etusivu" : "Home", href: `/${language}` },
             { name: isFinnish ? "Dokumentaatio" : "Documentation", href: docsPath },
+            { name: isFinnish ? "Mitrox AI Advisor" : "Mitrox AI Advisor", href: aiAdvisorDocsPath },
             { name: platformDisplayName, href: platformPath },
           ],
           language
@@ -162,6 +164,7 @@ const DocsPlatformPage: React.FC<DocsPlatformPageProps> = ({
                 segments={[
                   { name: isFinnish ? "Etusivu" : "Home", href: `/${language}` },
                   { name: isFinnish ? "Dokumentaatio" : "Documentation", href: docsPath },
+                  { name: isFinnish ? "Mitrox AI Advisor" : "Mitrox AI Advisor", href: aiAdvisorDocsPath },
                   { name: platformDisplayName, href: platformPath },
                 ]}
                 visible={true}
@@ -171,11 +174,11 @@ const DocsPlatformPage: React.FC<DocsPlatformPageProps> = ({
 
             {/* Back Button */}
             <Link
-              to={docsPath}
+              to={aiAdvisorDocsPath}
               className="inline-flex items-center gap-2 text-body-muted hover:text-white transition-colors mb-8"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span>{isFinnish ? "Takaisin dokumentaatioon" : "Back to Documentation"}</span>
+              <span>{isFinnish ? "Takaisin AI Advisor -dokumentaatioon" : "Back to AI Advisor Documentation"}</span>
             </Link>
 
             {/* Header */}

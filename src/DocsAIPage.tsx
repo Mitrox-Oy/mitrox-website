@@ -1,4 +1,4 @@
-// src/DocsPage.tsx
+// src/DocsAIPage.tsx
 import React from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "./context/LanguageContext";
@@ -23,20 +23,21 @@ import {
   ExternalLink
 } from "lucide-react";
 
-const DocsPage: React.FC = () => {
+const DocsAIPage: React.FC = () => {
   const { language } = useLanguage();
   const isFinnish = language === "fi";
   const isSEO_V2 = import.meta.env.VITE_SEO_V2 === "true";
   const seoConfig = getSEOConfig(language);
   const docsPath = isFinnish ? "/fi/dokumentaatio" : "/en/docs";
+  const aiAdvisorDocsPath = isFinnish ? "/fi/dokumentaatio/ai-advisor" : "/en/docs/ai-advisor";
   
   const meta = isSEO_V2
     ? buildMeta({
-        title: isFinnish ? "Dokumentaatio | Mitrox AI Advisor" : "Documentation | Mitrox AI Advisor",
+        title: isFinnish ? "Mitrox AI Advisor – Dokumentaatio | Mitrox" : "Mitrox AI Advisor – Documentation | Mitrox",
         description: isFinnish
           ? "Asennus- ja upotusohjeet Mitrox AI Advisorille. Opas integraatioon verkkosivuillesi."
           : "Installation and embedding guide for Mitrox AI Advisor. Learn how to integrate it into your website.",
-        path: docsPath,
+        path: aiAdvisorDocsPath,
         keywords: isFinnish
           ? "dokumentaatio, asennus, upotus, integraatio, AI advisor, chatbotti"
           : "documentation, installation, embedding, integration, AI advisor, chatbot",
@@ -51,6 +52,7 @@ const DocsPage: React.FC = () => {
           [
             { name: isFinnish ? "Etusivu" : "Home", href: `/${language}` },
             { name: isFinnish ? "Dokumentaatio" : "Documentation", href: docsPath },
+            { name: isFinnish ? "Mitrox AI Advisor" : "Mitrox AI Advisor", href: aiAdvisorDocsPath },
           ],
           language
         ),
@@ -65,7 +67,7 @@ const DocsPage: React.FC = () => {
       description: isFinnish 
         ? "Sisältää ohjeet Insert Headers and Footers / WPCode -laajennuksilla ja CSS-korjaukset teemakonflikteihin."
         : "Includes steps using Insert Headers and Footers / WPCode, and CSS fixes for theme conflicts.",
-      href: isFinnish ? "/fi/dokumentaatio/wordpress" : "/en/docs/wordpress",
+      href: isFinnish ? "/fi/dokumentaatio/ai-advisor/wordpress" : "/en/docs/ai-advisor/wordpress",
     },
     {
       id: "wix",
@@ -74,7 +76,7 @@ const DocsPage: React.FC = () => {
       description: isFinnish
         ? "Sisältää Custom Code -injektio-ohjeet ja preview-tilan huomautukset."
         : "Includes Custom Code injection instructions and preview-mode notes.",
-      href: isFinnish ? "/fi/dokumentaatio/wix" : "/en/docs/wix",
+      href: isFinnish ? "/fi/dokumentaatio/ai-advisor/wix" : "/en/docs/ai-advisor/wix",
     },
     {
       id: "webflow",
@@ -83,7 +85,7 @@ const DocsPage: React.FC = () => {
       description: isFinnish
         ? "Selittää, miten koodi lisätään Footer Code -kenttään ja julkaistaan oikein."
         : "Explains how to add code via Footer Code and publish correctly.",
-      href: isFinnish ? "/fi/dokumentaatio/webflow" : "/en/docs/webflow",
+      href: isFinnish ? "/fi/dokumentaatio/ai-advisor/webflow" : "/en/docs/ai-advisor/webflow",
     },
     {
       id: "shopify",
@@ -92,7 +94,7 @@ const DocsPage: React.FC = () => {
       description: isFinnish
         ? "Kattaa theme.liquid -tiedoston muokkaamisen ja päällekkäisten elementtien korjauksen."
         : "Covers editing theme.liquid and fixing overlapping elements.",
-      href: isFinnish ? "/fi/dokumentaatio/shopify" : "/en/docs/shopify",
+      href: isFinnish ? "/fi/dokumentaatio/ai-advisor/shopify" : "/en/docs/ai-advisor/shopify",
     },
     {
       id: "squarespace",
@@ -101,7 +103,7 @@ const DocsPage: React.FC = () => {
       description: isFinnish
         ? "Näyttää Code Injection -menetelmän ja suunnitelman vaatimukset."
         : "Shows the Code Injection method and plan requirements.",
-      href: isFinnish ? "/fi/dokumentaatio/squarespace" : "/en/docs/squarespace",
+      href: isFinnish ? "/fi/dokumentaatio/ai-advisor/squarespace" : "/en/docs/ai-advisor/squarespace",
     },
     {
       id: "netlify",
@@ -110,7 +112,7 @@ const DocsPage: React.FC = () => {
       description: isFinnish
         ? "Selittää suoran HTML-injektion tai framework-kohtaisten menetelmien käytön."
         : "Explains direct HTML injection or using framework-specific methods.",
-      href: isFinnish ? "/fi/dokumentaatio/netlify" : "/en/docs/netlify",
+      href: isFinnish ? "/fi/dokumentaatio/ai-advisor/netlify" : "/en/docs/ai-advisor/netlify",
     },
     {
       id: "react",
@@ -119,7 +121,7 @@ const DocsPage: React.FC = () => {
       description: isFinnish
         ? "Tarjoaa esimerkit public/index.html, layout.js ja _document.js -tiedostoille."
         : "Provides public/index.html, layout.js, and _document.js examples.",
-      href: isFinnish ? "/fi/dokumentaatio/react" : "/en/docs/react",
+      href: isFinnish ? "/fi/dokumentaatio/ai-advisor/react" : "/en/docs/ai-advisor/react",
     },
     {
       id: "html",
@@ -128,7 +130,7 @@ const DocsPage: React.FC = () => {
       description: isFinnish
         ? "Sopii räätälöityihin verkkosivuihin, landing-sivuihin ja staattiseen hostaukseen."
         : "Good for custom-built sites, landing pages, and static hosting.",
-      href: isFinnish ? "/fi/dokumentaatio/html" : "/en/docs/html",
+      href: isFinnish ? "/fi/dokumentaatio/ai-advisor/html" : "/en/docs/ai-advisor/html",
     },
   ];
 
@@ -136,11 +138,11 @@ const DocsPage: React.FC = () => {
     <div id="top" className="min-h-screen bg-black relative">
       <SpaceBackground className="top-[100vh]" />
       <SEOHead
-        title={meta?.title || (isFinnish ? "Dokumentaatio | Mitrox" : "Documentation | Mitrox")}
+        title={meta?.title || (isFinnish ? "Mitrox AI Advisor – Dokumentaatio | Mitrox" : "Mitrox AI Advisor – Documentation | Mitrox")}
         description={meta?.description || (isFinnish
           ? "Asennus- ja upotusohjeet Mitrox AI Advisorille"
           : "Installation and embedding guide for Mitrox AI Advisor")}
-        url={meta?.url || `https://mitrox.io${docsPath}`}
+        url={meta?.url || `https://mitrox.io${aiAdvisorDocsPath}`}
         keywords={meta?.keywords}
         language={language}
         locale={meta?.locale}
@@ -156,6 +158,7 @@ const DocsPage: React.FC = () => {
                 segments={[
                   { name: isFinnish ? "Etusivu" : "Home", href: `/${language}` },
                   { name: isFinnish ? "Dokumentaatio" : "Documentation", href: docsPath },
+                  { name: isFinnish ? "Mitrox AI Advisor" : "Mitrox AI Advisor", href: aiAdvisorDocsPath },
                 ]}
                 visible={true}
                 className="mb-8"
@@ -443,5 +446,5 @@ const DocsPage: React.FC = () => {
   );
 };
 
-export default DocsPage;
+export default DocsAIPage;
 
