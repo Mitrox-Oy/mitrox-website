@@ -27,6 +27,23 @@ export const SEO_CONFIG = {
 
   // Page-specific meta and keywords
   pages: {
+    home: {
+      title: "Mitrox – Technology That Feels Effortless",
+      description: "Mitrox – Finnish technology company offering business websites, AI advisor, and chatbot solutions. Premium design and AI solutions in 14 days.",
+      keywords: [
+        "mitrox",
+        "mitrox oy",
+        "business websites",
+        "AI advisor",
+        "chatbot",
+        "finnish technology company",
+        "premium design",
+        "AI solutions"
+      ],
+      breadcrumbs: [
+        { name: "Home", href: "/" }
+      ]
+    },
     websites: {
       title: "Websites for Business in 14 Days | Company Websites | Mitrox",
       description: "Custom business websites in 14 days. SEO optimization, modern design, and maintenance. Start today!",
@@ -55,7 +72,7 @@ export const SEO_CONFIG = {
     },
     advisor: {
       title: "AI Advisor for Business 24/7 | AI Agent | Chatbot | Mitrox",
-      description: "AI advisor and chatbot for businesses 24/7. Automate customer service, grow sales, and free your team. AI Agent and business chatbot solution.",
+      description: "AI advisor, chatbot and AI agent for businesses 24/7. Automate customer service, grow sales, and free your team. Premium AI chatbot solution.",
       keywords: [
         "AI advisor",
         "ai advisor",
@@ -83,9 +100,11 @@ export const SEO_CONFIG = {
     },
     about: {
       title: "About Us – Mitrox Team",
-      description: "Meet the Mitrox team. Finnish specialists creating premium websites and AI solutions. 14-day delivery, quality guaranteed.",
+      description: "Mitrox – Meet our team. Finnish specialists creating premium websites and AI solutions. 14-day delivery, quality guaranteed.",
       keywords: [
         "mitrox",
+        "mitrox oy",
+        "mitrox finland",
         "finnish technology company",
         "AI",
         "websites",

@@ -2,16 +2,19 @@
 <html lang="fi">
   <head>
     <meta charset="UTF-8" />
-    <!-- Favicon for Google Search - Using available files -->
-    <!-- Google recommended: 48x48, 96x96, 144x144 -->
-    <!-- Using 96x96 (available) and web manifest icons for other sizes -->
+    <!-- Favicon for Google Search - Following Google's guidelines -->
+    <!-- Primary favicon.ico (must be square, at least 8x8px, recommended >48x64px) -->
+    <!-- Google supports both 'icon' and 'shortcut icon' for historical reasons -->
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <!-- 64x64px PNG favicon (recommended size for Google Search) - using 96x96 which browsers will scale -->
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon-96x96.png" />
+    <!-- Modern SVG favicon (scalable, for modern browsers) -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- Additional sizes for various platforms and browsers -->
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/web-app-manifest-192x192.png" />
     <link rel="icon" type="image/png" sizes="512x512" href="/web-app-manifest-512x512.png" />
-    <!-- Modern SVG favicon (scalable) -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <!-- Fallback favicon.ico for older browsers -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <!-- Apple Touch Icon -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <!-- Web App Manifest -->

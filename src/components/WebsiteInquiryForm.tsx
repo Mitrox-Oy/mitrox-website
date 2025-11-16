@@ -1059,24 +1059,24 @@ Lisätietoja: ${formData.message || "Ei"}
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <div className="relative w-full max-w-3xl max-h-[90vh] bg-black rounded-2xl border border-white/10 shadow-2xl overflow-hidden flex flex-col">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4 bg-black/80 backdrop-blur-sm">
+      <div className="relative w-full max-w-3xl max-h-[95vh] sm:max-h-[90vh] bg-black rounded-xl sm:rounded-2xl border border-white/10 shadow-2xl overflow-hidden flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-white/10">
-          <div>
-            <h2 className="text-2xl font-medium text-white mb-1">
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-white/10">
+          <div className="flex-1 min-w-0">
+            <h2 className="text-lg sm:text-2xl font-medium text-white mb-1 truncate">
               {isFinnish ? "Verkkosivuhakemus" : "Website inquiry"}
             </h2>
-            <p className="text-sm text-gray-400">
+            <p className="text-xs sm:text-sm text-gray-400">
               {isFinnish ? "Vaihe" : "Step"} {currentStep + 1} / {totalSteps}
             </p>
           </div>
           <button
             onClick={onClose}
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-black/60 border border-white/20 hover:bg-black/80 transition-colors text-white"
+            className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-black/60 border border-white/20 hover:bg-black/80 transition-colors text-white flex-shrink-0 ml-2"
             aria-label={isFinnish ? "Sulje" : "Close"}
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
 
@@ -1097,9 +1097,9 @@ Lisätietoja: ${formData.message || "Ei"}
             }
           }}
         >
-          <div className="p-6">
+          <div className="p-4 sm:p-6">
             {submitStatus === "success" ? (
-              <div className="py-10 text-center">
+              <div className="py-6 sm:py-10 text-center">
                 <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4">
                   <svg
                     className="w-8 h-8 text-green-400"
@@ -1154,7 +1154,7 @@ Lisätietoja: ${formData.message || "Ei"}
               </div>
             ) : (
               <>
-                <h3 className="text-xl font-medium text-white mb-6">
+                <h3 className="text-lg sm:text-xl font-medium text-white mb-4 sm:mb-6">
                   {steps[currentStep].title}
                 </h3>
 
@@ -1170,7 +1170,7 @@ Lisätietoja: ${formData.message || "Ei"}
                   </p>
                 )}
 
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                   {steps[currentStep].fields.map((field) => {
                     // Hide companyImageOther - no longer needed with new options
                     if (field.name === "companyImageOther") {
@@ -1497,7 +1497,7 @@ Lisätietoja: ${formData.message || "Ei"}
           {submitStatus === "idle" && (
             <div className="border-t border-white/10">
               {/* Tip text */}
-              <div className="px-6 pt-4 pb-3">
+              <div className="px-4 sm:px-6 pt-3 sm:pt-4 pb-2 sm:pb-3">
                 <p className="text-xs text-gray-400 leading-relaxed text-center">
                   {isFinnish 
                     ? "Vinkki: Mitä tarkemmin vastaat kysymyksiin, sitä nopeammin pääsemme käynnistämään projektin ja varmistamaan täydellisen lopputuloksen."
@@ -1506,22 +1506,22 @@ Lisätietoja: ${formData.message || "Ei"}
               </div>
 
               {/* Progress bar and buttons */}
-              <div className="flex items-center justify-between px-6 pb-6">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-0 px-4 sm:px-6 pb-4 sm:pb-6">
               <button
                 type="button"
                 onClick={handlePrevious}
                 disabled={currentStep === 0}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white hover:bg-black/60 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2 rounded-lg bg-black/40 border border-white/10 text-white hover:bg-black/60 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
               >
                 <ChevronLeft className="w-4 h-4" />
                 {isFinnish ? "Edellinen" : "Previous"}
               </button>
 
-              <div className="flex gap-2">
+              <div className="flex gap-1.5 sm:gap-2 order-first sm:order-none">
                 {steps.map((_, index) => (
                   <div
                     key={index}
-                    className={`w-2 h-2 rounded-full transition-colors ${
+                    className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-colors ${
                       index === currentStep
                         ? "bg-white"
                         : index < currentStep
@@ -1537,7 +1537,7 @@ Lisätietoja: ${formData.message || "Ei"}
                   type="button"
                   onClick={handleNext}
                   disabled={!canProceed()}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white text-black hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                  className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2 rounded-lg bg-white text-black hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm sm:text-base"
                 >
                   {isFinnish ? "Seuraava" : "Next"}
                   <ChevronRight className="w-4 h-4" />
@@ -1547,7 +1547,7 @@ Lisätietoja: ${formData.message || "Ei"}
                   type="button"
                   onClick={handleSubmit}
                   disabled={!canProceed() || isSubmitting}
-                  className="flex items-center gap-2 px-6 py-2 rounded-lg bg-white text-black hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                  className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2.5 sm:py-2 rounded-lg bg-white text-black hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm sm:text-base"
                 >
                   {isSubmitting ? (
                     <>

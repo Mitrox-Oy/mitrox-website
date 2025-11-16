@@ -3,21 +3,20 @@
 ## Google's Requirements
 
 Google recommends favicons in the following sizes:
-- **48x48 pixels** (minimum)
-- **96x96 pixels** (recommended)
-- **144x144 pixels** (for high-DPI displays)
+- **At least 8x8 pixels** (minimum requirement)
+- **Larger than 48x48 pixels** (recommended)
+- **64x64 pixels** (optimal size for Google Search)
+- **96x96 pixels** (for high-DPI displays)
 
 ## Files Needed
 
 Create the following favicon files in the `public/` directory:
 
-1. **favicon-48x48.png** - 48x48 pixels, PNG format
-2. **favicon-96x96.png** - 96x96 pixels, PNG format
-3. **favicon-144x144.png** - 144x144 pixels, PNG format
-4. **favicon-32x32.png** - 32x32 pixels, PNG format (standard browser size)
-5. **favicon-16x16.png** - 16x16 pixels, PNG format (standard browser size)
-6. **favicon.ico** - Multi-size ICO file (fallback for older browsers)
-7. **apple-touch-icon.png** - 180x180 pixels (for iOS devices)
+1. **favicon.ico** - Multi-size ICO file containing at least 64x64px (primary for Google Search)
+2. **favicon-64x64.png** - 64x64 pixels, PNG format (recommended size for Google Search)
+3. **favicon-96x96.png** - 96x96 pixels, PNG format (for high-DPI displays)
+4. **favicon.svg** - SVG format (scalable, for modern browsers)
+5. **apple-touch-icon.png** - 180x180 pixels (for iOS devices)
 
 ## How to Create Favicons
 

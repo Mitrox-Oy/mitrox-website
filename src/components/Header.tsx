@@ -36,12 +36,12 @@ const Header: React.FC = () => {
   const productItems = useMemo(
     () => [
       {
-        label: language === "fi" ? "Verkkosivut" : "Websites",
+        label: "Mitrox Sites",
         href: getFullLocalizedPath("websites", language),
         subtitle: language === "fi" ? "Suunniteltu yrityksesi menestykseen" : "Designed for your business success",
       },
       {
-        label: language === "fi" ? "Tekoälyneuvoja" : "AI Advisor",
+        label: "Mitrox AI Advisor",
         href: getFullLocalizedPath("advisor", language),
         subtitle: language === "fi" ? "Älykäs kasvukumppanisi" : "Your 24/7 digital team member",
       },

@@ -163,6 +163,63 @@ export function organizationSchema(language: Language = 'fi') {
     "sameAs": [
       seoConfig.brand.social.instagram,
       seoConfig.brand.social.youtube
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": language === 'fi' ? "Mitroxin palvelut" : "Mitrox Services",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": language === 'fi' ? "Verkkosivut yrityksille" : "Business Websites"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": language === 'fi' ? "Tekoälyneuvoja" : "AI Advisor"
+          }
+        }
+      ]
+    }
+  };
+}
+
+/**
+ * LocalBusiness schema (JSON-LD) - for local SEO
+ */
+export function localBusinessSchema(language: Language = 'fi') {
+  const seoConfig = getSEOConfig(language);
+  return {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": `${seoConfig.brand.url}#organization`,
+    "name": seoConfig.brand.name,
+    "image": seoConfig.brand.logo,
+    "url": seoConfig.brand.url,
+    "description": seoConfig.brand.description,
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": seoConfig.brand.address.country,
+      "addressCountryName": seoConfig.brand.address.countryName
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": seoConfig.brand.phone,
+      "contactType": "customer service",
+      "email": seoConfig.brand.email,
+      "availableLanguage": ["Finnish", "English"]
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": seoConfig.brand.address.countryName
+    },
+    "priceRange": "$$",
+    "sameAs": [
+      seoConfig.brand.social.instagram,
+      seoConfig.brand.social.youtube
     ]
   };
 }
@@ -214,8 +271,15 @@ export function serviceSchema({ type, name, areaServed = 'FI', language = 'fi', 
   const seoConfig = getSEOConfig(language);
   const baseSchema: any = {
     "@context": "https://schema.org",
-    "@type": type === 'websites' ? "ProfessionalService" : "Service",
+    "@type": type === 'websites' ? "ProfessionalService" : "SoftwareApplication",
     "name": name,
+    "description": language === 'fi' 
+      ? (type === 'websites' 
+          ? "Räätälöidyt verkkosivut ja nettisivut yritykselle 14 päivässä. Hakukoneoptimointi, moderni design ja ylläpito."
+          : "Tekoälyneuvoja, tekoälybotti ja chatbot yrityksille 24/7. Automatisoi asiakaspalvelu ja kasvata myyntiä.")
+      : (type === 'websites'
+          ? "Custom business websites in 14 days. SEO optimization, modern design, and maintenance."
+          : "AI advisor, chatbot and AI agent for businesses 24/7. Automate customer service and grow sales."),
     "provider": {
       "@type": "Organization",
       "name": seoConfig.brand.name,
@@ -224,6 +288,11 @@ export function serviceSchema({ type, name, areaServed = 'FI', language = 'fi', 
     "areaServed": {
       "@type": "Country",
       "name": areaServed === 'FI' ? "Finland" : areaServed
+    },
+    "offers": {
+      "@type": "Offer",
+      "availability": "https://schema.org/InStock",
+      "priceCurrency": "EUR"
     }
   };
 

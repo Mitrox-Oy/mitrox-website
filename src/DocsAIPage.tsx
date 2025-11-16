@@ -135,7 +135,7 @@ const DocsAIPage: React.FC = () => {
   ];
 
   return (
-    <div id="top" className="min-h-screen bg-black relative">
+    <div id="top" className="min-h-screen bg-black relative flex flex-col">
       <SpaceBackground className="top-[100vh]" />
       <SEOHead
         title={meta?.title || (isFinnish ? "Mitrox AI Advisor – Dokumentaatio | Mitrox" : "Mitrox AI Advisor – Documentation | Mitrox")}

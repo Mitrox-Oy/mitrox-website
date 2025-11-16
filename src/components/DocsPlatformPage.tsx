@@ -141,7 +141,7 @@ const DocsPlatformPage: React.FC<DocsPlatformPageProps> = ({
   );
 
   return (
-    <div id="top" className="min-h-screen bg-black relative">
+    <div id="top" className="min-h-screen bg-black relative flex flex-col">
       <SpaceBackground className="top-[100vh]" />
       <SEOHead
         title={meta?.title || `${platformDisplayName} – ${isFinnish ? "Dokumentaatio" : "Documentation"} | Mitrox`}

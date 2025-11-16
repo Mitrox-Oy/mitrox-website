@@ -192,7 +192,7 @@ export default function WebsiteBusinessPage() {
     : [];
 
   return (
-    <div id="top" className="min-h-screen bg-black relative">
+    <div id="top" className="min-h-screen bg-black relative flex flex-col">
       {/* Space background for everything except hero */}
       <SpaceBackground className="top-[100vh]" />
       <SEOHead

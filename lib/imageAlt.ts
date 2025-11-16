@@ -28,7 +28,7 @@ export function getImageAlt(
     const defaults: Record<string, string> = {
       logo: `${seoConfig.brand.nameShort} logo`,
       hero: `${seoConfig.brand.name} - ${seoConfig.brand.description}`,
-      portfolio: 'Esimerkki Mitroxin toteuttamasta verkkosivustosta',
+      portfolio: 'Esimerkki Mitroxin toteuttamasta verkkosivustosta - verkkosivut yritykselle',
       team: 'Mitroxin tiimin jäsen',
       default: `${seoConfig.brand.name} - ${seoConfig.brand.description}`
     };
@@ -38,7 +38,7 @@ export function getImageAlt(
     const defaults: Record<string, string> = {
       logo: `${seoConfig.brand.nameShort} logo`,
       hero: `${seoConfig.brand.name} - ${seoConfig.brand.description}`,
-      portfolio: 'Example website created by Mitrox',
+      portfolio: 'Example business website created by Mitrox',
       team: 'Mitrox team member',
       default: `${seoConfig.brand.name} - ${seoConfig.brand.description}`
     };
