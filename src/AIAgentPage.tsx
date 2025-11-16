@@ -8,8 +8,10 @@ import BottomNavbar from "./components/BottomNavbar";
 import SEOHead from "./components/SEOHead";
 import SEOEnhanced from "./components/SEOEnhanced";
 import TrustSection from "./components/TrustSection";
+import DataBasedHeadline from "./components/DataBasedHeadline";
 import ProcessSection from "./components/ProcessSection";
 import Features from "./components/Features";
+import SavingsCalculator from "./components/SavingsCalculator";
 import Pricing from "./components/Pricing";
 import FAQ from "./components/FAQ";
 import ContactForm from "./components/ContactForm";
@@ -218,9 +220,11 @@ export default function AIAgentPage() {
       <ErrorBoundary>
         <AIAgentHero />
         <TrustSection />
+        <DataBasedHeadline />
         <ProcessSection type="advisor" />
         <section className="relative bg-black">
           <Features />
+          <SavingsCalculator />
           <Pricing />
           <FAQ type="advisor" emitSchema={isSEO_V2} />
         </section>
