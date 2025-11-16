@@ -1000,7 +1000,7 @@ Lisätietoja: ${formData.message || "Ei"}
             : `Website inquiry: ${formData.companyName}`,
           from_name: formData.name,
           from_email: formData.email,
-          to: "info@mitrox.io",
+          to: "johannes.hurmerinta@mitrox.io",
           // Send structured JSON for AI processing
           data: JSON.stringify(formattedData),
           // Human-readable email body
