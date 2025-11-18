@@ -166,6 +166,7 @@ const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = (
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
   const [generatedPrompt, setGeneratedPrompt] = useState<string>("");
+  const [botcheck, setBotcheck] = useState("");
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -994,13 +995,18 @@ Lisätietoja: ${formData.message || "Ei"}
           Accept: "application/json",
         },
         body: JSON.stringify({
-          access_key: "193da3a3-3009-437b-8d44-2c1a539273fb",
+          access_key: "e2fb1df8-082a-4ef4-a2b8-7a9d7f2a7bb6",
           subject: isFinnish 
             ? `Verkkosivuhakemus: ${formData.companyName}`
             : `Website inquiry: ${formData.companyName}`,
-          from_name: formData.name,
-          from_email: formData.email,
           to: "johannes.hurmerinta@mitrox.io",
+          name: formData.name,
+          email: formData.email,
+          reply_to: formData.email,
+          company: formData.companyName,
+          phone: formData.phone,
+          page_url: typeof window !== "undefined" ? window.location.href : "",
+          botcheck,
           // Send structured JSON for AI processing
           data: JSON.stringify(formattedData),
           // Human-readable email body
@@ -1097,6 +1103,19 @@ Lisätietoja: ${formData.message || "Ei"}
             }
           }}
         >
+          <div className="sr-only" aria-hidden="true">
+            <label htmlFor="botcheck">
+              {isFinnish ? "Jätä tyhjäksi (roskapostin esto)" : "Leave empty (spam prevention)"}
+            </label>
+            <input
+              id="botcheck"
+              name="botcheck"
+              tabIndex={-1}
+              autoComplete="off"
+              value={botcheck}
+              onChange={(e) => setBotcheck(e.target.value)}
+            />
+          </div>
           <div className="p-4 sm:p-6">
             {submitStatus === "success" ? (
               <div className="py-6 sm:py-10 text-center">
