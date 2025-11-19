@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Globe, Bot, Sparkles, ArrowUpRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
+import { getFullLocalizedPath } from "../utils/routeMapping";
 
 type Product = {
   id: string;
@@ -31,7 +32,7 @@ const ProductsSection: React.FC = () => {
           ? "Modernit ja käyttäjäystävälliset verkkosivut, jotka kertovat yrityksesi tarinan ja kasvattavat liiketoimintaasi. Yksilöllinen design joka vastaa brändisi visiota."
           : "Modern websites that express your brand and turn visitors into customers. Tailored design that reflects your vision.",
         buttonText: isFinnish ? "Tutustu portfolioon" : "Explore our work",
-        link: "/websites",
+        link: getFullLocalizedPath("websites", language),
         action: null,
         comingSoon: false,
       },
@@ -44,7 +45,7 @@ const ProductsSection: React.FC = () => {
           ? "Premium-tason tekoälyneuvoja, joka ohjaa, myy ja tukee asiakkaitasi 24/7. Rakenna luottamusta, karsi manuaalista työtä ja skaalaa myyntiäsi ilman lisäresursseja."
           : "The Mitrox AI Advisor helps you serve customers, close sales, and stay connected — without adding extra workload.",
         buttonText: isFinnish ? "Tutustu ratkaisuun" : "Explore the Advisor",
-        link: "/advisor",
+        link: getFullLocalizedPath("advisor", language),
         action: null,
         comingSoon: false,
       },
@@ -61,7 +62,7 @@ const ProductsSection: React.FC = () => {
         comingSoon: true,
       },
     ],
-    [isFinnish]
+    [isFinnish, language]
   );
 
   return (
