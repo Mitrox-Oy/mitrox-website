@@ -100,7 +100,7 @@ const ProductsSection: React.FC = () => {
                 </span>
               )}
               <div className="relative z-10 flex h-full flex-col gap-6">
-                <div className="flex flex-col gap-2">
+                <div className="flex min-h-[4.5rem] flex-col gap-2">
                   <h3 className="text-[1.6rem] font-medium text-white">
                     {product.title}
                   </h3>

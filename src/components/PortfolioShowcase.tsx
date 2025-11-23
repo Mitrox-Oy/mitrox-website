@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import visionHaircare from "../assets/visionhaircare.png";
 import claroYoga from "../assets/claro-yoga.png";
 import homewell from "../assets/homewell.png";
 import nordhavnBistro from "../assets/nordhavn-bistro.png";
@@ -53,8 +54,8 @@ const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ items }) => {
     },
     {
       id: "6",
-      image: studioKa,
-      company: "Studio—KA",
+      image: visionHaircare,
+      company: "Vision Haircare",
     },
   ];
 
