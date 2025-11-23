@@ -200,10 +200,12 @@ const ProcessSection: React.FC<ProcessSectionProps> = ({ type = "website" }) => 
 
                     {/* Copy */}
                     <div className="space-y-3 md:max-w-xs md:flex-1 md:flex md:flex-col">
-                      <p className="text-sm leading-relaxed text-body-subtle">
-                        {step.desc}
-                      </p>
-                      <div className="md:flex-1" />
+                      <div className="md:min-h-[6rem] md:flex md:flex-col">
+                        <p className="text-sm leading-relaxed text-body-subtle">
+                          {step.desc}
+                        </p>
+                        <div className="md:flex-1" />
+                      </div>
                       <p className="text-sm leading-relaxed text-body-muted border-l border-white/[0.08] pl-4 md:border-none md:pl-0 md:border-t md:pt-3">
                         {step.details}
                       </p>
