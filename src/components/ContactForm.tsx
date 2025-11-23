@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { MapPin } from "lucide-react";
+import { MapPin, ChevronDown } from "lucide-react";
 import SpaceBackground from "./SpaceBackground";
 import { useLanguage } from "../context/LanguageContext";
 import { useLocalizedSectionId } from "../hooks/useLocalizedSectionId";
@@ -60,7 +60,9 @@ const ContactForm: React.FC = () => {
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [botcheck, setBotcheck] = useState("");
+  const [isPreferredContactOpen, setIsPreferredContactOpen] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+  const preferredContactRef = useRef<HTMLDivElement | null>(null);
   const { language } = useLanguage();
   const isFinnish = language === "fi";
   const contactId = useLocalizedSectionId("contact");
@@ -71,6 +73,7 @@ const ContactForm: React.FC = () => {
     company: "",
     phone: "",
     message: "",
+    preferredContact: "",
   });
 
   // Fade-in
@@ -87,9 +90,26 @@ const ContactForm: React.FC = () => {
     return () => window.removeEventListener("keydown", onKey);
   }, [isModalOpen]);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (preferredContactRef.current && !preferredContactRef.current.contains(event.target as Node)) {
+        setIsPreferredContactOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((p) => ({ ...p, [name]: value }));
+  };
+
+  const handlePreferredContactChange = (value: string) => {
+    setFormData((p) => ({ ...p, preferredContact: value }));
+    setIsPreferredContactOpen(false);
   };
 
   const invalidReason = () => {
@@ -127,6 +147,7 @@ const ContactForm: React.FC = () => {
           message: formData.message,
           company: formData.company,
           phone: formData.phone,
+          preferred_contact: formData.preferredContact,
           page_url: typeof window !== "undefined" ? window.location.href : "",
           botcheck,
         }),
@@ -139,7 +160,7 @@ const ContactForm: React.FC = () => {
         isFinnish ? "Kiitos viestistä! Otamme sinuun yhteyttä pian." : "Thanks for your message! We’ll get back to you shortly."
       );
       setIsModalOpen(true);
-      setFormData({ name: "", email: "", company: "", phone: "", message: "" });
+      setFormData({ name: "", email: "", company: "", phone: "", message: "", preferredContact: "" });
       setBotcheck("");
     } catch (err: any) {
       setErrorMsg(err?.message || (isFinnish ? "Jotain meni pieleen. Yritä hetken päästä uudelleen." : "Something went wrong. Please try again in a moment."));
@@ -330,6 +351,79 @@ const ContactForm: React.FC = () => {
                   className="w-full rounded-lg border border-white/10 bg-black px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder={isFinnish ? "+358 40 123 4567" : "+358 40 123 4567"}
                 />
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <label htmlFor="preferredContact" className="text-sm text-gray-300">
+                {isFinnish ? "Mieluisin yhteydenottotapa" : "Preferred contact method"}
+              </label>
+              <div 
+                ref={preferredContactRef}
+                className="relative"
+              >
+                <button
+                  type="button"
+                  id="preferredContact"
+                  onClick={() => setIsPreferredContactOpen(!isPreferredContactOpen)}
+                  className={`w-full rounded-lg border text-left flex items-center justify-between transition-colors px-4 py-3 ${
+                    formData.preferredContact
+                      ? "bg-black border-white/10 text-white"
+                      : "bg-black border-white/10 text-gray-400"
+                  } hover:border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                >
+                  <span>
+                    {formData.preferredContact === "email"
+                      ? (isFinnish ? "Sähköposti" : "Email")
+                      : formData.preferredContact === "phone"
+                      ? (isFinnish ? "Puhelin" : "Phone")
+                      : formData.preferredContact === "text"
+                      ? (isFinnish ? "Tekstiviesti" : "Text message")
+                      : (isFinnish ? "Valitse..." : "Choose...")}
+                  </span>
+                  <ChevronDown 
+                    className={`w-4 h-4 transition-transform ${isPreferredContactOpen ? "rotate-180" : ""}`}
+                  />
+                </button>
+                {isPreferredContactOpen && (
+                  <div 
+                    className="absolute z-50 w-full rounded-lg bg-black/95 backdrop-blur-xl border border-white/10 shadow-2xl overflow-hidden top-full mt-2"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => handlePreferredContactChange("email")}
+                      className={`w-full px-4 py-3 text-left text-sm transition-colors ${
+                        formData.preferredContact === "email"
+                          ? "bg-white/10 text-white"
+                          : "text-gray-300 hover:bg-white/5 hover:text-white"
+                      }`}
+                    >
+                      {isFinnish ? "Sähköposti" : "Email"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handlePreferredContactChange("phone")}
+                      className={`w-full px-4 py-3 text-left text-sm transition-colors ${
+                        formData.preferredContact === "phone"
+                          ? "bg-white/10 text-white"
+                          : "text-gray-300 hover:bg-white/5 hover:text-white"
+                      }`}
+                    >
+                      {isFinnish ? "Puhelin" : "Phone"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handlePreferredContactChange("text")}
+                      className={`w-full px-4 py-3 text-left text-sm transition-colors ${
+                        formData.preferredContact === "text"
+                          ? "bg-white/10 text-white"
+                          : "text-gray-300 hover:bg-white/5 hover:text-white"
+                      }`}
+                    >
+                      {isFinnish ? "Tekstiviesti" : "Text message"}
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 

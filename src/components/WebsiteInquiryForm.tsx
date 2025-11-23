@@ -42,6 +42,7 @@ interface FormData {
   name: string;
   email: string;
   phone: string;
+  preferredContact: string;
   message: string;
   
   // Lisäpalvelut
@@ -118,14 +119,14 @@ const INTEGRATION_OPTIONS = [
 const ADDITIONAL_SERVICES_OPTIONS = [
   "Mitrox Advisor – 55 €/kk alkaen",
   "Lisäkieli (Suomi ↔ Englanti) – 199 € alkaen",
-  "Laajennettu hakukoneoptimointi – 69 €/kk",
+  "Laajennettu hakukoneoptimointi – 79 €/kk alkaen",
   "Ei lisäpalveluita tällä hetkellä",
 ];
 
 const ADDITIONAL_SERVICES_DESCRIPTIONS: { [key: string]: string } = {
   "Mitrox Advisor – 55 €/kk alkaen": "24/7 verkkosivun asiakasavustaja, joka vastaa kävijöiden kysymyksiin ja ohjaa oikeaan suuntaan.",
   "Lisäkieli (Suomi ↔ Englanti) – 199 € alkaen": "Ammattitason käännös ja viimeistely viidelle sivulle, sisältäen SEO-optimoinnin.",
-  "Laajennettu hakukoneoptimointi – 69 €/kk": "Jatkuva hakukonenäkyvyyden kehitys ja säännölliset raportit.",
+  "Laajennettu hakukoneoptimointi – 79 €/kk alkaen": "Jatkuva hakukonenäkyvyyden kehitys ja säännölliset raportit.",
 };
 
 const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
@@ -158,6 +159,7 @@ const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = (
     name: "",
     email: "",
     phone: "",
+    preferredContact: "",
     message: "",
     additionalServices: [],
     additionalRequests: "",
@@ -196,16 +198,16 @@ const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = (
       ? (formData.languages.includes("Suomi") && formData.languages.includes("Englanti"))
       : (formData.languages.includes("Finnish") && formData.languages.includes("English")));
     const needsExtendedSEO = isFinnish 
-      ? formData.seo === "Kyllä, tarvitsen laajempaa SEO-optimointia"
-      : formData.seo === "Yes, I need extended SEO optimization";
+      ? formData.seo === "Kyllä, tarvitsen laajempaa hakukoneoptimointia"
+      : formData.seo === "Yes, I need extended search engine optimization";
     const hasMitroxAdvisor = formData.integrations.includes("mitrox_advisor");
     
     const languageService = isFinnish 
       ? "Lisäkieli (Suomi ↔ Englanti) – 199 € alkaen"
       : "Additional language (Finnish ↔ English) – €199 starting";
     const seoService = isFinnish
-      ? "Laajennettu hakukoneoptimointi – 69 €/kk"
-      : "Extended search engine optimization – €69/month";
+      ? "Laajennettu hakukoneoptimointi – 79 €/kk alkaen"
+      : "Extended search engine optimization – €79/month starting";
     const advisorService = isFinnish
       ? "Mitrox Advisor – 55 €/kk alkaen"
       : "Mitrox Advisor – €55/month starting";
@@ -375,12 +377,12 @@ const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = (
     isFinnish ? [
       "Mitrox Advisor – 55 €/kk alkaen",
       "Lisäkieli (Suomi ↔ Englanti) – 199 € alkaen",
-      "Laajennettu hakukoneoptimointi – 69 €/kk",
+      "Laajennettu hakukoneoptimointi – 79 €/kk alkaen",
       "Ei lisäpalveluita tällä hetkellä",
     ] : [
       "Mitrox Advisor – €55/month starting",
       "Additional language (Finnish ↔ English) – €199 starting",
-      "Extended search engine optimization – €69/month",
+      "Extended search engine optimization – €79/month starting",
       "No additional services at this time",
     ], [isFinnish]
   );
@@ -389,11 +391,11 @@ const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = (
     ...(isFinnish ? {
       "Mitrox Advisor – 55 €/kk alkaen": "24/7 verkkosivun asiakasavustaja, joka vastaa kävijöiden kysymyksiin ja ohjaa oikeaan suuntaan.",
       "Lisäkieli (Suomi ↔ Englanti) – 199 € alkaen": "Ammattitason käännös ja viimeistely viidelle sivulle, sisältäen SEO-optimoinnin.",
-      "Laajennettu hakukoneoptimointi – 69 €/kk": "Jatkuva hakukonenäkyvyyden kehitys ja säännölliset raportit.",
+      "Laajennettu hakukoneoptimointi – 79 €/kk alkaen": "Jatkuva hakukonenäkyvyyden kehitys ja säännölliset raportit.",
     } : {
       "Mitrox Advisor – €55/month starting": "24/7 website customer assistant that answers visitor questions and guides them in the right direction.",
       "Additional language (Finnish ↔ English) – €199 starting": "Professional translation and finishing for five pages, including SEO optimization.",
-      "Extended search engine optimization – €69/month": "Continuous search engine visibility development and regular reports.",
+      "Extended search engine optimization – €79/month starting": "Continuous search engine visibility development and regular reports.",
     })
   }), [isFinnish]);
 
@@ -690,13 +692,13 @@ const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = (
         },
         {
           name: "seo",
-          label: isFinnish ? "Hakukoneoptimointi (SEO) *" : "Search engine optimization (SEO) *",
+          label: isFinnish ? "Hakukoneoptimointi *" : "Search engine optimization *",
           type: "select",
           options: isFinnish ? [
-            "Kyllä, tarvitsen laajempaa SEO-optimointia",
+            "Kyllä, tarvitsen laajempaa hakukoneoptimointia",
             "Perustaso riittää (sisältyy palveluun)",
           ] : [
-            "Yes, I need extended SEO optimization",
+            "Yes, I need extended search engine optimization",
             "Basic level is sufficient (included in service)",
           ],
           required: true,
@@ -741,6 +743,20 @@ const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = (
           name: "phone",
           label: isFinnish ? "Puhelinnumero" : "Phone number",
           type: "tel",
+        },
+        {
+          name: "preferredContact",
+          label: isFinnish ? "Mieluisin yhteydenottotapa" : "Preferred contact method",
+          type: "select",
+          options: isFinnish ? [
+            "Sähköposti",
+            "Puhelin",
+            "Tekstiviesti",
+          ] : [
+            "Email",
+            "Phone",
+            "Text message",
+          ],
         },
         {
           name: "message",
@@ -942,6 +958,7 @@ const WebsiteInquiryForm: React.FC<{ isOpen: boolean; onClose: () => void }> = (
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
+          preferred_contact: formData.preferredContact,
           message: formData.message,
         },
         additional_services: {
@@ -983,6 +1000,7 @@ Yhteystiedot:
 Nimi: ${formData.name}
 Sähköposti: ${formData.email}
 Puhelin: ${formData.phone || "Ei määritelty"}
+Mieluisin yhteydenottotapa: ${formData.preferredContact || (isFinnish ? "Ei määritelty" : "Not specified")}
 
 Lisätietoja: ${formData.message || "Ei"}
         `.trim(),
@@ -1005,6 +1023,7 @@ Lisätietoja: ${formData.message || "Ei"}
           reply_to: formData.email,
           company: formData.companyName,
           phone: formData.phone,
+          preferred_contact: formData.preferredContact,
           page_url: typeof window !== "undefined" ? window.location.href : "",
           botcheck,
           // Send structured JSON for AI processing
@@ -1052,6 +1071,7 @@ Lisätietoja: ${formData.message || "Ei"}
             name: "",
             email: "",
             phone: "",
+            preferredContact: "",
             message: "",
             additionalServices: [],
             additionalRequests: "",
