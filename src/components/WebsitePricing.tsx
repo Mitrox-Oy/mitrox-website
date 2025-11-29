@@ -23,6 +23,7 @@ const WebsitePricing: React.FC = () => {
   const [includeLanguage, setIncludeLanguage] = useState(false);
   const [includeAIBot, setIncludeAIBot] = useState(false);
   const [includeSEO, setIncludeSEO] = useState(false);
+  const [includeBooking, setIncludeBooking] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   const MONTHLY_PRICE = 39;
@@ -56,6 +57,12 @@ const WebsitePricing: React.FC = () => {
     : billing === "yearly"
     ? 84
     : 79;
+  // Mitrox Booking System: Kuukausitilaus 15€/kk, Vuosittain 12€/kk, 3 vuotta 10€/kk
+  const BOOKING_MONTHLY = billing === "monthly" 
+    ? 15 
+    : billing === "yearly"
+    ? 12
+    : 10;
 
   const calculateSetupFee = () => {
     const extraPages = Math.max(0, pageCount - 5);
@@ -70,7 +77,7 @@ const WebsitePricing: React.FC = () => {
 
   const totalSetupFee = calculateSetupFee() + calculateLanguageFee();
   const baseMonthlyFee = EFFECTIVE_MONTHLY;
-  const monthlyFee = baseMonthlyFee + (includeAIBot ? AI_BOT_MONTHLY : 0) + (includeSEO ? SEO_MONTHLY : 0);
+  const monthlyFee = baseMonthlyFee + (includeAIBot ? AI_BOT_MONTHLY : 0) + (includeSEO ? SEO_MONTHLY : 0) + (includeBooking ? BOOKING_MONTHLY : 0);
 
   // Säästöt lisäpalveluista
   const AI_BOT_MONTHLY_PRICE = 69; // Kuukausitilauksen hinta verkkosivun lisäpalveluna
@@ -82,6 +89,10 @@ const WebsitePricing: React.FC = () => {
   const SEO_MONTHLY_PRICE = 89; // Kuukausitilauksen hinta
   const SEO_YEARLY_SAVINGS = billing === "yearly" ? (SEO_MONTHLY_PRICE - SEO_MONTHLY) * 12 : 0;
   const SEO_3YEAR_SAVINGS = billing === "3year" ? (SEO_MONTHLY_PRICE - SEO_MONTHLY) * 36 : 0;
+  
+  const BOOKING_MONTHLY_PRICE = 15; // Kuukausitilauksen hinta
+  const BOOKING_YEARLY_SAVINGS = billing === "yearly" && includeBooking ? (BOOKING_MONTHLY_PRICE - BOOKING_MONTHLY) * 12 : 0;
+  const BOOKING_3YEAR_SAVINGS = billing === "3year" && includeBooking ? (BOOKING_MONTHLY_PRICE - BOOKING_MONTHLY) * 36 : 0;
 
   return (
     <section id={pricingId} className="relative py-40 md:py-48 px-4 sm:px-6 lg:px-8 bg-black font-inter">
@@ -252,6 +263,31 @@ const WebsitePricing: React.FC = () => {
           </button>
         </div>
 
+        {/* Booking Calendar Toggle */}
+        <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10">
+          <div>
+            <label className="text-sm font-medium text-white block mb-1">
+              {isFinnish ? "Mitrox Ajanvarausjärjestelmä" : "Mitrox Booking System"}
+            </label>
+            <p className="text-xs text-gray-400">
+              {isFinnish ? "Ajanvaraus, joka toimii puolestasi." : "Booking made effortless."} (+{formatEUR(BOOKING_MONTHLY)}/{isFinnish ? "kk" : "mo"})
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setIncludeBooking(!includeBooking)}
+            className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 ${
+              includeBooking ? "bg-white" : "bg-white/20"
+            }`}
+          >
+            <span
+              className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-black shadow ring-0 transition duration-200 ease-in-out ${
+                includeBooking ? "translate-x-5" : "translate-x-0"
+              }`}
+            />
+          </button>
+        </div>
+
                 {/* Price Breakdown */}
                 <div className="space-y-4 pt-6 border-t border-white/10">
                   <div className="flex justify-between items-center">
@@ -297,11 +333,12 @@ const WebsitePricing: React.FC = () => {
                       <span className="text-lg font-medium text-white">
                         {formatEUR(monthlyFee)} /{isFinnish ? "kk" : "mo"}
                       </span>
-                      {(includeAIBot || includeSEO) && (
+                      {(includeAIBot || includeSEO || includeBooking) && (
                         <p className="text-xs text-gray-500 mt-1">
                           {formatEUR(baseMonthlyFee)} ({isFinnish ? "verkkosivusto" : "website"})
                           {includeAIBot && ` + ${formatEUR(AI_BOT_MONTHLY)} (Mitrox AI Advisor)`}
                           {includeSEO && ` + ${formatEUR(SEO_MONTHLY)} (${isFinnish ? "Laajennettu hakukoneoptimointi" : "Extended SEO"})`}
+                          {includeBooking && ` + ${formatEUR(BOOKING_MONTHLY)} (${isFinnish ? "Mitrox Ajanvarausjärjestelmä" : "Mitrox Booking System"})`}
                         </p>
                       )}
                       {billing === "monthly" && includeAIBot && AI_BOT_MONTHLY_SAVINGS > 0 && (
@@ -335,6 +372,16 @@ const WebsitePricing: React.FC = () => {
                           {includeSEO && billing === "3year" && SEO_3YEAR_SAVINGS > 0 && (
                             <p className="text-xs text-green-400 mt-1">
                               {isFinnish ? "Säästät" : "Save"} {formatEUR(SEO_3YEAR_SAVINGS)} / {isFinnish ? "3 vuotta" : "3 years"} ({isFinnish ? "Laajennettu hakukoneoptimointi" : "Extended SEO"})
+                            </p>
+                          )}
+                          {includeBooking && billing === "yearly" && BOOKING_YEARLY_SAVINGS > 0 && (
+                            <p className="text-xs text-green-400 mt-1">
+                              {isFinnish ? "Säästät" : "Save"} {formatEUR(BOOKING_YEARLY_SAVINGS)} / {isFinnish ? "vuosi" : "year"} ({isFinnish ? "Mitrox Ajanvarausjärjestelmä" : "Mitrox Booking System"})
+                            </p>
+                          )}
+                          {includeBooking && billing === "3year" && BOOKING_3YEAR_SAVINGS > 0 && (
+                            <p className="text-xs text-green-400 mt-1">
+                              {isFinnish ? "Säästät" : "Save"} {formatEUR(BOOKING_3YEAR_SAVINGS)} / {isFinnish ? "3 vuotta" : "3 years"} ({isFinnish ? "Mitrox Ajanvarausjärjestelmä" : "Mitrox Booking System"})
                             </p>
                           )}
                         </>
@@ -580,6 +627,23 @@ const WebsitePricing: React.FC = () => {
               </p>
               <p className="text-sm text-gray-400 leading-relaxed">
                 {isFinnish ? "Kehitämme sisältöä, rakennetta ja nopeutta tavoitteidesi mukaan, jotta sivustosi nousee hakutuloksissa ja houkuttelee oikeat kävijät." : "We develop content, structure, and speed according to your goals, so your site ranks higher in search results and attracts the right visitors."}
+              </p>
+            </div>
+
+            {/* Mitrox Booking System */}
+            <div className="p-6 rounded-xl bg-white/[0.02] backdrop-blur-xl border border-white/10 hover:bg-white/[0.04] transition-all duration-300">
+              <h4 className="text-lg font-medium text-white mb-3">
+                {isFinnish ? "Mitrox Ajanvarausjärjestelmä" : "Mitrox Booking System"}
+              </h4>
+              <div className="text-2xl font-light text-white mb-4">
+                {formatEUR(10)}
+                <span className="text-gray-400 text-base ml-1">/ {isFinnish ? "kk" : "mo"} {isFinnish ? "alkaen" : "starting from"}</span>
+              </div>
+              <p className="text-sm text-gray-400 leading-relaxed mb-3">
+                {isFinnish ? "Ajanvaraus, joka toimii puolestasi." : "Booking made effortless."}
+              </p>
+              <p className="text-sm text-gray-400 leading-relaxed">
+                {isFinnish ? "Asiakkaat varaavat ajat suoraan sivuiltasi, ja sinä hallitset varauksia helposti." : "Your customers book directly from your website, and you manage everything with ease."}
               </p>
             </div>
 
