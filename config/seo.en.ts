@@ -34,11 +34,17 @@ export const SEO_CONFIG = {
         "mitrox",
         "mitrox oy",
         "business websites",
+        "website builder service",
+        "website development service",
+        "company websites",
         "AI advisor",
+        "AI chatbot",
         "chatbot",
         "finnish technology company",
         "premium design",
-        "AI solutions"
+        "AI solutions",
+        "website design service",
+        "custom websites"
       ],
       breadcrumbs: [
         { name: "Home", href: "/" }
@@ -54,6 +60,9 @@ export const SEO_CONFIG = {
         "company website",
         "corporate websites",
         "corporate website",
+        "website builder service",
+        "website development service",
+        "website design service",
         "websites finland",
         "website builder finland",
         "business website finland",
@@ -61,7 +70,8 @@ export const SEO_CONFIG = {
         "SEO",
         "website maintenance",
         "custom websites",
-        "professional websites"
+        "professional websites",
+        "website creation service"
       ],
       breadcrumbs: [
         { name: "Home", href: "/" },
@@ -84,6 +94,8 @@ export const SEO_CONFIG = {
         "business chatbot",
         "ai chatbot for business",
         "AI chatbot",
+        "AI chatbot for websites",
+        "chatbot for websites",
         "customer service chatbot",
         "AI customer service",
         "automated customer service",

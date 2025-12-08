@@ -56,7 +56,6 @@ export default function BlogArticlePage() {
   const [relatedPosts, setRelatedPosts] = useState<BlogPostDetail[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [authorProfilePicture, setAuthorProfilePicture] = useState<string | null>(null);
 
   const pagePath = useMemo(() => {
     if (!slug) {
@@ -73,6 +72,16 @@ export default function BlogArticlePage() {
     let ignore = false;
 
     const loadPost = async () => {
+      if (!supabase) {
+        setError(
+          language === "fi"
+            ? "Tietokantayhteys ei ole käytettävissä."
+            : "Database connection is not available."
+        );
+        setLoading(false);
+        return;
+      }
+
       setLoading(true);
       setError(null);
 
@@ -102,30 +111,11 @@ export default function BlogArticlePage() {
       }
 
       setPost(data);
-      
-      // Load author profile picture if created_by exists
-      if (data?.created_by && supabase) {
-        const { data: profileData } = supabase.storage
-          .from("profiles")
-          .getPublicUrl(`${data.created_by}/avatar.jpg`);
-        if (profileData?.publicUrl) {
-          // Check if image exists
-          try {
-            const response = await fetch(profileData.publicUrl, { method: "HEAD" });
-            if (response.ok) {
-              setAuthorProfilePicture(profileData.publicUrl);
-            }
-          } catch {
-            // Image doesn't exist
-          }
-        }
-      }
-      
       setLoading(false);
 
       const { data: related, error: relatedError } = await supabase
         .from("blog_posts")
-        .select("id,title,slug,excerpt,cover_image_url,language,published_at,created_at")
+        .select("id,title,slug,excerpt,cover_image_url,language,published_at,created_at,status,updated_at,content")
         .eq("language", language)
         .eq("status", "published")
         .neq("id", data.id)
@@ -138,7 +128,7 @@ export default function BlogArticlePage() {
           console.error("[BlogArticlePage] Failed to load related posts", relatedError);
           setRelatedPosts([]);
         } else {
-          setRelatedPosts(related ?? []);
+          setRelatedPosts((related ?? []) as BlogPostDetail[]);
         }
       }
     };
@@ -301,22 +291,7 @@ export default function BlogArticlePage() {
                   {post.author_name && (
                     <>
                       <span aria-hidden>•</span>
-                      <div className="flex items-center gap-2">
-                        {authorProfilePicture ? (
-                          <img
-                            src={authorProfilePicture}
-                            alt={post.author_name}
-                            className="h-8 w-8 rounded-full object-cover border-2 border-white/30"
-                          />
-                        ) : (
-                          <div className="h-8 w-8 rounded-full border-2 border-white/30 bg-white/10 flex items-center justify-center">
-                            <span className="text-xs text-white/60 font-medium">
-                              {post.author_name.charAt(0).toUpperCase()}
-                            </span>
-                          </div>
-                        )}
-                        <span className="font-medium">{post.author_name}</span>
-                      </div>
+                      <span className="font-medium">{post.author_name}</span>
                     </>
                   )}
                 </div>

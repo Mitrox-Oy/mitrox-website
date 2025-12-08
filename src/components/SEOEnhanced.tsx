@@ -45,9 +45,7 @@ const SEOEnhanced: React.FC<SEOEnhancedProps> = ({ meta, schemas = [], lang = 'f
       {/* Enhanced meta tags if provided */}
       {meta && (
         <>
-          {/* Canonical URL */}
-          <link rel="canonical" href={fullUrl} />
-
+          {/* NOTE: Canonical is handled by SEOHead to avoid duplicates */}
           {/* Open Graph enhanced */}
           <meta property="og:locale" content={meta.locale || seoConfig.defaultLocale} />
           {seoConfig.alternateLocales.map(locale => (

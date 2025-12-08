@@ -17,7 +17,7 @@ export const LanguageAlternates: React.FC = () => {
       <meta name="google" content="notranslate" />
       <meta name="googlebot" content="notranslate" />
       
-      {/* Hreflang tags for SEO */}
+      {/* Hreflang tags for SEO - MUST use hreflang (not hrefLang) */}
       {SUPPORTED_LANGUAGES.map((lang) => {
         const localizedPath = addLanguagePrefix(currentPath, lang);
         const fullUrl = `${baseUrl}${localizedPath}`;
@@ -25,7 +25,7 @@ export const LanguageAlternates: React.FC = () => {
           <link
             key={lang}
             rel="alternate"
-            hrefLang={lang}
+            hreflang={lang}
             href={fullUrl}
           />
         );
@@ -34,7 +34,7 @@ export const LanguageAlternates: React.FC = () => {
       {/* Default/x-default for search engines */}
       <link
         rel="alternate"
-        hrefLang="x-default"
+        hreflang="x-default"
         href={`${baseUrl}${addLanguagePrefix(currentPath, 'fi')}`}
       />
     </Helmet>

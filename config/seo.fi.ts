@@ -36,12 +36,20 @@ export const SEO_CONFIG = {
         "mitrox suomi",
         "verkkosivut yritykselle",
         "nettisivut yritykselle",
+        "nettisivujen rakennus palvelu",
+        "verkkosivujen rakennus palvelu",
+        "nettisivut palvelu",
+        "verkkosivut palvelu",
         "tekoälyneuvoja",
         "tekoälybotti",
+        "tekoälybotti yritykselle",
         "chatbot",
+        "chatbotti",
         "suomalainen teknologiayritys",
         "premium design",
-        "AI-ratkaisut"
+        "AI-ratkaisut",
+        "nettisivujen suunnittelu",
+        "verkkosivujen suunnittelu"
       ],
       breadcrumbs: [
         { name: "Etusivu", href: "/" }
@@ -57,6 +65,12 @@ export const SEO_CONFIG = {
         "verkkosivut yritykselle",
         "nettisivut yritykselle suomessa",
         "verkkosivut yritykselle suomessa",
+        "nettisivujen rakennus palvelu",
+        "verkkosivujen rakennus palvelu",
+        "nettisivut palvelu",
+        "verkkosivut palvelu",
+        "nettisivujen suunnittelu",
+        "verkkosivujen suunnittelu",
         "kotisivut",
         "verkkosivut suomessa",
         "verkkosivut suomeksi",
@@ -67,7 +81,9 @@ export const SEO_CONFIG = {
         "SEO",
         "verkkosivujen ylläpito",
         "verkkosivut pk-yrityksille",
-        "yrityssivut"
+        "yrityssivut",
+        "nettisivut yritykselle hinta",
+        "verkkosivut yritykselle hinta"
       ],
       breadcrumbs: [
         { name: "Etusivu", href: "/" },
@@ -84,12 +100,12 @@ export const SEO_CONFIG = {
         "tekoälyneuvoja yrityksille",
         "tekoälybotti",
         "tekoälybotti yrityksille",
+        "tekoälybotti suomeksi",
         "chatbotti",
         "chatbot",
         "chatbotti yrityksille",
         "chatbot yrityksille",
         "chatbotti suomeksi",
-        "tekoälybotti suomeksi",
         "AI-neuvoja",
         "AI asiakaspalvelija",
         "tekoäly asiakaspalvelija",
@@ -99,7 +115,10 @@ export const SEO_CONFIG = {
         "AI agent",
         "liidien keruu",
         "tekoäly chatbot",
-        "suomenkielinen chatbot"
+        "suomenkielinen chatbot",
+        "tekoälybotti nettisivuille",
+        "chatbotti nettisivuille",
+        "AI neuvoja nettisivuille"
       ],
       breadcrumbs: [
         { name: "Etusivu", href: "/" },
