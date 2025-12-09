@@ -264,11 +264,10 @@ const ContactForm: React.FC = () => {
         </p>
       </header>
 
-      <div className="mx-auto grid max-w-5xl gap-10 lg:grid-cols-[1.05fr_1fr]">
-        {/* Lomake boxi */}
-        <div className="lg:col-span-2 max-w-2xl mx-auto space-y-4">
-          {/* Lomake boxi */}
-          <div className="rounded-xl bg-white/5 backdrop-blur-xl backdrop-saturate-150 p-6">
+      <div className="mx-auto max-w-7xl grid gap-10 lg:grid-cols-[1fr_1fr] items-start">
+        {/* Lomake vasemmalla */}
+        <div className="space-y-4">
+          <div className="rounded-xl bg-white/5 backdrop-blur-xl backdrop-saturate-150 p-6 min-h-[600px] flex flex-col">
             <h3 className="text-lg font-semibold text-white mb-6">{isFinnish ? "Lähetä viesti" : "Get in touch"}</h3>
 
             <form onSubmit={handleSubmit} className="space-y-5" noValidate>
@@ -469,6 +468,27 @@ const ContactForm: React.FC = () => {
                 : ""}
             </p>
             </form>
+          </div>
+        </div>
+
+        {/* Kalenteri oikealla */}
+        <div className="space-y-4">
+          <div className="w-full rounded-xl overflow-hidden" style={{ minHeight: "600px" }}>
+            <iframe
+              src={import.meta.env.VITE_CALENDAR_EMBED_URL || "https://69384f97621d6e2fa9f67a2d--inspiring-dodol-0e3278.netlify.app/book/mitrox-akcwztlrg"}
+              width="100%"
+              height="600"
+              frameBorder="0"
+              allow="payment"
+              className="w-full border-0"
+              style={{ 
+                backgroundColor: "transparent",
+                display: "block",
+                border: "none",
+                outline: "none"
+              }}
+              title={isFinnish ? "Ajanvarauskalenteri" : "Booking calendar"}
+            />
           </div>
         </div>
       </div>

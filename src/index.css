@@ -208,3 +208,28 @@ a:focus-visible {
   overflow: hidden;
   border-radius: 0.5rem; /* 8px */
 }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) #000000;
+}
