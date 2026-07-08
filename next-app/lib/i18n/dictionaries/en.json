@@ -1,0 +1,133 @@
+{
+  "meta": {
+    "siteName": "Mitrox",
+    "homeTitle": "Mitrox – A software house building ambitious products",
+    "homeDescription": "Mitrox is a software house founded in late 2025. We build our own ambitious products and take on custom software projects when the fit is right.",
+    "privacyTitle": "Privacy Policy",
+    "privacyDescription": "How Mitrox Oy collects, uses, and protects your personal data, including your rights under GDPR."
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact",
+    "careers": "Careers"
+  },
+  "hero": {
+    "eyebrow": "Mitrox",
+    "title": "We're building something new",
+    "subtitle": "Mitrox is a software house building ambitious products, fast. Right now our full focus is our own platform — but we're a small team that ships, and we take on the right software projects too.",
+    "cta": "Join the waitlist",
+    "secondaryCta": "Our story"
+  },
+  "story": {
+    "eyebrow": "Our story",
+    "title": "Our Story",
+    "paragraphs": [
+      "Mitrox is a software house founded at the end of 2025, built on a simple belief: technology should make ambitious ideas possible faster, without cutting corners.",
+      "We're a small team of engineers and product people who like moving quickly — from idea to working software in code, not slides. That includes AI where it genuinely helps, not as a buzzword bolted on top.",
+      "Right now, most of our energy is going into a platform of our own. It's the clearest way to show what we can build when we control the whole product, start to finish."
+    ],
+    "visionTitle": "Our vision",
+    "visionParagraphs": [
+      "We believe the strongest software companies are built by teams who ship fast, iterate honestly, and stay close to the product.",
+      "That's what we're building toward with our own platform — and it's the same standard we hold for any software we build for others.",
+      "We're not ready to share what the platform is yet. We are ready to say we're building it properly."
+    ]
+  },
+  "ambition": {
+    "eyebrow": "Ambition",
+    "title": "A small team built for speed",
+    "subtitle": "Mitrox moves fast without sacrificing quality — full-stack product engineering, applied AI, and the ability to take a system from idea to production.",
+    "capabilities": [
+      { "title": "Full-stack engineering", "desc": "Design, frontend, backend, and infrastructure, handled end to end." },
+      { "title": "Applied AI", "desc": "Practical machine learning and language models, built into real products, not demos." },
+      { "title": "Product craft", "desc": "An eye for interfaces that feel simple, fast, and considered." },
+      { "title": "Fast iteration", "desc": "A small team that ships in tight loops, without layers of process in the way." }
+    ]
+  },
+  "process": {
+    "eyebrow": "How we work",
+    "title": "How we're building it",
+    "steps": [
+      { "title": "Explore", "desc": "We test ideas quickly, in code, before committing to a direction." },
+      { "title": "Build", "desc": "Design and engineering move together, in tight iterations." },
+      { "title": "Refine", "desc": "We use what we build ourselves before anyone else sees it." },
+      { "title": "Release", "desc": "We ship in small steps, to the people who asked to be first." }
+    ]
+  },
+  "teaser": {
+    "badge": "Coming soon",
+    "title": "We're building something new",
+    "description": "We're quietly working on a new platform that brings community and commerce together in a way you haven't seen yet. More details soon, as we get closer to launch.",
+    "emailPlaceholder": "you@email.com",
+    "submit": "Join the waitlist",
+    "submitting": "Joining…",
+    "success": "Thanks! You're on the list.",
+    "error": "Please check your email and try again."
+  },
+  "services": {
+    "eyebrow": "Software for hire",
+    "title": "Need software built? Let's talk.",
+    "description": "Our own platform has our full focus right now, but Mitrox is still a working software house — and we take on the right projects alongside it.",
+    "points": [
+      { "title": "Small or large", "desc": "From a focused MVP to a full production system — we scope to what the project actually needs." },
+      { "title": "Built to scale", "desc": "Architecture that holds up as usage grows, not a prototype dressed up as a product." },
+      { "title": "Tailored to your business", "desc": "No off-the-shelf templates — solutions shaped around how your business actually works." },
+      { "title": "AI where it helps", "desc": "We bring applied AI into the product when it adds real value, not because it's trendy." }
+    ],
+    "cta": "Tell us about your project"
+  },
+  "faq": {
+    "eyebrow": "FAQ",
+    "title": "Common questions",
+    "items": [
+      { "q": "What does Mitrox do?", "a": "Mitrox is a software house founded at the end of 2025. We build our own product platform and also take on custom software projects for other companies." },
+      { "q": "Is Mitrox taking on client software projects?", "a": "Yes. Our own platform has our main focus right now, but we're still a working software house and take on the right projects — reach out via the contact section below." },
+      { "q": "What is the platform you're building?", "a": "We're not sharing details yet. Join the waitlist and you'll be among the first to know." },
+      { "q": "When does it launch?", "a": "We don't have a public date yet. We're building carefully rather than quickly." },
+      { "q": "How do I get early access?", "a": "Join the waitlist below. We'll reach out as we get closer to launch." }
+    ]
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Get in touch",
+    "description": "Software project, press, partnership, or just want to say hello — we'd like to hear from you.",
+    "namePlaceholder": "Your name",
+    "emailPlaceholder": "you@email.com",
+    "messagePlaceholder": "Your message",
+    "submit": "Send message",
+    "submitting": "Sending…",
+    "success": "Thanks! We'll get back to you soon.",
+    "error": "Something went wrong. Please try again."
+  },
+  "careers": {
+    "title": "We're not hiring right now",
+    "description": "We don't have open roles at the moment, but we're always glad to hear from exceptional people. Feel free to reach out through the contact section above if that's you."
+  },
+  "footer": {
+    "allRightsReserved": "All rights reserved.",
+    "businessId": "Business ID: 3562179-8",
+    "privacyPolicy": "Privacy Policy",
+    "language": "Language"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "updated": "Effective from: November 4, 2025"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or has moved.",
+    "cta": "Back to home"
+  },
+  "languagePopup": {
+    "title": "Choose site language",
+    "note": "You can change the language later in the site footer."
+  },
+  "consent": {
+    "title": "Your privacy",
+    "text": "We use cookies to improve your experience and understand site usage. See our",
+    "linkLabel": "Privacy Policy",
+    "acceptAll": "Accept all",
+    "necessaryOnly": "Necessary only"
+  }
+}

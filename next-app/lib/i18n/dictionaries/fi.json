@@ -1,0 +1,133 @@
+{
+  "meta": {
+    "siteName": "Mitrox",
+    "homeTitle": "Mitrox – Software house, joka rakentaa kunnianhimoisia tuotteita",
+    "homeDescription": "Mitrox on vuoden 2025 lopussa perustettu software house. Rakennamme omaa alustaamme ja toteutamme myös asiakasprojekteja, kun se sopii yhteen.",
+    "privacyTitle": "Tietosuojaseloste",
+    "privacyDescription": "Miten Mitrox Oy kerää, käyttää ja suojaa henkilötietojasi, sekä oikeutesi GDPR:n mukaisesti."
+  },
+  "nav": {
+    "home": "Etusivu",
+    "about": "Tietoa meistä",
+    "contact": "Ota yhteyttä",
+    "careers": "Ura"
+  },
+  "hero": {
+    "eyebrow": "Mitrox",
+    "title": "Rakennamme jotain uutta",
+    "subtitle": "Mitrox on software house, joka rakentaa kunnianhimoisia tuotteita nopeasti. Juuri nyt keskitymme täysin omaan alustaamme – mutta olemme pieni tiimi, joka toimittaa, ja otamme vastaan myös sopivia ohjelmistoprojekteja.",
+    "cta": "Liity jonotuslistalle",
+    "secondaryCta": "Tarinamme"
+  },
+  "story": {
+    "eyebrow": "Tarinamme",
+    "title": "Meidän tarinamme",
+    "paragraphs": [
+      "Mitrox on vuoden 2025 lopussa perustettu software house, joka syntyi yksinkertaisesta uskosta: teknologian pitäisi tehdä kunnianhimoisista ideoista mahdollisia nopeammin, tinkimättä laadusta.",
+      "Olemme pieni tiimi insinöörejä ja tuoteosaajia, jotka etenevät nopeasti – ideasta toimivaksi ohjelmistoksi koodissa, ei kalvosarjoissa. Sama koskee tekoälyä: käytämme sitä, kun se oikeasti auttaa, ei muotisanana päälle liimattuna.",
+      "Juuri nyt suurin osa energiastamme menee oman alustamme rakentamiseen. Se on selkein tapa näyttää, mitä pystymme tekemään, kun hallitsemme koko tuotteen alusta loppuun."
+    ],
+    "visionTitle": "Meidän visiomme",
+    "visionParagraphs": [
+      "Uskomme, että vahvimmat ohjelmistoyritykset rakentuvat tiimeistä, jotka toimittavat nopeasti, iteroivat rehellisesti ja pysyvät lähellä tuotetta.",
+      "Sitä kohti rakennamme omaa alustaamme – ja samaa mittapuuta sovellamme mihin tahansa ohjelmistoon, jonka rakennamme muille.",
+      "Emme ole vielä valmiita kertomaan, mikä alusta on. Olemme valmiita kertomaan, että rakennamme sen kunnolla."
+    ]
+  },
+  "ambition": {
+    "eyebrow": "Kunnianhimo",
+    "title": "Pieni tiimi, rakennettu nopeuteen",
+    "subtitle": "Mitrox etenee nopeasti tinkimättä laadusta – full-stack-tuotekehitystä, käytännön tekoälyä ja kyky viedä järjestelmä ideasta tuotantoon.",
+    "capabilities": [
+      { "title": "Full-stack-kehitys", "desc": "Suunnittelu, frontend, backend ja infrastruktuuri, alusta loppuun." },
+      { "title": "Käytännön tekoäly", "desc": "Koneoppiminen ja kielimallit rakennettuna oikeisiin tuotteisiin, ei demoihin." },
+      { "title": "Tuoteosaaminen", "desc": "Silmä käyttöliittymille, jotka tuntuvat yksinkertaisilta, nopeilta ja harkituilta." },
+      { "title": "Nopea iterointi", "desc": "Pieni tiimi, joka toimittaa tiiviissä sykleissä, ilman ylimääräisiä prosessikerroksia." }
+    ]
+  },
+  "process": {
+    "eyebrow": "Näin toimimme",
+    "title": "Näin rakennamme sitä",
+    "steps": [
+      { "title": "Tutkiminen", "desc": "Testaamme ideoita nopeasti koodilla ennen suuntaan sitoutumista." },
+      { "title": "Rakentaminen", "desc": "Design ja kehitys etenevät yhdessä, tiiviissä iteraatioissa." },
+      { "title": "Hiominen", "desc": "Käytämme itse sitä, mitä rakennamme, ennen kuin kukaan muu näkee sen." },
+      { "title": "Julkaisu", "desc": "Julkaisemme pienin askelin niille, jotka pyysivät päästä ensimmäisten joukkoon." }
+    ]
+  },
+  "teaser": {
+    "badge": "Tulossa",
+    "title": "Rakennamme jotain uutta",
+    "description": "Työstämme parhaillaan uutta alustaa, joka yhdistää yhteisön ja kaupankäynnin tavalla, jota et ole vielä nähnyt. Lisää tietoa julkistetaan lähempänä julkaisua.",
+    "emailPlaceholder": "sinun@sahkoposti.fi",
+    "submit": "Liity jonotuslistalle",
+    "submitting": "Lähetetään…",
+    "success": "Kiitos! Olet nyt jonotuslistalla.",
+    "error": "Tarkista sähköpostiosoite ja yritä uudelleen."
+  },
+  "services": {
+    "eyebrow": "Ohjelmistokehitys",
+    "title": "Tarvitsetko ohjelmiston? Jutellaan.",
+    "description": "Oma alustamme on juuri nyt pääfokuksemme, mutta Mitrox on silti toimiva software house – ja otamme vastaan sopivia projekteja sen rinnalla.",
+    "points": [
+      { "title": "Pieni tai suuri", "desc": "Kohdennetusta MVP:stä täyteen tuotantojärjestelmään – mitoitamme sen mukaan, mitä projekti oikeasti tarvitsee." },
+      { "title": "Rakennettu skaalautumaan", "desc": "Arkkitehtuuri, joka kestää käytön kasvaessa, ei prototyyppi tuotteeksi puettuna." },
+      { "title": "Räätälöity liiketoimintaasi", "desc": "Ei valmiita malleja – ratkaisut muotoillaan sen mukaan, miten yrityksesi oikeasti toimii." },
+      { "title": "Tekoälyä, kun se auttaa", "desc": "Tuomme käytännön tekoälyn mukaan, kun se tuo oikeaa arvoa – ei siksi, että se on trendikästä." }
+    ],
+    "cta": "Kerro projektistasi"
+  },
+  "faq": {
+    "eyebrow": "UKK",
+    "title": "Yleisiä kysymyksiä",
+    "items": [
+      { "q": "Mitä Mitrox tekee?", "a": "Mitrox on vuoden 2025 lopussa perustettu software house. Rakennamme omaa tuotealustaamme ja toteutamme myös asiakkaiden ohjelmistoprojekteja." },
+      { "q": "Ottaako Mitrox vastaan asiakasprojekteja?", "a": "Kyllä. Oma alustamme on juuri nyt pääfokuksemme, mutta olemme yhä toimiva software house ja otamme vastaan sopivia projekteja – ota yhteyttä alla olevasta yhteystieto-osiosta." },
+      { "q": "Mikä alusta on kyseessä?", "a": "Emme vielä kerro yksityiskohtia. Liity jonotuslistalle ja olet ensimmäisten joukossa kuulemassa." },
+      { "q": "Milloin se julkaistaan?", "a": "Meillä ei ole vielä julkista päivämäärää. Rakennamme huolella nopeuden sijaan." },
+      { "q": "Miten pääsen mukaan varhain?", "a": "Liity jonotuslistalle alta. Otamme yhteyttä, kun lähestymme julkaisua." }
+    ]
+  },
+  "contact": {
+    "eyebrow": "Yhteystiedot",
+    "title": "Ota yhteyttä",
+    "description": "Ohjelmistoprojekti, media, yhteistyö tai vain tervehdys – kuulemme mielellämme sinusta.",
+    "namePlaceholder": "Nimesi",
+    "emailPlaceholder": "sinun@sahkoposti.fi",
+    "messagePlaceholder": "Viestisi",
+    "submit": "Lähetä viesti",
+    "submitting": "Lähetetään…",
+    "success": "Kiitos! Vastaamme pian.",
+    "error": "Jokin meni pieleen. Yritä uudelleen."
+  },
+  "careers": {
+    "title": "Emme rekrytoi juuri nyt",
+    "description": "Mitroxilla ei ole avoimia paikkoja tällä hetkellä, mutta olemme aina kiinnostuneita kuulemaan poikkeuksellisen taitavista tekijöistä. Ota rohkeasti yhteyttä yllä olevan yhteystieto-osion kautta, jos tämä kuulostaa sinulta."
+  },
+  "footer": {
+    "allRightsReserved": "Kaikki oikeudet pidätetään.",
+    "businessId": "Y-tunnus: 3562179-8",
+    "privacyPolicy": "Tietosuojaseloste",
+    "language": "Kieli"
+  },
+  "privacy": {
+    "title": "Tietosuojaseloste",
+    "updated": "Voimassa alkaen: 4.11.2025"
+  },
+  "notFound": {
+    "title": "Sivua ei löytynyt",
+    "description": "Etsimääsi sivua ei ole olemassa tai se on siirretty.",
+    "cta": "Takaisin etusivulle"
+  },
+  "languagePopup": {
+    "title": "Valitse sivuston kieli",
+    "note": "Voit vaihtaa kielen myöhemmin sivuston alatunnisteesta."
+  },
+  "consent": {
+    "title": "Yksityisyytesi",
+    "text": "Käytämme evästeitä parantaaksemme kokemustasi ja ymmärtääksemme sivuston käyttöä. Katso",
+    "linkLabel": "tietosuojaseloste",
+    "acceptAll": "Hyväksy kaikki",
+    "necessaryOnly": "Vain välttämättömät"
+  }
+}
