@@ -23,24 +23,26 @@ export async function POST(request: NextRequest) {
 
   const accessKey = process.env.WEB3FORMS_ACCESS_KEY;
   if (!accessKey) {
+    console.error("WEB3FORMS_ACCESS_KEY not set in env");
     return NextResponse.json({ success: false, message: "Not configured" }, { status: 500 });
   }
 
+  const formData = new FormData();
+  formData.append("access_key", accessKey);
+  formData.append("subject", "New contact form message");
+  formData.append("from_name", name || "");
+  formData.append("email", email);
+  formData.append("to", "info@mitrox.io");
+  formData.append("message", message || "");
+
   const res = await fetch("https://api.web3forms.com/submit", {
     method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify({
-      access_key: accessKey,
-      to: "info@mitrox.io",
-      subject: "New contact form message",
-      email,
-      name,
-      message,
-    }),
+    body: formData,
   });
 
   const data = await res.json();
   if (!data?.success) {
+    console.error("Web3Forms error:", { status: res.status, data });
     return NextResponse.json({ success: false, message: data?.message }, { status: 502 });
   }
 
