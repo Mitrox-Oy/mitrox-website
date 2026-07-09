@@ -6,24 +6,51 @@ import GlassPanel from "@/components/ui/GlassPanel";
 import CinematicScene from "@/components/motion/CinematicScene";
 import SceneLayer from "@/components/motion/SceneLayer";
 import { enterHoldExit } from "@/components/motion/keyframes";
-import { useSubscribeForm } from "./useSubscribeForm";
 
 const reveal = enterHoldExit({ enterStart: 0, enterEnd: 0.18, exitStart: 0.88, exitEnd: 0.99, distance: 22, blur: 6, fromScale: 0.98, toScale: 1.01 });
+
+const WEB3FORMS_PUBLIC_KEY = "e2fb1df8-082a-4ef4-a2b8-7a9d7f2a7bb6";
 
 export default function ContactGeneral({ dict }: { dict: Dictionary }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [botcheck, setBotcheck] = useState("");
-  const { status, submit } = useSubscribeForm("/api/contact");
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const ok = await submit({ email, name, message, botcheck });
-    if (ok) {
-      setName("");
-      setEmail("");
-      setMessage("");
+    if (botcheck) return;
+
+    setStatus("submitting");
+    const formData = new FormData();
+    formData.append("access_key", WEB3FORMS_PUBLIC_KEY);
+    formData.append("subject", "New contact form message from mitrox.io");
+    formData.append("from_name", name);
+    formData.append("email", email);
+    formData.append("message", message);
+    formData.append("to", "info@mitrox.io");
+
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        setStatus("success");
+        setName("");
+        setEmail("");
+        setMessage("");
+        setTimeout(() => setStatus("idle"), 3000);
+      } else {
+        setStatus("error");
+        setTimeout(() => setStatus("idle"), 3000);
+      }
+    } catch {
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 3000);
     }
   }
 
