@@ -152,7 +152,7 @@ const ProcessSection: React.FC<ProcessSectionProps> = ({ type = "website" }) => 
   return (
     <section
       id={processId}
-      className="relative py-40 md:py-48 pb-56 md:pb-64 px-4 sm:px-6 lg:px-8 bg-black"
+      className="relative py-40 md:py-48 pb-56 md:pb-64 px-4 sm:px-6 lg:px-8"
       style={{ fontFamily: 'Inter, sans-serif' }}
     >
       <div className="max-w-7xl mx-auto relative z-10">

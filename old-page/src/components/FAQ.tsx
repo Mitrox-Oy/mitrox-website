@@ -593,7 +593,7 @@ const FAQ: React.FC<FAQProps> = ({ type = "website", emitSchema = false }) => {
   return (
     <>
       {faqSchemaData && <SEOEnhanced schemas={[faqSchemaData]} />}
-      <section id={faqId} className="relative py-16 px-4 sm:px-6 lg:px-8 bg-black">
+      <section id={faqId} className="relative py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">

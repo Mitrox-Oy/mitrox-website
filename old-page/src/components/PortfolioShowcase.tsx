@@ -63,7 +63,7 @@ const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ items }) => {
     <>
       <section
         id={referencesId}
-        className="relative py-20 md:py-32 px-4 sm:px-6 lg:px-8 bg-black"
+        className="relative py-20 md:py-32 px-4 sm:px-6 lg:px-8"
       >
         <div className="max-w-7xl mx-auto">
           {/* Header */}
@@ -83,7 +83,7 @@ const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ items }) => {
             {defaultItems.map((item) => (
               <div
                 key={item.id}
-                className="group relative aspect-[4/3] rounded-xl overflow-hidden bg-white/[0.02] backdrop-blur-xl border border-white/10 hover:border-white/20 transition-all duration-300 cursor-pointer"
+                className="group relative aspect-[4/3] rounded-xl overflow-hidden glass glass-hover transition-all duration-300 cursor-pointer"
                 onClick={() => setSelectedItem(item)}
               >
                 {/* Image */}

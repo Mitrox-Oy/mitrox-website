@@ -11,6 +11,9 @@ import { LanguageRedirect } from "./components/LanguageRedirect";
 import { LocalizedRoutes } from "./components/LocalizedRoutes";
 import { LanguageAlternates } from "./components/LanguageAlternates";
 import { LanguageContextRouter } from "./components/LanguageContextRouter";
+import Preloader from "./components/Preloader";
+import SmoothScrollProvider from "./components/SmoothScrollProvider";
+import PersistentBackground from "./three/PersistentBackground";
 
 const ScrollToTopOnRouteChange = () => {
   const { pathname, hash } = useLocation();
@@ -53,6 +56,9 @@ export default function App() {
   return (
     <>
       <StructuredData />
+      <Preloader />
+      <SmoothScrollProvider />
+      <PersistentBackground />
       <LanguageProvider>
         <Router>
           {allowAnalytics && <Analytics />}

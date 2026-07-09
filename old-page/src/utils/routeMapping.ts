@@ -75,6 +75,18 @@ export const SECTION_ANCHORS: Record<string, RouteMapping> = {
     fi: 'ota-yhteytta',
     en: 'contact',
   },
+  waitlist: {
+    fi: 'liity-jonotuslistalle',
+    en: 'waitlist',
+  },
+  careers: {
+    fi: 'ura',
+    en: 'careers',
+  },
+  'general-contact': {
+    fi: 'yleiset-kysymykset',
+    en: 'general-inquiries',
+  },
 };
 
 /**

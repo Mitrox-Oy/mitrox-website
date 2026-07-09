@@ -137,6 +137,54 @@ a:focus-visible {
   background: radial-gradient(circle, var(--tw-gradient-stops));
 }
 
+/* Liquid glass surface treatment */
+@layer components {
+  .glass {
+    position: relative;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    backdrop-filter: blur(24px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    isolation: isolate;
+  }
+
+  .glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(120% 60% at 50% 0%, rgba(255, 255, 255, 0.14), transparent 60%);
+    opacity: 0.8;
+    z-index: -1;
+  }
+
+  .glass-hover {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  .glass-hover::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(220px circle at var(--glass-x, 50%) var(--glass-y, 0%), rgba(255, 255, 255, 0.16), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    z-index: -1;
+  }
+
+  .glass-hover:hover::after {
+    opacity: 1;
+  }
+
+  .glass-hover:hover {
+    border-color: rgba(255, 255, 255, 0.22);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  }
+}
+
 /* Smooth scroll behavior */
 @media (prefers-reduced-motion: no-preference) {
   html {

@@ -1,5 +1,4 @@
 // src/Home.tsx
-import SpaceBackground from "./components/SpaceBackground";
 import Header from "./components/Header";
 import SEOHead from "./components/SEOHead";
 import SEOEnhanced from "./components/SEOEnhanced";
@@ -8,7 +7,14 @@ import ProductsSection from "./components/ProductsSection";
 import CompanyInfo from "./components/CompanyInfo";
 import Features from "./components/Features";
 import CompanyStory from "./components/CompanyStory";
+import ProcessSection from "./components/ProcessSection";
+import UpcomingProjectTeaser from "./components/UpcomingProjectTeaser";
+import PortfolioShowcase from "./components/PortfolioShowcase";
+import Testimonials from "./components/Testimonials";
+import FAQ from "./components/FAQ";
 import ContactForm from "./components/ContactForm";
+import GeneralContactForm from "./components/GeneralContactForm";
+import CareersSection from "./components/CareersSection";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import { useLanguage } from "./context/LanguageContext";
@@ -40,10 +46,8 @@ export default function Home() {
     : [];
 
   return (
-    <div id="top" className="min-h-screen bg-black relative flex flex-col">
-      {/* Space background for everything except hero */}
-      <SpaceBackground className="top-[100vh]" />
-      <SEOHead 
+    <div id="top" className="min-h-screen relative flex flex-col">
+      <SEOHead
         title={meta?.title || (isFinnish ? "Mitrox – Teknologia, joka tuntuu luonnolliselta" : "Mitrox – Technology That Feels Effortless")}
         description={meta?.description || (isFinnish
           ? "Mitrox – Suomalainen teknologiayritys, joka tarjoaa verkkosivut yritykselle, nettisivut yritykselle, tekoälyneuvojan ja tekoälybotin. Premium-design ja AI-ratkaisut 14 päivässä."
@@ -56,13 +60,18 @@ export default function Home() {
       {isSEO_V2 && <SEOEnhanced meta={meta} schemas={schemas} lang={isFinnish ? "fi" : "en"} />}
       <Header />
       <Hero />
+      <CompanyStory />
       <ProductsSection />
       <CompanyInfo />
-      <section className="relative bg-black">
-        <Features />
-      </section>
-      <CompanyStory />
+      <Features />
+      <ProcessSection />
+      <UpcomingProjectTeaser />
+      <PortfolioShowcase />
+      <Testimonials />
+      <FAQ />
       <ContactForm />
+      <GeneralContactForm />
+      <CareersSection />
       <Footer />
       <ScrollToTop />
     </div>

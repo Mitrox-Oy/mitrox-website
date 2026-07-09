@@ -14,9 +14,11 @@ type AnalyticsEvent = {
 };
 
 const getLocationData = async (): Promise<{ country?: string; city?: string }> => {
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 1500);
   try {
-    // Use a free IP geolocation service
-    const response = await fetch('https://ipapi.co/json/');
+    // Use a free IP geolocation service (optional enhancement only)
+    const response = await fetch('https://ipapi.co/json/', { signal: controller.signal });
     if (response.ok) {
       const data = await response.json();
       return {
@@ -24,8 +26,10 @@ const getLocationData = async (): Promise<{ country?: string; city?: string }> =
         city: data.city,
       };
     }
-  } catch (error) {
-    console.error('[TrafficAnalytics] Failed to get location:', error);
+  } catch {
+    // Silently ignore blocked/failed geo lookups (adblock/privacy tools)
+  } finally {
+    window.clearTimeout(timeout);
   }
   return {};
 };
@@ -49,10 +53,11 @@ const trackPageView = async (path: string, language: string) => {
     const { error } = await supabase.from('traffic_analytics').insert(event);
 
     if (error) {
-      console.error('[TrafficAnalytics] Failed to track page view:', error);
+      // eslint-disable-next-line no-console
+      console.warn('[TrafficAnalytics] Insert blocked or failed');
     }
-  } catch (error) {
-    console.error('[TrafficAnalytics] Error tracking page view:', error);
+  } catch {
+    // Keep analytics failures invisible to end users
   }
 };
 

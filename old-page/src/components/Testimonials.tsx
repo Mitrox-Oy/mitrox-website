@@ -42,7 +42,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonials = [] }) => {
       ];
 
   return (
-    <section className="relative py-20 md:py-32 px-4 sm:px-6 lg:px-8 bg-black">
+    <section className="relative py-20 md:py-32 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
@@ -59,7 +59,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonials = [] }) => {
           {defaultTestimonials.map((testimonial, index) => (
             <div
               key={index}
-              className="group relative p-6 lg:p-8 rounded-xl bg-white/[0.02] backdrop-blur-xl border border-white/10 hover:bg-white/[0.04] hover:border-white/20 transition-all duration-300 flex flex-col"
+              className="group relative p-6 lg:p-8 rounded-xl glass glass-hover transition-all duration-300 flex flex-col"
             >
               {/* Quote Icon */}
               <div className="mb-4 text-gray-500">

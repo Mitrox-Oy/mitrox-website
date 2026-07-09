@@ -78,11 +78,8 @@ const BottomNavbar: React.FC = () => {
       }`}>
         <div className="flex justify-center">
           <div
-            className={`rounded-full backdrop-blur-xl backdrop-saturate-150 shadow-2xl border border-white/10 overflow-hidden transition-all duration-500 ${
+            className={`rounded-full glass glass-hover shadow-2xl overflow-hidden transition-all duration-500 ${
               isExpanded ? "px-6 py-3" : "px-2.5 py-1"
-            } ${
-              // Transparent background on mobile, semi-transparent on desktop
-              "bg-transparent md:bg-black/40"
             }`}
           >
             <div className="flex items-center gap-3">

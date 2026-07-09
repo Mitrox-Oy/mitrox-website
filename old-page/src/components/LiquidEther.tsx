@@ -88,6 +88,25 @@ export default function LiquidEther({
   useEffect(() => {
     if (!mountRef.current) return;
 
+    const isWebGLAvailable = () => {
+      try {
+        if (typeof document === 'undefined') return false;
+        const canvas = document.createElement('canvas');
+        const gl =
+          (canvas.getContext('webgl2') as WebGLRenderingContext | null) ||
+          (canvas.getContext('webgl') as WebGLRenderingContext | null) ||
+          (canvas.getContext('experimental-webgl') as WebGLRenderingContext | null);
+        return !!gl;
+      } catch {
+        return false;
+      }
+    };
+
+    if (!isWebGLAvailable()) {
+      // Gracefully degrade on browsers without stable WebGL
+      return;
+    }
+
     function makePaletteTexture(stops: string[]): THREE.DataTexture {
       let arr: string[];
       if (Array.isArray(stops) && stops.length > 0) {
@@ -1069,16 +1088,23 @@ export default function LiquidEther({
     container.style.position = container.style.position || 'relative';
     container.style.overflow = container.style.overflow || 'hidden';
 
-    const webgl = new WebGLManager({
-      $wrapper: container,
-      autoDemo,
-      autoSpeed,
-      autoIntensity,
-      takeoverDuration,
-      autoResumeDelay,
-      autoRampDuration
-    });
-    webglRef.current = webgl;
+    let webgl: LiquidEtherWebGL | null = null;
+    try {
+      webgl = new WebGLManager({
+        $wrapper: container,
+        autoDemo,
+        autoSpeed,
+        autoIntensity,
+        takeoverDuration,
+        autoResumeDelay,
+        autoRampDuration
+      });
+      webglRef.current = webgl;
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('LiquidEther WebGL init failed, disabling effect:', error);
+      return;
+    }
 
     const applyOptionsFromProps = () => {
       if (!webglRef.current) return;
