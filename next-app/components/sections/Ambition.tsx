@@ -14,7 +14,7 @@ export default function Ambition({ dict }: { dict: Dictionary }) {
   return (
     <section id="ambition">
       <CinematicScene heightVh={220} stageClassName="flex items-center px-4 sm:px-6 lg:px-8">
-        <div className="relative max-w-5xl mx-auto w-full h-auto sm:h-[52vh]">
+        <div className="relative max-w-5xl mx-auto w-full h-auto sm:h-[clamp(36rem,52vh,46rem)]">
           <SceneLayer keyframes={heading} className="relative sm:absolute sm:inset-x-0 sm:top-0">
             <span className="text-xs uppercase tracking-[0.35em] text-white/50">{dict.ambition.eyebrow}</span>
             <h2 className="mt-4 text-3xl sm:text-4xl font-semibold text-white max-w-2xl">

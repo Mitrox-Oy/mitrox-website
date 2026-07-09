@@ -20,7 +20,7 @@ export default function Story({ dict }: { dict: Dictionary }) {
         {/* Fixed-height frame: layers are absolutely positioned within it and
             cross-fade in place, so a layer fading out never leaves the next
             one pushed further down the page (no layout shift/reflow). */}
-        <div className="relative max-w-4xl mx-auto w-full h-auto sm:h-[50vh]">
+        <div className="relative max-w-4xl mx-auto w-full h-auto sm:h-[clamp(34rem,50vh,44rem)]">
           <SceneLayer keyframes={heading} className="relative sm:absolute sm:inset-x-0 sm:top-0">
             <span className="text-xs uppercase tracking-[0.35em] text-white/50">{dict.story.eyebrow}</span>
             <h2 className="mt-4 text-3xl sm:text-4xl font-semibold text-white">{dict.story.title}</h2>

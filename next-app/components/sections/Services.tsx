@@ -14,7 +14,7 @@ export default function Services({ dict }: { dict: Dictionary }) {
         {/* Taller frame than Ambition/Process — the CTA button under the
             points grid needs extra room so it doesn't crowd the heading
             block above it. */}
-        <div className="relative max-w-5xl mx-auto w-full h-auto sm:h-[58vh]">
+        <div className="relative max-w-5xl mx-auto w-full h-auto sm:h-[clamp(40rem,58vh,52rem)]">
           <SceneLayer keyframes={heading} className="relative sm:absolute sm:inset-x-0 sm:top-0">
             <span className="text-xs uppercase tracking-[0.35em] text-white/50">{dict.services.eyebrow}</span>
             <h2 className="mt-4 text-3xl sm:text-4xl font-semibold text-white max-w-2xl">{dict.services.title}</h2>

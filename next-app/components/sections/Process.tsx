@@ -12,7 +12,7 @@ export default function Process({ dict }: { dict: Dictionary }) {
   return (
     <section id="process">
       <CinematicScene heightVh={200} stageClassName="flex items-center px-4 sm:px-6 lg:px-8">
-        <div className="relative max-w-5xl mx-auto w-full h-auto sm:h-[46vh]">
+        <div className="relative max-w-5xl mx-auto w-full h-auto sm:h-[clamp(32rem,46vh,40rem)]">
           <SceneLayer keyframes={heading} className="relative sm:absolute sm:inset-x-0 sm:top-0">
             <span className="text-xs uppercase tracking-[0.35em] text-white/50">{dict.process.eyebrow}</span>
             <h2 className="mt-4 text-3xl sm:text-4xl font-semibold text-white">{dict.process.title}</h2>
